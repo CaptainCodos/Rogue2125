@@ -10,6 +10,8 @@
 using namespace std;
 using namespace sf;
 
+bool pleaseWork = true;
+
 // Entity Implementation //
 Entity::Entity()
 {
