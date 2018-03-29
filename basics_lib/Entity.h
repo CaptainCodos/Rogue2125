@@ -80,6 +80,23 @@ public:
 
 		return nullptr;
 	}
+
+	// Will return a component of type T, or anything which is derived from a T component.
+	template <typename T>
+	const std::vector<std::shared_ptr<T>> GetCompatibleComponent()
+	{
+		static_assert(std::is_base_of<Component, T>::value, "Must be a component!");
+		std::vector<std::shared_ptr<T>> ret;
+		for (auto c : _components)
+		{
+			auto dc = dynamic_cast<T*>(&(*c));
+			if (dc)
+			{
+				ret.push_back(std::dynamic_pointer_cast<T>(c));
+			}
+		}
+		return ret;
+	}
 };
 
 class Component
