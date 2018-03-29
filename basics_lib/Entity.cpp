@@ -10,8 +10,6 @@
 using namespace std;
 using namespace sf;
 
-bool pleaseWork = true;
-
 // Entity Implementation //
 Entity::Entity()
 {
@@ -26,7 +24,22 @@ Entity::Entity()
 }
 Entity::~Entity()
 {
+	// Component deletion may take multiple passes depending on the relations between entities/components.
+	int m_del_index = 0;
+	while (m_del_index != m_components.size())
+	{
+		m_del_index = m_components.size();
+		m_components.erase(remove_if(m_components.begin(), m_components.end(),
+			[](auto& sp) { return (sp.use_count() <= 1); }), m_components.end());
+	}
 
+	if (m_components.size() > 0)
+	{
+		throw std::runtime_error(
+			"Can't delete entity, component in use.");
+	}
+
+	m_components.clear();
 }
 
 vector<shared_ptr<Component>> &Entity::GetComponents()
