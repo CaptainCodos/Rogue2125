@@ -97,15 +97,15 @@ target_link_libraries(lib_ecm PRIVATE lib_maths)
 
 
 ## 6 - Platformer
-file(GLOB_RECURSE SOURCES practical_6_platformer/*.cpp practical_6_platformer/*.h)
-file(GLOB_RECURSE CMPNTS practical_6_platformer/components/*.cpp practical_6_platformer/components/*.h)
-file(GLOB_RECURSE SCENES practical_6_platformer/scenes/*.cpp practical_6_platformer/scenes/*.h)
-add_executable(PRACTICAL_6_PLATFORMER ${SOURCES} ${RESOURCE_FILES})
+file(GLOB_RECURSE SOURCES src_code/*.cpp src_code/*.h)
+file(GLOB_RECURSE CMPNTS src_code/components/*.cpp src_code/components/*.h)
+file(GLOB_RECURSE SCENES src_code/scenes/*.cpp src_code/scenes/*.h)
+add_executable(SRC_CODE ${SOURCES} ${RESOURCE_FILES})
 source_group("components" FILES ${CMPNTS})
 source_group("resources" FILES ${RESOURCE_FILES})
-#target_include_directories(PRACTICAL_6_PLATFORMER SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
-target_link_libraries(PRACTICAL_6_PLATFORMER lib_engine)
-set(EXECUTABLES ${EXECUTABLES} PRACTICAL_6_PLATFORMER)
+#target_include_directories(SRC_CODE SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
+target_link_libraries(SRC_CODE lib_engine)
+set(EXECUTABLES ${EXECUTABLES} SRC_CODE)
 
 
 ## 7 - AI Movement
