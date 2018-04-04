@@ -15,14 +15,14 @@ before_build:
     cmake -G "Visual Studio 15 2017 Win64"
     
 build:
-  project: build/Rogue2125.vcxproj
+  project: build/SRC_CODE.vcxproj
   parallel: true
   verbosity: minimal
   
 #after_build:
 #- cmd: >-
 
-#    7z a Rogue2125_%CONFIGURATION%_win64.zip %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/Rogue2125_main.exe %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/*.dll  %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/**/*
+#    7z a SRC_CODE_%CONFIGURATION%_win64.zip %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/SRC_CODE.exe %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/*.dll  %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/**/*
     
 #    cd ../build/installer/
     
