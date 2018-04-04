@@ -15,6 +15,6 @@ before_build:
     cmake -G "Visual Studio 15 2017 Win64"
     
 build:
-  project: coursework_build/SRC_CODE.vcxproj
+  project: build/Games_Engineering.sln
   parallel: true
   verbosity: minimal
