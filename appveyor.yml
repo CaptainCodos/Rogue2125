@@ -13,3 +13,8 @@ before_build:
     git submodule update --init --recursive
     
     cmake -G "Visual Studio 15 2017 Win64"
+    
+build:
+  project: coursework_build/SRC_CODE.vcxproj
+  parallel: true
+  verbosity: minimal
