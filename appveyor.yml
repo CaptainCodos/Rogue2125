@@ -13,37 +13,5 @@ before_build:
     git submodule update --init --recursive
     
     cmake -G "Visual Studio 15 2017 Win64"
-    
-build:
-  project: build/SRC_CODE.vcxproj
-  parallel: true
-  verbosity: minimal
-  
-#after_build:
-#- cmd: >-
 
-#    7z a SRC_CODE_%CONFIGURATION%_win64.zip %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/SRC_CODE.exe %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/*.dll  %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/**/*
-    
-#    cd ../build/installer/
-    
-#    dir
-    
-#    for %%a in (*.exe) do ren "%%~a" "%%~na_%CONFIGURATION%_win64%%~xa"
-    
-#    dir
-    
-#artifacts:
-#  - path: build/*.zip
-#    name: Rogue2125_zip
-#  - path: build/installer/*.exe
-#    name: Rogue2125_installer
-    
-#deploy:
-#- provider: GitHub
-#  on:
-#    appveyor_repo_tag: true
-#    CONFIGURATION: Release
-#  auth_token:
-#    secure: ECVq3ge/gI4xSJEeoXNUiE3fq0samUls/hSKmaGeJmk3CAxEqr02LX2tcVenpINm
-#  artifact: AI_cw_installer, AI_cw_zip
-#  prerelease: true
+verbosity: minimal
