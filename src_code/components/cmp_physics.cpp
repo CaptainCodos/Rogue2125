@@ -82,6 +82,7 @@ void PhysicsComponent::setVelocity(const sf::Vector2f& v) {
   _body->SetLinearVelocity(sv2_to_bv2(v, true));
 }
 
+b2Body* const PhysicsComponent::getBody() const { return _body; }
 b2Fixture* const PhysicsComponent::getFixture() const { return _fixture; }
 
 PhysicsComponent::~PhysicsComponent() {

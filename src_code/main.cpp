@@ -5,11 +5,19 @@
 using namespace std;
 
 MenuScene menu;
-Level1Scene level1;
-Level2Scene level2;
-Level3Scene level3;
+SettingsScene settings;
+GameplayScene gameplay;
+PauseScene pause;
+HighscoresScene highscores;
+
+TextureMgr* txrMgr;
+FontMgr* fontMgr;
+bool loadContentComplete;
 
 int main() 
 {
-	Engine::Start(1600, 900, "Rogue2125",&menu);
+	txrMgr = TextureMgr::GetInstance();
+	fontMgr = FontMgr::GetInstance();
+	Engine::Start(1600, 900, "Rogue2125", &menu);
+	
 }

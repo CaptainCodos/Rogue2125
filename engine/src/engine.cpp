@@ -86,6 +86,7 @@ void Engine::Start(unsigned int width, unsigned int height,
   _window = &window;
   Renderer::initialise(window);
   Physics::initialise();
+
   ChangeScene(scn);
   while (window.isOpen()) {
     Event event;
@@ -128,13 +129,12 @@ void Engine::ChangeScene(Scene* s) {
   if (old != nullptr) {
     old->UnLoad(); // todo: Unload Async
   }
-  _activeScene->Load();
-  /*if (!s->isLoaded()) {
+  if (!s->isLoaded()) {
     cout << "Eng: Entering Loading Screen\n";
     loadingTime =0;
-    _activeScene->LoadAsync();
+    _activeScene->Load();
     loading = true;
-  }*/
+  }
 }
 
 void Scene::Update(const double& dt) { ents.update(dt); }
