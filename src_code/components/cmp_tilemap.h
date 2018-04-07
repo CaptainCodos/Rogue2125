@@ -44,6 +44,11 @@ private:
 	char m_roomIDs;
 	char m_corridorIDs;
 
+	float m_chanceOfLiquid;
+
+	sf::Color m_roomColor;
+	sf::Color m_corridorColor;
+
 	std::vector<std::vector<std::shared_ptr<Entity>>> m_tileEnts;
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> m_tileCmps;
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> m_visibleTiles;
@@ -54,6 +59,11 @@ private:
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> m_corridors;
 
 	char CalculateTileIdx(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours);
+	char CalculateLiquidID(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours, char currID);
+
+	bool CheckForRoughLiquid(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours, char currID);
+	void SmoothLiquids(int bX, int bY);
+
 	bool ToggleTile(std::vector<std::vector<std::shared_ptr<TileComponent>>> tiles);
 
 	sf::IntRect GenerateRoom(sf::IntRect prev);	// Generate new room within bounds of previous.
@@ -61,7 +71,9 @@ private:
 	//sf::IntRect GenerateLockedRoom();			// Generate new room along corridor that is locked.
 	//sf::IntRect GenerateHiddenRoom();			// Generate hidden room on side of normal room.
 
-	void AlterRoomTiles(sf::IntRect room);
-	void AlterCorridorTiles(std::vector<std::shared_ptr<TileComponent>> corridor);
-	void IterateAcrossTileMap();
+	void AlterRoomTiles(sf::IntRect room, char ID, sf::Color color, bool isLiquid);
+	void AlterCorridorTiles(std::vector<std::shared_ptr<TileComponent>> corridor, char ID, sf::Color color);
+	void IterateAcrossTileMap(int pass);
+
+	bool ListContains(std::vector<std::shared_ptr<TileComponent>> list, std::shared_ptr<TileComponent> t);
 };

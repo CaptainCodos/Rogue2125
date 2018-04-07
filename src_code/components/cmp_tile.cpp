@@ -14,8 +14,9 @@ TileComponent::TileComponent(Entity* p, TextureMgr* txrMgr, int x, int y)
 	m_walkable = false;
 
 	//m_tileID = 6;
-	SetTileID(0);
+	SetTileID(1);
 	m_tileIdx = 0;
+	m_liquidID = 0;
 
 	m_terrainMod = 1.0f;
 
@@ -38,6 +39,7 @@ bool TileComponent::GetDisguised() { return m_disguised; }
 
 char TileComponent::GetID() { return m_tileID; }
 char TileComponent::GetIdx() { return m_tileIdx; }
+char TileComponent::GetLiquidID() { return m_liquidID; }
 
 float TileComponent::GetTerrainMod() { return m_terrainMod; }
 
@@ -45,8 +47,15 @@ void TileComponent::SetTileID(char ID)
 {
 	m_tileID = ID;
 
-	int catagory = ID / 6;
-	int set = ID % 6;
+	int catagory = ID / 5;
+	int set = ID % 5;
+
+	if (ID > 14)
+	{
+		m_liquidID = (ID - 15);
+		catagory = 0;
+		set = 0;
+	}
 
 	switch (catagory)
 	{
@@ -58,12 +67,8 @@ void TileComponent::SetTileID(char ID)
 		if (set <= 0)
 		{
 			SetTexture(m_txrMgr->anim_Tiles[set], 32);
+			SetColor(m_txrMgr->colors_LiquidTiles[m_liquidID]);
 			SetTextureRect(m_txrMgr->anim_TilesRect);
-		}
-		else if (set < 4)
-		{
-			SetTexture(m_txrMgr->sheet_Tiles[set], 32);
-			SetTextureRect(make_shared<sf::IntRect>(sf::IntRect(0, 0, m_texRes, m_texRes)));
 		}
 		else
 		{
@@ -75,45 +80,19 @@ void TileComponent::SetTileID(char ID)
 		m_walkable = false;
 		m_disguised = false;
 
-		SetTint(Color(180, 180, 180, 255));
+		SetTint(Color(220, 220, 220, 255));
 
-		if (set <= 0)
-		{
-			SetTexture(m_txrMgr->anim_Tiles[set], 32);
-			SetTextureRect(m_txrMgr->anim_TilesRect);
-		}
-		else if (set < 4)
-		{
-			SetTexture(m_txrMgr->sheet_Tiles[set], 32);
-			SetTextureRect(make_shared<sf::IntRect>(sf::IntRect(0, 0, m_texRes, m_texRes)));
-		}
-		else
-		{
-			SetTexture(m_txrMgr->sheet_Tiles[set], 32);
-			SetTextureRect(make_shared<sf::IntRect>(sf::IntRect(0, 0, m_texRes, m_texRes)));
-		}
+		SetTexture(m_txrMgr->sheet_Tiles[set], 32);
+		SetTextureRect(make_shared<sf::IntRect>(sf::IntRect(0, 0, m_texRes, m_texRes)));
 		break;
 	case 2:
 		m_walkable = true;
 		m_disguised = true;
 
-		SetTint(Color(180, 180, 180, 255));
+		SetTint(Color(220, 220, 220, 255));
 
-		if (set <= 0)
-		{
-			SetTexture(m_txrMgr->anim_Tiles[set], 32);
-			SetTextureRect(m_txrMgr->anim_TilesRect);
-		}
-		else if (set < 4)
-		{
-			SetTexture(m_txrMgr->sheet_Tiles[set], 32);
-			SetTextureRect(make_shared<sf::IntRect>(sf::IntRect(0, 0, m_texRes, m_texRes)));
-		}
-		else
-		{
-			SetTexture(m_txrMgr->sheet_Tiles[set], 32);
-			SetTextureRect(make_shared<sf::IntRect>(sf::IntRect(0, 0, m_texRes, m_texRes)));
-		}
+		SetTexture(m_txrMgr->sheet_Tiles[set], 32);
+		SetTextureRect(make_shared<sf::IntRect>(sf::IntRect(0, 0, m_texRes, m_texRes)));
 		break;
 	}
 

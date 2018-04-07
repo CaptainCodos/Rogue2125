@@ -19,6 +19,11 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 	m_roomIDs = RandomInt(1, 5);
 	m_corridorIDs = RandomInt(1, 5);
 
+	m_roomColor = Color(RandomInt(210, 256), RandomInt(210, 256), RandomInt(210, 256), 255);
+	m_corridorColor = Color(RandomInt(180, 256), RandomInt(180, 256), RandomInt(180, 256), 255);
+
+	m_chanceOfLiquid = RandomFloat(0.2f, 0.5f);
+
 	while (m_corridorIDs == m_roomIDs)
 	{
 		m_corridorIDs = RandomInt(1, 5);
@@ -55,8 +60,8 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 				ent->setPosition(Vector2f(16.0f + (32.0f * x), 16.0f + (32.0f * y)));
 				
 				shared_ptr<TileComponent> cmpT = ent->addComponent<TileComponent>(txrMgr, x, y);
-				cmpT->SetTileID(9);
-				//cmpT->SetColor(m_txrMgr->colors_LiquidTiles[0]);
+				cmpT->SetTileID(m_roomIDs + 5);
+				cmpT->SetColor(m_roomColor);
 				cmpT->update(1.0f);
 
 				m_tileEnts[y].push_back(ent);
@@ -258,13 +263,20 @@ void TileMapComponent::GenerateMap()
 
 	for (int i = 0; i < m_corridors.size(); i++)
 	{
-		AlterCorridorTiles(m_corridors[i]);
+		AlterCorridorTiles(m_corridors[i], m_corridorIDs, m_corridorColor);
 	}
 	for (int i = 0; i < m_rooms.size(); i++)
 	{
-		AlterRoomTiles(m_rooms[i]);
+		AlterRoomTiles(m_rooms[i], m_roomIDs, m_roomColor, false);
 	}
-	IterateAcrossTileMap();
+	int passes = 0;
+
+	while (passes < 1)
+	{
+		IterateAcrossTileMap(passes);
+		passes++;
+	}
+	
 }
 
 char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>> neighbours)
@@ -320,6 +332,92 @@ char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>
 	}
 
 	return idx;
+}
+
+char TileMapComponent::CalculateLiquidID(vector<vector<shared_ptr<TileComponent>>> neighbours, char currID)
+{
+	char idx = currID;
+
+	for (int y = 0; y < neighbours.size(); y++)
+	{
+		for (int x = 0; x < neighbours[y].size(); x++)
+		{
+			if (neighbours[y][x] != nullptr)
+			{
+				char id = neighbours[y][x]->GetID();
+				char lID = neighbours[y][x]->GetLiquidID();
+				if (id > 14 && lID < idx)
+					idx = lID;
+			}
+		}
+	}
+
+	return idx + 15;
+}
+
+bool TileMapComponent::CheckForRoughLiquid(vector<vector<shared_ptr<TileComponent>>> neighbours, char currID)
+{
+	char idx = currID;
+
+	for (int y = 0; y < neighbours.size(); y++)
+	{
+		for (int x = 0; x < neighbours[y].size(); x++)
+		{
+			if (neighbours[y][x] != nullptr)
+			{
+				char id = neighbours[y][x]->GetID();
+				char lID = neighbours[y][x]->GetLiquidID();
+				if (id > 14 && lID > idx)
+					return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void TileMapComponent::SmoothLiquids(int bX, int bY)
+{
+	vector<shared_ptr<TileComponent>> openList = vector<shared_ptr<TileComponent>>();
+	vector<shared_ptr<TileComponent>> closedList = vector<shared_ptr<TileComponent>>();
+
+	Vector2i cC = Vector2i(bX, bY);
+	shared_ptr<TileComponent> start = GetTile(bX, bY);
+	openList.push_back(start);
+	//TileComponent current = *start;
+
+	while (openList.size() > 0)
+	{
+		TileComponent current = *GetTile(openList[0]->GetCoords().x, openList[0]->GetCoords().y);
+
+		vector<vector<shared_ptr<TileComponent>>> Ns = GetNeighbourTiles(current.GetCoords().x, current.GetCoords().y);
+
+		for (int y = 0; y < Ns.size(); y++)
+		{
+			for (int x = 0; x < Ns[y].size(); x++)
+			{
+				if (Ns[y][x] != nullptr)
+				{
+					bool found = find(openList.begin(), openList.end(), Ns[y][x]) != openList.end() 
+						&& find(closedList.begin(), closedList.end(), Ns[y][x]) != closedList.end();
+
+					if (!found)
+					{
+						char id = Ns[y][x]->GetID();
+						char Lid = Ns[y][x]->GetLiquidID();
+						if (id > 14 && Lid > current.GetLiquidID() && current.GetID() > 14)
+						{
+							Ns[y][x]->SetTileID(current.GetID());
+							openList.push_back(Ns[y][x]);
+						}
+					}
+				}
+			}
+		}
+
+		closedList.push_back(GetTile(current.GetCoords().x, current.GetCoords().y));
+		openList.erase(remove_if(begin(openList), end(openList), [&](shared_ptr<TileComponent> x) {return find(begin(closedList), end(closedList), x) != end(closedList); }), end(openList));
+	}
 }
 
 bool TileMapComponent::ToggleTile(vector<vector<shared_ptr<TileComponent>>> tiles)
@@ -418,40 +516,90 @@ std::vector<std::shared_ptr<TileComponent>> TileMapComponent::GenerateCorridor(I
 	return corridor;
 }
 
-void TileMapComponent::AlterRoomTiles(IntRect room)
+void TileMapComponent::AlterRoomTiles(IntRect room, char ID, Color color, bool isLiquid)
 {
 	vector<vector<shared_ptr<TileComponent>>> tilegrid = GetTiles(room);
+
+	float liquidVal = RandomFloat(0.0f, 1.0f);
+	IntRect liquidCover;
+
+	
+
 
 	for (int y = 0; y < tilegrid.size(); y++)
 	{
 		for (int x = 0; x < tilegrid[y].size(); x++)
 		{
-			tilegrid[y][x]->SetColor(Color(255, 255, 255, 255));
-			tilegrid[y][x]->SetTileID(3);
+			tilegrid[y][x]->SetColor(color);
+			tilegrid[y][x]->SetTileID(ID);
 		}
 	}
-}
 
-void TileMapComponent::AlterCorridorTiles(std::vector<std::shared_ptr<TileComponent>> corridor)
-{
-	for (int i = 0; i < corridor.size(); i++)
+	if (liquidVal <= m_chanceOfLiquid && !isLiquid)
 	{
-		corridor[i]->SetColor(Color(255, 255, 255, 255));
-		corridor[i]->SetTileID(1);
+		int rW = RandomInt(2, min(room.width, 6));
+		int rH = RandomInt(2, min(room.height, 6));
+
+		liquidCover = IntRect(RandomInt(0, room.width - rW), RandomInt(0, room.height - rH), rW, rH);
+		liquidCover.left += room.left;
+		liquidCover.top += room.top;
+
+		char id = RandomInt(15, 20);
+		AlterRoomTiles(liquidCover, id, m_txrMgr->colors_LiquidTiles[id % 5], true);
 	}
 }
 
-void TileMapComponent::IterateAcrossTileMap()
+void TileMapComponent::AlterCorridorTiles(vector<shared_ptr<TileComponent>> corridor, char ID, Color color)
 {
+	int liquidIdx = RandomInt(0, 5);
+
+	for (int i = 0; i < corridor.size(); i++)
+	{
+		float liquidVal = RandomFloat(0.0f, 1.0f);
+
+		if (liquidVal < m_chanceOfLiquid)
+		{
+			corridor[i]->SetColor(m_txrMgr->colors_LiquidTiles[liquidIdx]);
+			corridor[i]->SetTileID(liquidIdx + 15);
+		}
+		else
+		{
+			corridor[i]->SetColor(color);
+			corridor[i]->SetTileID(ID);
+		}
+		
+	}
+}
+
+void TileMapComponent::IterateAcrossTileMap(int pass)
+{
+	
 	for (int y = 0; y < m_tileEnts.size(); y++)
 	{
 		for (int x = 0; x < m_tileEnts[y].size(); x++)
 		{
-			if (!m_tileCmps[y][x]->GetWalkable())
-				m_tileCmps[y][x]->SetTileIdx(1 + CalculateTileIdx(GetNeighbourTiles(x, y)));
+			if (pass <= 0)
+			{
+				if (!m_tileCmps[y][x]->GetWalkable())
+					m_tileCmps[y][x]->SetTileIdx(1 + CalculateTileIdx(GetNeighbourTiles(x, y)));
 
-			bool vis = ToggleTile(GetAllNeighbourTiles(x, y));
-			m_tileEnts[y][x]->setVisible(vis);
+				bool vis = ToggleTile(GetAllNeighbourTiles(x, y));
+				m_tileEnts[y][x]->setVisible(vis);
+			}
+
+			if (m_tileCmps[y][x]->GetID() > 14)
+			{
+				//m_tileCmps[y][x]->SetTileIdx(CalculateLiquidID(GetNeighbourTiles(x, y), m_tileCmps[y][x]->GetLiquidID()));
+				if (CheckForRoughLiquid(GetNeighbourTiles(x, y), m_tileCmps[y][x]->GetLiquidID()))
+				{
+					SmoothLiquids(x, y);
+				}
+			}
 		}
 	}
+}
+
+bool TileMapComponent::ListContains(vector<shared_ptr<TileComponent>> list, shared_ptr<TileComponent> t)
+{
+	return find(list.begin(), list.end(), t) != list.end();
 }

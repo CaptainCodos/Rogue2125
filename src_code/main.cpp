@@ -14,8 +14,11 @@ TextureMgr* txrMgr;
 FontMgr* fontMgr;
 bool loadContentComplete;
 
+int counter;
+
 int main() 
 {
+	counter = 0;
 	srand(time(NULL));
 	txrMgr = TextureMgr::GetInstance();
 	fontMgr = FontMgr::GetInstance();

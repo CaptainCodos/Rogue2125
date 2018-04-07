@@ -14,6 +14,8 @@ float zoom;
 
 void MenuScene::Load() 
 {
+	counter++;
+	cout << "Test: " << counter << "\n";
 	zoom = 1.0f;
 	view = View(FloatRect(0, 0, 1920, 1080));
 	Engine::GetWindow().setView(view);
@@ -24,7 +26,7 @@ void MenuScene::Load()
 			"Platformer\nPress Space to Start");
 		
 		auto tm = makeEntity();
-		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, 0);
+		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, 20);
 	}
 	setLoaded(true);
 }
@@ -35,7 +37,7 @@ void MenuScene::Update(const double& dt) {
 	txrMgr->UpdateAnims(dt);
 
   if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-	  Engine::ChangeScene(&gameplay);
+	  Engine::ChangeScene(&menu);
   }
 
   if (sf::Keyboard::isKeyPressed(Keyboard::S)) {
