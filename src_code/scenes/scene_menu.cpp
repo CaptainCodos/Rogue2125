@@ -26,7 +26,7 @@ void MenuScene::Load()
 			"Platformer\nPress Space to Start");
 		
 		auto tm = makeEntity();
-		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, 20);
+		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, 0);
 	}
 	setLoaded(true);
 }
