@@ -1,4 +1,4 @@
-#include "player_controls.h"
+#include "remap_controls.h"
 
 using namespace std;
 using namespace sf;
@@ -7,6 +7,11 @@ map<std::string, Keyboard::Key> PlayerControls::keyTable;
 
 void PlayerControls::Initialise() {
 	PlayerControls::SetKey("Exit", Keyboard::Escape);
+	PlayerControls::SetKey("Up", Keyboard::W);
+	PlayerControls::SetKey("Down", Keyboard::S);
+	PlayerControls::SetKey("Left", Keyboard::A);
+	PlayerControls::SetKey("Right", Keyboard::D);
+	PlayerControls::SetKey("Inventory", Keyboard::U);
 }
 
 Keyboard::Key PlayerControls::GetKey(string key) {
