@@ -6,7 +6,7 @@ using namespace std;
 using namespace sf;
 
 void ControlsComponent::update(double dt) {
-	const auto pos = _parent->getPosition();
+	//const auto pos = _parent->getPosition();
 	float _speed = speed;
 	Vector2f dir = { 0, 0 };
 
