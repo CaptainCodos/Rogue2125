@@ -1,5 +1,8 @@
 #include "cmp_tilemap.h"
 #include "system_physics.h"
+#include <fstream>
+#include <string>
+#include <iostream>
 //#include "maths.h"
 
 using namespace std;
@@ -70,6 +73,8 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 		}
 
 		GenerateMap();
+
+		SaveMap();
 
 		m_visibleTiles = GetTiles(IntRect(0, 0, m_width, m_height));
 	}
@@ -236,11 +241,33 @@ bool TileMapComponent::LoadMap()
 {
 	return false;
 }
-//void TileMapComponent::SaveMap()
-//{
-//
-//}
-//
+void TileMapComponent::SaveMap()
+{
+	string dir = "res/" + m_ID + ".txt";
+	std::ofstream out(dir);
+
+	if (out.is_open())
+	{
+		for (int i = 0; i < m_tileCmps.size(); i++)
+		{
+			std::stringstream input;
+			string ipt = "";
+
+
+			for (int j = 0; j < m_tileCmps[i].size(); j++)
+			{
+				out << m_tileCmps[i][j]->GetID();
+
+				/*if (j >= m_tileCmps[i].size() - 1)
+					out << "\n";*/
+			}
+		}
+
+		out.close();
+	}
+	
+}
+
 void TileMapComponent::GenerateMap()
 {
 	int rRooms = sf::RandomInt(7 + (m_IntID / 2), 11 + (m_IntID / 2));

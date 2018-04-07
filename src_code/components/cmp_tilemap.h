@@ -16,7 +16,7 @@ public:
 	void render() override;
 
 	bool LoadMap();
-	//void SaveMap();
+	void SaveMap();
 	void GenerateMap();
 
 	std::string GetID();
