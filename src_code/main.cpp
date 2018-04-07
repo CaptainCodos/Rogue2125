@@ -16,6 +16,7 @@ bool loadContentComplete;
 
 int main() 
 {
+	srand(time(NULL));
 	txrMgr = TextureMgr::GetInstance();
 	fontMgr = FontMgr::GetInstance();
 	Engine::Start(1600, 900, "Rogue2125", &menu);
