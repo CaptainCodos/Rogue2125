@@ -19,8 +19,14 @@ sf::Sprite& SpriteComponent::getSprite() const { return *_sprite; }
 
 #pragma region TextureComponent
 TextureComponent::TextureComponent(Entity* p)
-	: Component(p), m_sprite(make_shared<sf::Sprite>()) {
-	m_srcRect = make_shared<sf::IntRect>(sf::IntRect(0, 0, 32, 32));
+	: Component(p), m_sprite(make_shared<sf::Sprite>()) 
+{
+	m_color = sf::Color::White;
+	m_tint = sf::Color::White;
+
+	SetColor(m_color);
+	SetTint(m_tint);
+	//m_srcRect = make_shared<sf::IntRect>(sf::IntRect(0, 0, 32, 32));
 	//m_srcRect = new sf::IntRect(0, 0, 32, 32);
 }
 
@@ -31,7 +37,7 @@ void TextureComponent::update(double dt) {
 
 void TextureComponent::render() 
 {
-	if (m_sprite->getTexture() != nullptr)
+	if (m_sprite->getTexture() != nullptr && _parent->isVisible())
 	{
 		if (m_srcRect != nullptr)
 			m_sprite->setTextureRect(*m_srcRect);
@@ -57,7 +63,13 @@ void TextureComponent::SetOrigin(sf::Vector2f origin)
 
 void TextureComponent::SetColor(sf::Color color)
 {
-	m_sprite->setColor(color);
+	m_color = color;
+	m_sprite->setColor(m_color * m_tint);
+}
+void TextureComponent::SetTint(sf::Color tint)
+{
+	m_tint = tint;
+	m_sprite->setColor(m_color * m_tint);
 }
 
 void TextureComponent::SetScale(float scale)

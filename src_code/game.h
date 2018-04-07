@@ -18,3 +18,5 @@ extern TextureMgr* txrMgr;
 //extern SoundMgr* audioMgr;
 extern FontMgr* fontMgr;
 extern bool loadContentComplete;
+
+extern int counter;
