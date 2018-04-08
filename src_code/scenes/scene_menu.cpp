@@ -1,4 +1,5 @@
 #include "scene_menu.h"
+#include "system_player_controls.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_tilemap.h"
@@ -8,6 +9,7 @@
 
 using namespace std;
 using namespace sf;
+using namespace controls;
 
 View view;
 float zoom;
@@ -39,36 +41,11 @@ void MenuScene::Update(const double& dt) {
   // cout << "Menu Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
+	CheckCameraInput(view, zoom, dt);
 
   if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 	  Engine::ChangeScene(&menu);
   }
-
-  if (sf::Keyboard::isKeyPressed(Keyboard::S)) {
-	  view.move(0, dt * 300.0f);
-  }
-  if (sf::Keyboard::isKeyPressed(Keyboard::W)) {
-	  view.move(0, -dt * 300.0f);
-  }
-
-  if (sf::Keyboard::isKeyPressed(Keyboard::A)) {
-	  view.move(-dt * 300.0f, 0);
-  }
-  if (sf::Keyboard::isKeyPressed(Keyboard::D)) {
-	  view.move(dt * 300.0f, 0);
-  }
-
-  if (sf::Keyboard::isKeyPressed(Keyboard::Q)) {
-	  zoom += dt;
-  }
-  if (sf::Keyboard::isKeyPressed(Keyboard::E)) {
-	  zoom -= dt;
-  }
-
-  view.zoom(zoom);
-
-  zoom = 1.0f;
-  Engine::GetWindow().setView(view);
 
   Scene::Update(dt);
 }
