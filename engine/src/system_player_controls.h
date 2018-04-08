@@ -1,9 +1,21 @@
 #pragma once
 
 #include <SFML/Window/Keyboard.hpp>
-#include "remap_controls.h"
+//#include "remap_controls.h"
 
 using namespace sf;
+
+namespace Input
+{
+	bool GetKeyDown(Keyboard::Key key);		// Simple key press trigger
+	bool GetKeyPressed(Keyboard::Key key);	// For single frame
+	bool GetKeyHeld(Keyboard::Key key);		// Get key held down
+
+	bool GetMouseDown(Mouse::Button button);	// Simple mouse click trigger
+	bool GetMousePressed(Mouse::Button button);	// For single frame
+
+	float GetAxisValue(int axis);	// Returns direction value from axis, 0 = horizontal, 1 = vertical
+};
 
 namespace controls 
 {
