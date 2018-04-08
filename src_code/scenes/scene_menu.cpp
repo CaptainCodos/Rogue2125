@@ -3,13 +3,14 @@
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_tilemap.h"
+#include "../components/cmp_actor_stats.h"
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 
 using namespace std;
 using namespace sf;
-using namespace controls;
+//using namespace controls;
 
 View view;
 float zoom;
@@ -29,6 +30,9 @@ void MenuScene::Load()
 		
 		auto tm = makeEntity();
 		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);
+
+		auto acto = makeEntity();
+		auto actC = acto->addComponent<ActorStatsComponent>();
 	}
 
 	counter++;
@@ -41,9 +45,9 @@ void MenuScene::Update(const double& dt) {
   // cout << "Menu Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
-	CheckCameraInput(view, zoom, dt);
+	/*CheckCameraInput(view, zoom, dt);
 	GetMouseClick();
-	GetMousePos();
+	GetMousePos();*/
 
   if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 	  Engine::ChangeScene(&menu);
