@@ -42,6 +42,8 @@ void MenuScene::Update(const double& dt) {
 
 	txrMgr->UpdateAnims(dt);
 	CheckCameraInput(view, zoom, dt);
+	GetMouseClick();
+	GetMousePos();
 
   if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 	  Engine::ChangeScene(&menu);
