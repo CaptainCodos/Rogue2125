@@ -1,4 +1,5 @@
 #include "remap_controls.h"
+#include <iostream>
 
 using namespace std;
 using namespace sf;
@@ -29,11 +30,11 @@ void PlayerControls::SetKey(string key, Keyboard::Key newKey) {
 	keyTable[key] = newKey;
 }
 
-unsigned int PlayerControls::GetControllerButton(std::string input)
+unsigned int PlayerControls::GetControllerButton(string input)
 {
 	return 0;
 }
 
-void PlayerControls::SetControllerButton(std::string input, unsigned int button)
+void PlayerControls::SetControllerButton(string input, unsigned int button)
 {
 }
