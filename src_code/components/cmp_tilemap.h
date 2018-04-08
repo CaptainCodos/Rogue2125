@@ -16,7 +16,11 @@ public:
 	void render() override;
 
 	bool LoadMap();
-	//void SaveMap();
+	void SaveMap();
+
+	char ConvertFromInt(int n);
+	int ConvertFromChar(char c);
+
 	void GenerateMap();
 
 	std::string GetID();
@@ -73,7 +77,9 @@ private:
 
 	void AlterRoomTiles(sf::IntRect room, char ID, sf::Color color, bool isLiquid);
 	void AlterCorridorTiles(std::vector<std::shared_ptr<TileComponent>> corridor, char ID, sf::Color color);
-	void IterateAcrossTileMap(int pass);
+	void IterateAcrossTileMap(int pass);		// Determines visibility, determines walls and propagates fluids.
+
+	void IterateTiles();						// Similar to IterateAcross, however does not propagate fluids.
 
 	bool ListContains(std::vector<std::shared_ptr<TileComponent>> list, std::shared_ptr<TileComponent> t);
 };

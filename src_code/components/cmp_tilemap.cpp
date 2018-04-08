@@ -1,5 +1,8 @@
 #include "cmp_tilemap.h"
 #include "system_physics.h"
+#include <fstream>
+#include <string>
+#include <iostream>
 //#include "maths.h"
 
 using namespace std;
@@ -13,7 +16,9 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 	m_width = 40 + ((currMap) * 3);
 	m_height = 40 + ((currMap) * 3);
 
-	m_ID = "map" + currMap;
+	stringstream str;
+	str << "map" << currMap;
+	m_ID = str.str();
 	m_IntID = currMap;
 
 	m_roomIDs = RandomInt(1, 5);
@@ -38,13 +43,10 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 
 	m_corridorDirs = vector<int>();
 	m_corridors = vector<vector<shared_ptr<TileComponent>>>();
-
+	//LoadMap();
 	bool b = true;
-	if (!b)
-	{
 
-	}
-	else
+	if (!LoadMap())
 	{
 		for (int y = 0; y < m_height; y++)
 		{
@@ -58,7 +60,7 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 			{
 				shared_ptr<Entity> ent = make_shared<Entity>(nullptr);
 				ent->setPosition(Vector2f(16.0f + (32.0f * x), 16.0f + (32.0f * y)));
-				
+
 				shared_ptr<TileComponent> cmpT = ent->addComponent<TileComponent>(txrMgr, x, y);
 				cmpT->SetTileID(m_roomIDs + 5);
 				cmpT->SetColor(m_roomColor);
@@ -70,6 +72,8 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 		}
 
 		GenerateMap();
+
+		SaveMap();
 
 		m_visibleTiles = GetTiles(IntRect(0, 0, m_width, m_height));
 	}
@@ -232,15 +236,175 @@ vector<vector<shared_ptr<TileComponent>>> TileMapComponent::GetAllNeighbourTiles
 	return tilegrid;
 }
 
+char TileMapComponent::ConvertFromInt(int n)
+{
+	assert(n >= 0 && n < 26);
+	return "abcdefghijklmnopqrstuvwxyz"[n];
+}
+int TileMapComponent::ConvertFromChar(char c)
+{
+	assert(c >= 'a' && c <= 'z');
+	return int(c) - 97;
+}
+
 bool TileMapComponent::LoadMap()
 {
-	return false;
+	//_tileSize = tileSize;
+	//size_t w = 0, h = 0;
+	//string buffer;
+
+	//// Load in file to buffer
+	//ifstream f("res/maze_2.txt");
+	//if (f.good()) {
+	//	f.seekg(0, std::ios::end);
+	//	buffer.resize(f.tellg());
+	//	f.seekg(0);
+	//	f.read(&buffer[0], buffer.size());
+	//	f.close();
+	//}
+
+	//for (int i = 0; i < buffer.size(); i++)
+	//{
+	//	cout << buffer[i];
+	//}
+	bool info = false;
+	bool data = false;
+	ifstream infoFile("res/" + m_ID + "Info.txt");
+	if (infoFile.good())
+	{
+		Uint8 roomCs[3] = { 0, 0, 0 };
+		Uint8 corrCs[3] = { 0, 0, 0 };
+		char IDs[2] = { 'a', 'a' };
+
+		for (int i = 0; i < 3; i++)
+		{
+			string l;
+			getline(infoFile, l);
+
+			roomCs[i] = l[0];
+		}
+
+		for (int i = 0; i < 3; i++)
+		{
+			string l;
+			getline(infoFile, l);
+
+			corrCs[i] = l[0];
+		}
+
+		for (int i = 0; i < 2; i++)
+		{
+			string l;
+			getline(infoFile, l);
+
+			IDs[i] = l[0];
+		}
+
+		m_roomColor = Color(roomCs[0], roomCs[1], roomCs[2], 255);
+		m_corridorColor = Color(corrCs[0], corrCs[1], corrCs[2], 255);
+
+		m_roomIDs = ConvertFromChar(IDs[0]);
+		m_corridorIDs = ConvertFromChar(IDs[1]);
+
+		info = true;
+	}
+
+	ifstream file("res/" + m_ID + ".txt");
+	if (file.good())
+	{
+		
+		for (int y = 0; y < m_height; y++)
+		{
+			m_tileEnts.push_back(vector<shared_ptr<Entity>>());
+			m_tileCmps.push_back(vector<shared_ptr<TileComponent>>());
+		}
+
+		int y = 0;
+		for (string line; getline(file, line); )
+		{
+			for (int x = 0; x < line.size(); x++)
+			{
+				shared_ptr<Entity> ent = make_shared<Entity>(nullptr);
+				ent->setPosition(Vector2f(16.0f + (32.0f * x), 16.0f + (32.0f * y)));
+
+				shared_ptr<TileComponent> cmpT = ent->addComponent<TileComponent>(m_txrMgr, x, y);
+				cmpT->SetColor(m_roomColor);
+				cmpT->SetTileID(ConvertFromChar(line[x]));
+
+				if (cmpT->GetWalkable() && cmpT->GetID() == m_corridorIDs)
+					cmpT->SetColor(m_corridorColor);
+
+				/*if (cmpT->GetWalkable() && cmpT->GetID() == m_roomIDs)
+					cmpT->SetColor(m_roomColor);*/
+
+				cmpT->update(1.0f);
+
+				m_tileEnts[y].push_back(ent);
+				m_tileCmps[y].push_back(cmpT);
+				
+			}
+
+			y++;
+		}
+
+		m_visibleTiles = GetTiles(IntRect(0, 0, m_width, m_height));
+		IterateTiles();
+
+		data = true;
+	}
+
+	return info && data;
 }
-//void TileMapComponent::SaveMap()
-//{
-//
-//}
-//
+void TileMapComponent::SaveMap()
+{
+	string dir = "res/" + m_ID + ".txt";
+	string mapInfoDir = "res/" + m_ID + "Info.txt";
+
+	ofstream out(dir);
+	ofstream outInfo(mapInfoDir);
+	//string str = "hahaha";
+
+	if (outInfo.good())
+	{
+		string str;
+
+		str += m_roomColor.r; outInfo << str << endl; str = "";
+		str += m_roomColor.g; outInfo << str << endl; str = "";
+		str += m_roomColor.b; outInfo << str << endl; str = "";
+
+		str += m_corridorColor.r; outInfo << str << endl; str = "";
+		str += m_corridorColor.g; outInfo << str << endl; str = "";
+		str += m_corridorColor.b; outInfo << str << endl; str = "";
+
+		str += ConvertFromInt(m_roomIDs); outInfo << str << endl; str = "";
+		str += ConvertFromInt(m_corridorIDs); outInfo << str << endl; str = "";
+
+		outInfo.close();
+	}
+
+	if (out.good())
+	{
+		for (int i = 0; i < m_tileCmps.size(); i++)
+		{
+			string str;
+
+			for (int j = 0; j < m_tileCmps[i].size(); j++)
+			{
+				str += ConvertFromInt(m_tileCmps[i][j]->GetID());
+
+				/*if (j >= m_tileCmps[i].size() - 1)
+					str << '-';*/
+			}
+
+			out << str << endl;
+		}
+
+		out.close();
+	}
+	
+	
+}
+
 void TileMapComponent::GenerateMap()
 {
 	int rRooms = sf::RandomInt(7 + (m_IntID / 2), 11 + (m_IntID / 2));
@@ -248,8 +412,8 @@ void TileMapComponent::GenerateMap()
 	IntRect currRoom;
 
 	// Generate first room
-	int rW = sf::RandomInt(3, 8);
-	int rH = sf::RandomInt(3, 8);
+	int rW = sf::RandomInt(3 + (m_IntID / 2), 8 + m_IntID);
+	int rH = sf::RandomInt(3 + (m_IntID / 2), 8 + m_IntID);
 	prevRoom = IntRect(sf::RandomInt(1, m_width - rW - 2), sf::RandomInt(1, m_height - rH - 2), rW, rH);
 
 	m_rooms.push_back(prevRoom);
@@ -438,8 +602,8 @@ IntRect TileMapComponent::GenerateRoom(IntRect prev)
 {
 
 
-	int rW = sf::RandomInt(3, 8);
-	int rH = sf::RandomInt(3, 8);
+	int rW = sf::RandomInt(3 + (m_IntID / 2), 8 + m_IntID);
+	int rH = sf::RandomInt(3 + (m_IntID / 2), 8 + m_IntID);
 
 	IntRect newRoom;
 	newRoom = IntRect(sf::RandomInt(1, m_width - rW - 2), sf::RandomInt(1, m_height - rH - 2), rW, rH);
@@ -537,8 +701,8 @@ void TileMapComponent::AlterRoomTiles(IntRect room, char ID, Color color, bool i
 
 	if (liquidVal <= m_chanceOfLiquid && !isLiquid)
 	{
-		int rW = RandomInt(2, min(room.width, 6));
-		int rH = RandomInt(2, min(room.height, 6));
+		int rW = RandomInt(2, min(room.width, 12));
+		int rH = RandomInt(2, min(room.height, 12));
 
 		liquidCover = IntRect(RandomInt(0, room.width - rW), RandomInt(0, room.height - rH), rW, rH);
 		liquidCover.left += room.left;
@@ -595,6 +759,22 @@ void TileMapComponent::IterateAcrossTileMap(int pass)
 					SmoothLiquids(x, y);
 				}
 			}
+		}
+	}
+}
+
+void TileMapComponent::IterateTiles()
+{
+
+	for (int y = 0; y < m_tileEnts.size(); y++)
+	{
+		for (int x = 0; x < m_tileEnts[y].size(); x++)
+		{
+			if (!m_tileCmps[y][x]->GetWalkable())
+				m_tileCmps[y][x]->SetTileIdx(1 + CalculateTileIdx(GetNeighbourTiles(x, y)));
+
+			bool vis = ToggleTile(GetAllNeighbourTiles(x, y));
+			m_tileEnts[y][x]->setVisible(vis);
 		}
 	}
 }
