@@ -5,6 +5,12 @@
 
 namespace Input
 {
+	static Keyboard currKeyboard;
+	static Keyboard oldKeyboard;
+
+	static Mouse currMouse;
+	static Mouse oldMouse;
+
 	bool GetKeyDown(Keyboard::Key key);		// Simple key press trigger
 	bool GetKeyPressed(Keyboard::Key key);	// For single frame
 	bool GetKeyHeld(Keyboard::Key key);		// Get key held down
@@ -13,6 +19,9 @@ namespace Input
 	bool GetMousePressed(Mouse::Button button);	// For single frame
 
 	float GetAxisValue(int axis);	// Returns direction value from axis, 0 = horizontal, 1 = vertical
+
+	void UpdateStatesBegin();
+	void UpdateStatesEnd();
 };
 
 class System_Player_Controls : public Component {
