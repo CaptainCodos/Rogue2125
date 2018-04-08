@@ -81,7 +81,7 @@ public:
 
   bool isVisible() const;
 
-  void setVisible(bool _visible);
+  void setVisible(bool visible);
 
   template <typename T, typename... Targs>
   std::shared_ptr<T> addComponent(Targs... params) {

@@ -6,6 +6,8 @@
 #include <iostream> // std::cout, std::fixed
 #include <sstream>
 #include <vector>
+#include <algorithm>
+//#include <cstdlib>
 
 namespace sf {
 
@@ -61,6 +63,21 @@ Vector2<T> rotate(const Vector2<T>& v, const double degrees) {
   return {(T)(v.x * cs - v.y * sn), (T)(v.x * sn + v.y * cs)};
 }
 
+static int RandomInt(int min, int max)	// Generate random int between min[inclusive] and max[exclusive]
+{
+	return (((float)rand()) / ((float)RAND_MAX) * (max - min)) + min;
+}
+
+static float RandomFloat(float min, float max)	// Generate random float between min[inclusive] and max[exclusive]
+{
+	return (((float)rand() / (float)RAND_MAX) * (max - min)) + min;
+}
+
+static float RandomDouble(double min, double max)	// Generate random double between min[inclusive] and max[exclusive]
+{
+	return (((double)rand() / (double)RAND_MAX) * (max - min)) + min;
+}
+
 } // namespace sf
 
 template <typename T>
@@ -79,3 +96,4 @@ std::string toStrDecPt(const uint16_t& dp, const T& i) {
   stream << std::fixed << std::setprecision(dp) << i;
   return stream.str();
 }
+

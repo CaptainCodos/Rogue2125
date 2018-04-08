@@ -9,9 +9,16 @@
 using namespace std;
 using namespace sf;
 
+View view;
+float zoom;
+
 void MenuScene::Load() 
 {
-	
+	/*counter++;
+	cout << "Test: " << counter << "\n";*/
+	zoom = 1.0f;
+	view = View(FloatRect(0, 0, 1920, 1080));
+	Engine::GetWindow().setView(view);
 	cout << "Menu Load \n";
 	{
 		auto txt = makeEntity();
@@ -19,8 +26,12 @@ void MenuScene::Load()
 			"Platformer\nPress Space to Start");
 		
 		auto tm = makeEntity();
-		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, 0);
+		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);
 	}
+
+	counter++;
+	cout << "Test: " << counter << "\n";
+
 	setLoaded(true);
 }
 
@@ -30,8 +41,34 @@ void MenuScene::Update(const double& dt) {
 	txrMgr->UpdateAnims(dt);
 
   if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-	  Engine::ChangeScene(&gameplay);
+	  Engine::ChangeScene(&menu);
   }
+
+  if (sf::Keyboard::isKeyPressed(Keyboard::S)) {
+	  view.move(0, dt * 300.0f);
+  }
+  if (sf::Keyboard::isKeyPressed(Keyboard::W)) {
+	  view.move(0, -dt * 300.0f);
+  }
+
+  if (sf::Keyboard::isKeyPressed(Keyboard::A)) {
+	  view.move(-dt * 300.0f, 0);
+  }
+  if (sf::Keyboard::isKeyPressed(Keyboard::D)) {
+	  view.move(dt * 300.0f, 0);
+  }
+
+  if (sf::Keyboard::isKeyPressed(Keyboard::Q)) {
+	  zoom += dt;
+  }
+  if (sf::Keyboard::isKeyPressed(Keyboard::E)) {
+	  zoom -= dt;
+  }
+
+  view.zoom(zoom);
+
+  zoom = 1.0f;
+  Engine::GetWindow().setView(view);
 
   Scene::Update(dt);
 }

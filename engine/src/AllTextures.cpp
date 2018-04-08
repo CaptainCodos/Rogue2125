@@ -7,13 +7,13 @@ TextureMgr* TextureMgr::m_instance = NULL;
 TextureMgr::TextureMgr()
 {
 	colors_LiquidTiles = std::vector<sf::Color>();
-	colors_LiquidTiles.push_back(sf::Color(90, 230, 255, 255));
-	colors_LiquidTiles.push_back(sf::Color(255, 150, 30, 255));
-	colors_LiquidTiles.push_back(sf::Color(150, 195, 255, 255));
-	colors_LiquidTiles.push_back(sf::Color(180, 255, 0, 255));
-	colors_LiquidTiles.push_back(sf::Color(20, 255, 180, 255));
-
-	LoadTextures("tile sheets/", "GreyScale", sheet_Tiles, 6);
+	colors_LiquidTiles.push_back(sf::Color(255, 150, 30, 255));	// Lava
+	colors_LiquidTiles.push_back(sf::Color(180, 255, 0, 255));	// Toxic
+	colors_LiquidTiles.push_back(sf::Color(20, 255, 180, 255));	// Acid
+	colors_LiquidTiles.push_back(sf::Color(150, 195, 255, 255));// Energized Water
+	colors_LiquidTiles.push_back(sf::Color(90, 230, 255, 255));	// Water
+	
+	LoadTextures("tile sheets/", "GreyScale", sheet_Tiles, 5);
 	LoadTextures("tile sheets/", "GreyScale", anim_Tiles, 1);
 
 	anim_TilesRect = std::make_shared<sf::IntRect>(sf::IntRect(0, 0, 32, 32));

@@ -37,12 +37,16 @@ public:
 
 	virtual void SetTexture(sf::Texture& txr, int texRes);
 	virtual void SetOrigin(sf::Vector2f origin);	// between 0f - 1f, 0f = top/left
-	void SetColor(sf::Color color);
+	void SetColor(sf::Color color);					// Used to set color of texture. Recommend using Max brightness colors.
+	void SetTint(sf::Color tint);					// Allows tinting of the given color of sprite.
 	void SetScale(float scale);
 	void SetTextureRect(std::shared_ptr<sf::IntRect> rect);
 protected:
 	std::shared_ptr<sf::Sprite> m_sprite;
 	std::shared_ptr<sf::IntRect> m_srcRect;
+
+	sf::Color m_color;
+	sf::Color m_tint;
 	int m_texRes;
 private:
 

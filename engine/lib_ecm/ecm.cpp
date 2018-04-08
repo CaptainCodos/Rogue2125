@@ -55,7 +55,7 @@ void Entity::setForDelete() {
 
 bool Entity::isVisible() const { return _visible; }
 
-void Entity::setVisible(bool _visible) { Entity::_visible = _visible; }
+void Entity::setVisible(bool visible) { _visible = visible; }
 
 Component::Component(Entity* const p) : _parent(p), _fordeletion(false) {}
 
