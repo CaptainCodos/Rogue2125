@@ -3,10 +3,54 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 //#include "remap_controls.h"
+<<<<<<< HEAD
 #include <iostream>
+=======
+>>>>>>> refs/remotes/origin/SampleInput
 
 using namespace std;
 using namespace sf;
+
+namespace Input
+{
+	// Simple key press trigger
+	bool GetKeyDown(Keyboard::Key key) {
+		Engine::GetWindow().setKeyRepeatEnabled(true);
+		if (Keyboard::isKeyPressed(key)) {		
+			return true;
+		}
+	}
+	// For single frame
+	bool GetKeyPressed(Keyboard::Key key) {
+		Engine::GetWindow().setKeyRepeatEnabled(false);
+		if (Keyboard::isKeyPressed(key)) {
+			return true;
+		}
+	}
+	// Get key held down
+	bool GetKeyHeld(Keyboard::Key key) {
+		Engine::GetWindow().setKeyRepeatEnabled(true);
+		if (Keyboard::isKeyPressed(key)) {
+			return true;
+		}
+	}
+	// Simple mouse click trigger
+	bool GetMouseDown(Mouse::Button button) {
+		Engine::GetWindow().setKeyRepeatEnabled(true);
+		if (Mouse::isButtonPressed(button)) {
+			return true;
+		}
+	}
+	// For single frame
+	bool GetMousePressed(Mouse::Button button) {
+		Engine::GetWindow().setKeyRepeatEnabled(false);
+		return false;
+	}
+	// Returns direction value from axis, 0 = horizontal, 1 = verticals
+	float GetAxisValue(int axis) {
+		return 0.0;
+	}
+};
 
 namespace controls 
 {
