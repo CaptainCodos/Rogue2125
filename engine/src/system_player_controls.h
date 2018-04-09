@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 //#include "remap_controls.h"
 
 using namespace sf;
@@ -28,18 +29,22 @@ namespace Input
 			return true;
 		}
 	}
-	//// Simple mouse click trigger
-	//bool GetMouseDown(Mouse::Button button) {
-
-	//}
-	//// For single frame
-	//bool GetMousePressed(Mouse::Button button) {
-
-	//}
-	//// Returns direction value from axis, 0 = horizontal, 1 = verticals
-	//float GetAxisValue(int axis) {
-
-	//}
+	// Simple mouse click trigger
+	bool GetMouseDown(Mouse::Button button) {
+		Engine::GetWindow().setKeyRepeatEnabled(true);
+		if (Mouse::isButtonPressed(button)) {
+			return true;
+		}
+	}
+	// For single frame
+	bool GetMousePressed(Mouse::Button button) {
+		Engine::GetWindow().setKeyRepeatEnabled(false);
+		return false;
+	}
+	// Returns direction value from axis, 0 = horizontal, 1 = verticals
+	float GetAxisValue(int axis) {
+		return 0.0;
+	}
 };
 
 namespace controls 
