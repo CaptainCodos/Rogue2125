@@ -128,3 +128,40 @@ EntityManager::find(const vector<string>& tags) const {
   }
   return ret;
 }
+
+void Scene::Update(const double& dt) { ents.update(dt); }
+
+void Scene::Render() { ents.render(); }
+
+bool Scene::isLoaded() const
+{
+	std::lock_guard<std::mutex> lck(_loaded_mtx);
+	// Are we already loading asynchronously?
+	if (_loaded_future.valid() // yes
+		&&                     // Has it finished?
+		_loaded_future.wait_for(chrono::seconds(0)) ==
+		future_status::ready) {
+		// Yes
+		_loaded_future.get();
+		//getFromFuture(_loaded_future);
+		_loaded = true;
+	}
+	//_loaded = true;
+	return _loaded;
+}
+
+void Scene::setLoaded(bool b) {
+	{
+		std::lock_guard<std::mutex> lck(_loaded_mtx);
+		_loaded = b;
+	}
+}
+
+void Scene::UnLoad() {
+	ents.list.clear();
+	setLoaded(false);
+}
+
+void Scene::LoadAsync() { _loaded_future = std::async(&Scene::Load, this); }
+
+Scene::~Scene() { UnLoad(); }
