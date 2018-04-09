@@ -10,9 +10,11 @@
 using namespace std;
 using namespace sf;
 using namespace controls;
+using namespace input;
 
 View view;
 float zoom;
+double delay;
 
 void MenuScene::Load() 
 {
@@ -41,7 +43,16 @@ void MenuScene::Update(const double& dt) {
   // cout << "Menu Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
+	delay += dt;
 	CheckCameraInput(view, zoom, dt);
+
+	// DEBUG
+	/*if (input::GetKeyPressed(Keyboard::E, delay) == true) {
+		cout << "pressed" << endl;
+	}*/
+	if (input::GetMousePressed(Mouse::Button::Left, delay) == true) {
+		cout << "pressed" << endl;
+	}
 
   if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 	  Engine::ChangeScene(&menu);

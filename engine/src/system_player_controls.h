@@ -6,40 +6,54 @@
 
 using namespace sf;
 
-namespace Input
+namespace input
 {
 	// Simple key press trigger
 	bool GetKeyDown(Keyboard::Key key) {
-		Engine::GetWindow().setKeyRepeatEnabled(true);
 		if (Keyboard::isKeyPressed(key)) {		
 			return true;
 		}
+		else {
+			return false;
+		}
 	}
 	// For single frame
-	bool GetKeyPressed(Keyboard::Key key) {
-		Engine::GetWindow().setKeyRepeatEnabled(false);
-		if (Keyboard::isKeyPressed(key)) {
+	bool GetKeyPressed(Keyboard::Key key, double &delay){
+		if (Keyboard::isKeyPressed(key) && delay >= 2) {
+			delay = 0;
 			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	// Get key held down
 	bool GetKeyHeld(Keyboard::Key key) {
-		Engine::GetWindow().setKeyRepeatEnabled(true);
 		if (Keyboard::isKeyPressed(key)) {
 			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	// Simple mouse click trigger
 	bool GetMouseDown(Mouse::Button button) {
-		Engine::GetWindow().setKeyRepeatEnabled(true);
 		if (Mouse::isButtonPressed(button)) {
 			return true;
 		}
+		else {
+			return false;
+		}
 	}
 	// For single frame
-	bool GetMousePressed(Mouse::Button button) {
-		Engine::GetWindow().setKeyRepeatEnabled(false);
-		return false;
+	bool GetMousePressed(Mouse::Button button, double &delay) {
+		if (Mouse::isButtonPressed(button) && delay >= 2) {
+			delay = 0;
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	// Returns direction value from axis, 0 = horizontal, 1 = verticals
 	float GetAxisValue(int axis) {
