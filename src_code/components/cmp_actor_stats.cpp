@@ -7,7 +7,10 @@ using namespace sf;
 ActorStatsComponent::ActorStatsComponent(Entity* p) 
 	: Component(p)
 {
-	m_resistances[5] = { 0.0f };
+	for (int i = 0; i < 5; i++)
+	{
+		m_resistances[i] = 0.0f;
+	}
 
 	m_isInvincible = false;
 

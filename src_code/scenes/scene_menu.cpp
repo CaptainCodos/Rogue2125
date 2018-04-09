@@ -30,6 +30,9 @@ void MenuScene::Load()
 		
 		auto tm = makeEntity();
 		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);
+
+		auto a = makeEntity();
+		auto aC = a->addComponent<ActorStatsComponent>();
 	}
 
 	counter++;
