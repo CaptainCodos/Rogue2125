@@ -1,7 +1,8 @@
 #pragma once
 
 #include <SFML/Window/Keyboard.hpp>
-#include "remap_controls.h"
+#include <SFML/Window/Mouse.hpp>
+//#include "remap_controls.h"
 #include <iostream>
 
 using namespace std;
