@@ -36,7 +36,7 @@ protected:
 private:
 	TextureMgr* m_txrMgr;
 
-	std::shared_ptr<PhysicsComponent> m_tileBox;	// Used for collision purposes
+	std::shared_ptr<sf::RectangleShape> m_bounds;	// Bounds used to detect collision
 
 	sf::Vector2i m_coords;	// Coordinates of the tile.
 

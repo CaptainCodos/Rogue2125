@@ -67,6 +67,8 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
   */
 }
 
+void PhysicsComponent::setFixture(b2Fixture* fix) { _fixture = fix; }
+
 void PhysicsComponent::setFriction(float r) { _fixture->SetFriction(r); }
 
 void PhysicsComponent::setMass(float m) { _fixture->SetDensity(m); }

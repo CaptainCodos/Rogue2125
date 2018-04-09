@@ -13,9 +13,11 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 {
 	m_txrMgr = txrMgr;
 
+	// Create size according to game progression
 	m_width = 40 + ((currMap) * 3);
 	m_height = 40 + ((currMap) * 3);
 
+	// Generate randomized map properties
 	stringstream str;
 	str << "map" << currMap;
 	m_ID = str.str();
@@ -29,6 +31,7 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 
 	m_chanceOfLiquid = RandomFloat(0.2f, 0.5f);
 
+	// ensure corridors are not the same tile type as rooms
 	while (m_corridorIDs == m_roomIDs)
 	{
 		m_corridorIDs = RandomInt(1, 5);
@@ -43,9 +46,8 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 
 	m_corridorDirs = vector<int>();
 	m_corridors = vector<vector<shared_ptr<TileComponent>>>();
-	//LoadMap();
-	bool b = true;
 
+	// If loading the map from file succeeds then no need to generate a map
 	if (!LoadMap())
 	{
 		for (int y = 0; y < m_height; y++)
@@ -54,6 +56,7 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 			m_tileCmps.push_back(vector<shared_ptr<TileComponent>>());
 		}
 
+		// Create blank map
 		for (int y = 0; y < m_tileEnts.size(); y++)
 		{
 			for (int x = 0; x < m_width; x++)
@@ -73,6 +76,7 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 
 		GenerateMap();
 
+		// Save map and it's data to files
 		SaveMap();
 
 		m_visibleTiles = GetTiles(IntRect(0, 0, m_width, m_height));
@@ -133,6 +137,7 @@ vector<vector<shared_ptr<TileComponent>>> TileMapComponent::GetTiles(IntRect are
 
 	bool areaValid = (area.left >= 0 && area.left + area.width - 1 < m_width) && (area.top >= 0 && area.top + area.height - 1 < m_height);
 
+	// Checks if area is within map bounds
 	if (areaValid)
 	{
 		int sX = area.left;
@@ -188,7 +193,7 @@ vector<vector<shared_ptr<TileComponent>>> TileMapComponent::GetNeighbourTiles(in
 	return tilegrid;
 }
 
-vector<vector<shared_ptr<Entity>>> TileMapComponent::GetNeightbourEnts(int X, int Y)
+vector<vector<shared_ptr<Entity>>> TileMapComponent::GetAllNeightbourEnts(int X, int Y)
 {
 	vector<vector<shared_ptr<Entity>>> tilegrid = vector<vector<shared_ptr<Entity>>>();
 
@@ -236,6 +241,42 @@ vector<vector<shared_ptr<TileComponent>>> TileMapComponent::GetAllNeighbourTiles
 	return tilegrid;
 }
 
+vector<vector<shared_ptr<TileComponent>>> TileMapComponent::GetAllNeighbourWalls(int X, int Y)
+{
+	vector<vector<shared_ptr<TileComponent>>> tilegrid = vector<vector<shared_ptr<TileComponent>>>();
+
+	for (int i = 0; i < 3; i++)
+	{
+		tilegrid.push_back(vector<shared_ptr<TileComponent>>());
+	}
+
+	for (int y = -1; y < 2; y++)
+	{
+		for (int x = -1; x < 2; x++)
+		{
+			int cX = X + x;
+			int cY = Y + y;
+			int vY = y + 1;
+
+			shared_ptr<TileComponent> tmp = GetTile(cX, cY);
+
+			if (tmp != nullptr)
+			{
+				if (tmp->GetWalkable())
+					tilegrid[vY].push_back(tmp);
+				else
+					tilegrid[vY].push_back(nullptr);
+			}
+			else
+			{
+				tilegrid[vY].push_back(tmp);
+			}
+		}
+	}
+
+	return tilegrid;
+}
+
 char TileMapComponent::ConvertFromInt(int n)
 {
 	assert(n >= 0 && n < 26);
@@ -249,26 +290,10 @@ int TileMapComponent::ConvertFromChar(char c)
 
 bool TileMapComponent::LoadMap()
 {
-	//_tileSize = tileSize;
-	//size_t w = 0, h = 0;
-	//string buffer;
-
-	//// Load in file to buffer
-	//ifstream f("res/maze_2.txt");
-	//if (f.good()) {
-	//	f.seekg(0, std::ios::end);
-	//	buffer.resize(f.tellg());
-	//	f.seekg(0);
-	//	f.read(&buffer[0], buffer.size());
-	//	f.close();
-	//}
-
-	//for (int i = 0; i < buffer.size(); i++)
-	//{
-	//	cout << buffer[i];
-	//}
 	bool info = false;
 	bool data = false;
+
+	// Load map properties such as room colours and the IDs those colours match to
 	ifstream infoFile("res/" + m_ID + "Info.txt");
 	if (infoFile.good())
 	{
@@ -309,10 +334,10 @@ bool TileMapComponent::LoadMap()
 		info = true;
 	}
 
+	// Load in all the tiles. Each character represents a tile's ID
 	ifstream file("res/" + m_ID + ".txt");
 	if (file.good())
 	{
-		
 		for (int y = 0; y < m_height; y++)
 		{
 			m_tileEnts.push_back(vector<shared_ptr<Entity>>());
@@ -334,9 +359,6 @@ bool TileMapComponent::LoadMap()
 				if (cmpT->GetWalkable() && cmpT->GetID() == m_corridorIDs)
 					cmpT->SetColor(m_corridorColor);
 
-				/*if (cmpT->GetWalkable() && cmpT->GetID() == m_roomIDs)
-					cmpT->SetColor(m_roomColor);*/
-
 				cmpT->update(1.0f);
 
 				m_tileEnts[y].push_back(ent);
@@ -348,6 +370,8 @@ bool TileMapComponent::LoadMap()
 		}
 
 		m_visibleTiles = GetTiles(IntRect(0, 0, m_width, m_height));
+
+		// Changes wall appearance and tile visibility
 		IterateTiles();
 
 		data = true;
@@ -362,8 +386,8 @@ void TileMapComponent::SaveMap()
 
 	ofstream out(dir);
 	ofstream outInfo(mapInfoDir);
-	//string str = "hahaha";
 
+	// Save map properties to info file
 	if (outInfo.good())
 	{
 		string str;
@@ -382,6 +406,7 @@ void TileMapComponent::SaveMap()
 		outInfo.close();
 	}
 
+	// Save map tile IDs to map file
 	if (out.good())
 	{
 		for (int i = 0; i < m_tileCmps.size(); i++)
@@ -418,6 +443,7 @@ void TileMapComponent::GenerateMap()
 
 	m_rooms.push_back(prevRoom);
 
+	// Generate the rest of the rooms and create the corridors
 	for (int i = 0; i < rRooms; i++)
 	{
 		currRoom = GenerateRoom(prevRoom);
@@ -425,6 +451,7 @@ void TileMapComponent::GenerateMap()
 		prevRoom = currRoom;
 	}
 
+	// Change tile colours and IDs across the map where appropriate
 	for (int i = 0; i < m_corridors.size(); i++)
 	{
 		AlterCorridorTiles(m_corridors[i], m_corridorIDs, m_corridorColor);
@@ -433,10 +460,13 @@ void TileMapComponent::GenerateMap()
 	{
 		AlterRoomTiles(m_rooms[i], m_roomIDs, m_roomColor, false);
 	}
+
 	int passes = 0;
 
 	while (passes < 1)
 	{
+		// Unlike the IterateTiles method, this is used to propagate fluids correctly as well. This way you don't get
+		// lava and water tiles sitting directly next to eachother.
 		IterateAcrossTileMap(passes);
 		passes++;
 	}
@@ -548,8 +578,8 @@ void TileMapComponent::SmoothLiquids(int bX, int bY)
 	Vector2i cC = Vector2i(bX, bY);
 	shared_ptr<TileComponent> start = GetTile(bX, bY);
 	openList.push_back(start);
-	//TileComponent current = *start;
 
+	// Spreads until no lesser liquid is found is found
 	while (openList.size() > 0)
 	{
 		TileComponent current = *GetTile(openList[0]->GetCoords().x, openList[0]->GetCoords().y);
@@ -565,6 +595,9 @@ void TileMapComponent::SmoothLiquids(int bX, int bY)
 					bool found = find(openList.begin(), openList.end(), Ns[y][x]) != openList.end() 
 						&& find(closedList.begin(), closedList.end(), Ns[y][x]) != closedList.end();
 
+					// If tile hasn't been checked and is liquid then checks if liquid is lesser than this liquid tile.
+					// Then it sets it's ID to this tile. Liquid Hierarchy (ID)(Liquid): 0 Lava > 1 Toxic > 2 Acid > 3 E water > 4 Water.
+					// Since Lava is higher on the hierarchy than acid, Lava wins.
 					if (!found)
 					{
 						char id = Ns[y][x]->GetID();
@@ -608,6 +641,7 @@ IntRect TileMapComponent::GenerateRoom(IntRect prev)
 	IntRect newRoom;
 	newRoom = IntRect(sf::RandomInt(1, m_width - rW - 2), sf::RandomInt(1, m_height - rH - 2), rW, rH);
 
+	// Ensures there is 1 tile buffer between room and tile map edge.
 	if (newRoom.left <= 0)
 		newRoom.left = 1;
 	else if (newRoom.left + newRoom.width >= m_width)
@@ -618,6 +652,7 @@ IntRect TileMapComponent::GenerateRoom(IntRect prev)
 	else if (newRoom.top + newRoom.height >= m_height)
 		newRoom.top = m_height - newRoom.height - 1;
 
+	// Generate corridor bewteen the last room and this one
 	m_corridors.push_back(GenerateCorridor(prev, newRoom));
 
 	return newRoom;
@@ -687,9 +722,6 @@ void TileMapComponent::AlterRoomTiles(IntRect room, char ID, Color color, bool i
 	float liquidVal = RandomFloat(0.0f, 1.0f);
 	IntRect liquidCover;
 
-	
-
-
 	for (int y = 0; y < tilegrid.size(); y++)
 	{
 		for (int x = 0; x < tilegrid[y].size(); x++)
@@ -699,15 +731,19 @@ void TileMapComponent::AlterRoomTiles(IntRect room, char ID, Color color, bool i
 		}
 	}
 
+	// Determines if room has liquid in it. If so generate liquid pool
+	// Also has flag to stop endless regression
 	if (liquidVal <= m_chanceOfLiquid && !isLiquid)
 	{
 		int rW = RandomInt(2, min(room.width, 12));
 		int rH = RandomInt(2, min(room.height, 12));
 
+		// Generate liquid rect in the room
 		liquidCover = IntRect(RandomInt(0, room.width - rW), RandomInt(0, room.height - rH), rW, rH);
 		liquidCover.left += room.left;
 		liquidCover.top += room.top;
 
+		// Pick random liquid
 		char id = RandomInt(15, 20);
 		AlterRoomTiles(liquidCover, id, m_txrMgr->colors_LiquidTiles[id % 5], true);
 	}
@@ -719,6 +755,7 @@ void TileMapComponent::AlterCorridorTiles(vector<shared_ptr<TileComponent>> corr
 
 	for (int i = 0; i < corridor.size(); i++)
 	{
+		// Places liquid randomly down the corridor
 		float liquidVal = RandomFloat(0.0f, 1.0f);
 
 		if (liquidVal < m_chanceOfLiquid)
@@ -744,16 +781,33 @@ void TileMapComponent::IterateAcrossTileMap(int pass)
 		{
 			if (pass <= 0)
 			{
+				// Change wall/non-traversable tiles
 				if (!m_tileCmps[y][x]->GetWalkable())
+				{
 					m_tileCmps[y][x]->SetTileIdx(1 + CalculateTileIdx(GetNeighbourTiles(x, y)));
-
+					m_tileEnts[y][x]->addTag("wall");
+				}
+				else
+				{
+					if (m_tileCmps[y][x]->GetID() > 14)
+					{
+						m_tileEnts[y][x]->addTag("liquid");
+					}
+					else
+					{
+						m_tileEnts[y][x]->addTag("floor");
+					}
+				}
+				
+				// Checks if tile has a traversable tile around it (non axis based). If so it will be visible.
 				bool vis = ToggleTile(GetAllNeighbourTiles(x, y));
 				m_tileEnts[y][x]->setVisible(vis);
 			}
 
+			// Time to propagate liquid
 			if (m_tileCmps[y][x]->GetID() > 14)
 			{
-				//m_tileCmps[y][x]->SetTileIdx(CalculateLiquidID(GetNeighbourTiles(x, y), m_tileCmps[y][x]->GetLiquidID()));
+				// Check if a lesser liquid is next to this tile
 				if (CheckForRoughLiquid(GetNeighbourTiles(x, y), m_tileCmps[y][x]->GetLiquidID()))
 				{
 					SmoothLiquids(x, y);
@@ -770,9 +824,25 @@ void TileMapComponent::IterateTiles()
 	{
 		for (int x = 0; x < m_tileEnts[y].size(); x++)
 		{
+			// Change wall/non-traversable tiles
 			if (!m_tileCmps[y][x]->GetWalkable())
+			{
 				m_tileCmps[y][x]->SetTileIdx(1 + CalculateTileIdx(GetNeighbourTiles(x, y)));
+				m_tileEnts[y][x]->addTag("wall");
+			}
+			else
+			{
+				if (m_tileCmps[y][x]->GetID() > 14)
+				{
+					m_tileEnts[y][x]->addTag("liquid");
+				}
+				else
+				{
+					m_tileEnts[y][x]->addTag("floor");
+				}
+			}
 
+			// Checks if tile has a traversable tile around it (non axis based). If so it will be visible.
 			bool vis = ToggleTile(GetAllNeighbourTiles(x, y));
 			m_tileEnts[y][x]->setVisible(vis);
 		}

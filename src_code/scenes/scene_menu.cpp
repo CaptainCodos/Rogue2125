@@ -3,6 +3,7 @@
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_tilemap.h"
+#include "../components/cmp_actor_stats.h"
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
@@ -29,6 +30,9 @@ void MenuScene::Load()
 		
 		auto tm = makeEntity();
 		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);
+
+		auto a = makeEntity();
+		auto aC = a->addComponent<ActorStatsComponent>();
 	}
 
 	counter++;
