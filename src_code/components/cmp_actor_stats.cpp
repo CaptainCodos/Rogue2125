@@ -1,8 +1,13 @@
 #include "cmp_actor_stats.h"
-#include "cmp_text.h"
+#include "cmp_sprite.h"
+#include "cmp_physics.h"
+#include "system_physics.h"
+//#include <Box2D/Dynamics/b2Body.h>
 
 using namespace std;
 using namespace sf;
+
+using namespace Physics;
 
 ActorStatsComponent::ActorStatsComponent(Entity* p) 
 	: Component(p)
@@ -14,16 +19,15 @@ ActorStatsComponent::ActorStatsComponent(Entity* p)
 
 	m_isInvincible = false;
 
-	OnDeath();
+
+	/*auto eC = _parent->addComponent<ShapeComponent>();
+	eC->setShape<CircleShape>(15.0f, 20);
+	eC->getShape().setOrigin(Vector2f(15.0f, 15.0f));*/
 }
 
 void ActorStatsComponent::update(double dt)
 {
-	if (m_hp <= 0.0f)
-	{
-		OnDeath();
-		_parent->setForDelete();
-	}
+	
 }
 
 void ActorStatsComponent::render()
@@ -35,6 +39,12 @@ void ActorStatsComponent::ApplyDamage(float dmg, vector<int> dmgTypes)
 {
 	if (m_isInvincible)
 		return;
+
+	if (m_hp <= 0.0f)
+	{
+		OnDeath();
+		_parent->setForDelete();
+	}
 }
 
 void ActorStatsComponent::GenerateStats(char ID)
@@ -76,5 +86,5 @@ void ActorStatsComponent::GenerateWObjStats()
 
 void ActorStatsComponent::OnDeath()
 {
-	
+
 }
