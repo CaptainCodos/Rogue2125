@@ -5,8 +5,6 @@
 #include <set>
 #include <typeindex>
 #include <vector>
-#include <future>
-#include <mutex>
 
 class Entity;
 class Scene;
@@ -40,55 +38,6 @@ struct EntityManager {
   find(const std::vector<std::string>& tags) const;
 };
 
-class Scene {
-public:
-	Scene() = default;
-	virtual ~Scene();
-	virtual void Load() = 0;
-	virtual void LoadAsync();
-	virtual void UnLoad();
-	virtual void Update(const double& dt);
-	virtual void Render();
-	bool isLoaded() const;
-	std::shared_ptr<Entity> makeEntity();
-
-	EntityManager ents;
-
-protected:
-	void setLoaded(bool);
-	mutable bool _loaded;
-	mutable std::future<void> _loaded_future;
-	mutable std::mutex _loaded_mtx;
-	void getFromFuture(std::future<void>& fut)
-	{
-		try
-		{
-			return fut.get();
-		}
-		catch (...)
-		{
-			fut = {};
-			throw;
-		}
-	};
-private:
-	/*mutable bool _loaded;
-	mutable std::future<void> _loaded_future;
-	mutable std::mutex _loaded_mtx;
-	void getFromFuture(std::future<void>& fut)
-	{
-	try
-	{
-	return fut.get();
-	}
-	catch (...)
-	{
-	fut = {};
-	throw;
-	}
-	};*/
-};
-
 class Entity {
   friend struct EntityManager;
 
@@ -104,8 +53,8 @@ protected:
 public:
   void addTag(const std::string& t);
   const std::set<std::string>& getTags() const;
-  Scene* scene;
-  Entity(Scene* s);
+  Scene* const scene;
+  Entity(Scene* const s);
 
   virtual ~Entity();
 

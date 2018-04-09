@@ -73,9 +73,5 @@ void ActorStatsComponent::GenerateWObjStats()
 
 void ActorStatsComponent::OnDeath()
 {
-	/*shared_ptr<Entity> ent = _parent->scene->makeEntity();
-	ent->setPosition(Vector2f(1200.0f, 100.0f));
 
-	auto e = ent->addComponent<TextComponent>(
-		"Platformer\nPress Space to Start");*/
 }
