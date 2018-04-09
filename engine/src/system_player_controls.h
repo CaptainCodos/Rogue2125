@@ -7,14 +7,39 @@ using namespace sf;
 
 namespace Input
 {
-	bool GetKeyDown(Keyboard::Key key);		// Simple key press trigger
-	bool GetKeyPressed(Keyboard::Key key);	// For single frame
-	bool GetKeyHeld(Keyboard::Key key);		// Get key held down
+	// Simple key press trigger
+	bool GetKeyDown(Keyboard::Key key) {
+		Engine::GetWindow().setKeyRepeatEnabled(true);
+		if (Keyboard::isKeyPressed(key)) {		
+			return true;
+		}
+	}
+	// For single frame
+	bool GetKeyPressed(Keyboard::Key key) {
+		Engine::GetWindow().setKeyRepeatEnabled(false);
+		if (Keyboard::isKeyPressed(key)) {
+			return true;
+		}
+	}
+	// Get key held down
+	bool GetKeyHeld(Keyboard::Key key) {
+		Engine::GetWindow().setKeyRepeatEnabled(true);
+		if (Keyboard::isKeyPressed(key)) {
+			return true;
+		}
+	}
+	//// Simple mouse click trigger
+	//bool GetMouseDown(Mouse::Button button) {
 
-	bool GetMouseDown(Mouse::Button button);	// Simple mouse click trigger
-	bool GetMousePressed(Mouse::Button button);	// For single frame
+	//}
+	//// For single frame
+	//bool GetMousePressed(Mouse::Button button) {
 
-	float GetAxisValue(int axis);	// Returns direction value from axis, 0 = horizontal, 1 = vertical
+	//}
+	//// Returns direction value from axis, 0 = horizontal, 1 = verticals
+	//float GetAxisValue(int axis) {
+
+	//}
 };
 
 namespace controls 

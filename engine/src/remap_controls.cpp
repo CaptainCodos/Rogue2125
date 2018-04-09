@@ -1,4 +1,4 @@
-#include "remap_controls.h"
+/*#include "remap_controls.h"
 #include <iostream>
 
 using namespace std;
@@ -38,3 +38,4 @@ unsigned int PlayerControls::GetControllerButton(string input)
 void PlayerControls::SetControllerButton(string input, unsigned int button)
 {
 }
+*/
