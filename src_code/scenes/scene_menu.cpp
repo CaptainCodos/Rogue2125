@@ -3,6 +3,7 @@
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_tilemap.h"
+#include "../components/cmp_actor_stats.h"
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
