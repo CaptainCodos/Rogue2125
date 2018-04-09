@@ -76,5 +76,5 @@ void ActorStatsComponent::GenerateWObjStats()
 
 void ActorStatsComponent::OnDeath()
 {
-
+	
 }
