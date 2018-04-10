@@ -7,6 +7,7 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_tilemap.h"
 #include "../components/cmp_actor_stats.h"
+#include "../components/cmp_inventory.h"
 
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
@@ -44,24 +45,34 @@ void MenuScene::Load()
 	counter++;
 	cout << "Test: " << counter << "\n";
 
-	Useable g = Useable();
-	g.GenerateItem();
+	shared_ptr<Useable> gA = make_shared<Useable>(Useable());
+	gA->GenerateItem();
 
-	vector<string> data = g.GetDataForSave();
+	shared_ptr<Useable> gB = make_shared<Useable>(Useable());
+	gB->GenerateItem();
 
-	for (int i = 0; i < data.size(); i++)
-	{
-		cout << data[i] << "\n";
-	}
+	shared_ptr<Useable> gC = make_shared<Useable>(Useable());
+	gC->GenerateItem();
 
-	g.CreateFromData(data);
+	shared_ptr<Useable> gD = make_shared<Useable>(Useable());
+	gD->GenerateItem();
 
-	data = g.GetDataForSave();
+	shared_ptr<TankGun> eD = make_shared<TankGun>(TankGun());
+	eD->GenerateItem();
 
-	for (int i = 0; i < data.size(); i++)
-	{
-		cout << data[i] << "\n";
-	}
+	auto i = makeEntity();
+	auto iC = i->addComponent<InventoryComponent>();
+
+	iC->AddItem(gA);
+	iC->AddItem(gB);
+	iC->AddItem(gC);
+	iC->AddItem(gD);
+	iC->AddItem(eD);
+
+	//iC->SaveInventory();
+	iC->FlushInventory();
+	iC->LoadInventory();
+	iC->PrintAllItems();
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	setLoaded(true);

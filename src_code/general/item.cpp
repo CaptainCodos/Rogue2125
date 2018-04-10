@@ -15,6 +15,9 @@ Item::Item()
 	m_absID = 0;
 }
 
+int Item::GetPriID() { return m_absID; }
+int Item::GetSecID() { return m_secID; }
+
 string Item::GetDescription() { return m_descript; }
 string Item::GetName() { return m_name; }
 string Item::GetShortName() { return m_short; }
@@ -51,6 +54,13 @@ void Item::GenerateItem()
 	m_txrVecIdx = 0;
 	m_color = Color::White;
 	m_absID = 0;
+	m_secID = 0;
+}
+
+void Item::CreateFromData(vector<string> data)
+{
+	int c = 0;
+	CreateFromItemData(data, c);
 }
 
 void Item::CreateFromItemData(vector<string> data, int &count)
@@ -90,9 +100,9 @@ vector<string> Item::GetDataForSave()
 	data.push_back(m_descript);
 
 	stringstream s;
-	s << m_color.r; data.push_back(s.str()); s.clear();
-	s << m_color.g; data.push_back(s.str()); s.clear();
-	s << m_color.b; data.push_back(s.str()); s.clear();
+	s << m_color.r; data.push_back(s.str()); s.str(string());
+	s << m_color.g; data.push_back(s.str()); s.str(string());
+	s << m_color.b; data.push_back(s.str()); s.str(string());
 
 	data.push_back(to_string(m_txrVecIdx));
 
@@ -108,7 +118,9 @@ vector<string> Item::GetDataForSave()
 
 Useable::Useable()
 {
+	m_absID = 1;
 	m_canStack = true;
+	m_effectPower = 0.0f;
 }
 
 int Useable::GetEffectID() { return m_effectID; }
@@ -116,6 +128,8 @@ float Useable::GetEffectPower() { return m_effectPower; }
 
 void Useable::GenerateItem()
 {
+	m_absID = 1;
+
 	m_effectID = RandomInt(0, 7);
 	m_secID = m_effectID;
 
@@ -157,10 +171,10 @@ void Useable::GenerateItem()
 		m_descript = "Will provide the tank with 4 points of energy.";
 		break;
 	case 5:
-
+		m_effectPower = 1.0f;
 		break;
 	case 6:
-
+		m_effectPower = 1.0f;
 
 		m_name = "Mystery Box";
 		m_short = "Mysry Bx";

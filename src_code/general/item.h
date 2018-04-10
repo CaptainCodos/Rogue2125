@@ -10,10 +10,13 @@ public:
 	Item();
 	~Item() = default;
 
+	int GetPriID();
+	int GetSecID();
+
 	bool CheckReqs(std::vector<Skill> skills);
 	virtual void GenerateItem();
 
-	virtual void CreateFromData(std::vector<std::string> data) = 0;
+	virtual void CreateFromData(std::vector<std::string> data);
 	void CreateFromItemData(std::vector<std::string> data, int &count);
 	std::vector<std::string> GetDataForSave();
 
