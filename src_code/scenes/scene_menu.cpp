@@ -74,6 +74,7 @@ void MenuScene::Update(const double& dt) {
 	delay += dt;
 	CheckCameraInput(view, zoom, dt);
 	GetMouseClick();
+
 	if (MouseInWindow(Mouse::getPosition()) == true) {
 		cout << "in window" << endl;
 	}
