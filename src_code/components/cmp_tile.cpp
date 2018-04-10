@@ -8,6 +8,8 @@ TileComponent::TileComponent(Entity* p, TextureMgr* txrMgr, int x, int y)
 {
 	m_txrMgr = txrMgr;
 
+	m_texRes = 32;
+
 	m_coords = Vector2i(x, y);
 
 	m_disguised = false;
