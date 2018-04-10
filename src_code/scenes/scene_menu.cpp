@@ -75,13 +75,6 @@ void MenuScene::Update(const double& dt) {
 	CheckCameraInput(view, zoom, dt);
 	GetMouseClick();
 
-	if (MouseInWindow(Mouse::getPosition()) == true) {
-		cout << "in window" << endl;
-	}
-	if (MouseInWindow(Mouse::getPosition()) == false) {
-		cout << "not in window" << endl;
-	}
-
 	// Function not working
 	//GetMousePos(Engine::GetWindow());
 

@@ -61,6 +61,7 @@ namespace input
 		return 0.0;
 	}
 
+	// If mouse is in relative window - return true, if not, return false.
 	bool MouseInWindow(Vector2i &mousePos) {
 		if (mousePos.x >= Engine::GetWindow().getPosition().x &&
 			mousePos.x <= ((unsigned int)Engine::GetWindow().getPosition().x + Engine::getWindowSize().x) &&
@@ -74,11 +75,12 @@ namespace input
 		}
 	}
 
-	// WHY DOESN'T THIS WORK?????????
-
-	/*Vector2i GetMousePos(Window &window) 
-		return Mouse::getPosition((Window&)window);
-	}*/
+	// If the mouse is in the window, return the position of the mouse (useful utility).
+	Vector2i GetMousePos() {
+		if (MouseInWindow(Mouse::getPosition()) == true) {
+			return Mouse::getPosition();
+		}
+	}
 };
 
 namespace controls 
