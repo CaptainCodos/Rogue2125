@@ -32,7 +32,7 @@ void TileComponent::update(double dt)
 	TextureComponent::update(dt);
 }
 
-shared_ptr<PhysicsComponent> TileComponent::GetTileBox() { return m_tileBox; }
+shared_ptr<sf::RectangleShape> TileComponent::GetTileBox() { return m_bounds; }
 
 Vector2i TileComponent::GetCoords() { return m_coords; }
 

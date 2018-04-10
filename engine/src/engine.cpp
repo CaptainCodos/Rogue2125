@@ -132,7 +132,7 @@ void Engine::ChangeScene(Scene* s) {
   if (!s->isLoaded()) {
     cout << "Eng: Entering Loading Screen\n";
     loadingTime =0;
-    _activeScene->Load();
+    _activeScene->LoadAsync();
     loading = true;
   }
 }
