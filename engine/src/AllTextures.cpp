@@ -13,6 +13,7 @@ TextureMgr::TextureMgr()
 	colors_LiquidTiles.push_back(sf::Color(150, 195, 255, 255));// Energized Water
 	colors_LiquidTiles.push_back(sf::Color(90, 230, 255, 255));	// Water
 	
+	// Load texture assets
 	LoadTextures("tile sheets/", "GreyScale", sheet_Tiles, 5);
 	LoadTextures("tile sheets/", "GreyScale", anim_Tiles, 1);
 	LoadTextures("UI/general/tmpButtons", "tmpButton", anim_Tiles, 1);
