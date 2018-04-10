@@ -63,9 +63,9 @@ namespace input
 
 	bool MouseInWindow(Vector2i &mousePos) {
 		if (mousePos.x >= Engine::GetWindow().getPosition().x &&
-			mousePos.x <= (Engine::GetWindow().getPosition().x + Engine::getWindowSize().x) &&
+			mousePos.x <= ((unsigned int)Engine::GetWindow().getPosition().x + Engine::getWindowSize().x) &&
 			mousePos.y >= Engine::GetWindow().getPosition().y &&
-			mousePos.y <= (Engine::GetWindow().getPosition().y + Engine::getWindowSize().y))
+			mousePos.y <= ((unsigned int)Engine::GetWindow().getPosition().y + Engine::getWindowSize().y))
 		{
 			return true;
 		}
