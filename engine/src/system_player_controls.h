@@ -80,6 +80,9 @@ namespace input
 		if (MouseInWindow(Mouse::getPosition()) == true) {
 			return Mouse::getPosition();
 		}
+		else {
+			return Vector2i(0, 0);
+		}
 	}
 };
 

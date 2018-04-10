@@ -75,13 +75,6 @@ void MenuScene::Update(const double& dt) {
 	CheckCameraInput(view, zoom, dt);
 	GetMouseClick();
 
-	// Function not working
-	//GetMousePos(Engine::GetWindow());
-
-	// DEBUG
-	/*if (input::GetKeyPressed(Keyboard::E, delay) == true) {
-		cout << "pressed" << endl;
-	}*/
 	if (input::GetMousePressed(Mouse::Button::Left, delay) == true) {
 		cout << "pressed" << endl;
 	}
