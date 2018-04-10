@@ -2,7 +2,9 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <iostream>
 
+using namespace std;
 using namespace sf;
 
 namespace input
@@ -93,5 +95,15 @@ namespace controls
 
 		zoom = 1.0f;
 		Engine::GetWindow().setView(view);
+	}
+
+	void GetMouseClick() {
+		if (Mouse::isButtonPressed(Mouse::Left)) {
+			cout << "\r" << "Left Click Pressed." << endl;
+		}
+	}
+
+	void GetMousePos() {
+		cout << "\r" << Mouse::getPosition() << std::flush;
 	}
 }

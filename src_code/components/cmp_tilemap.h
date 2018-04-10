@@ -31,7 +31,9 @@ public:
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> GetNeighbourTiles(int x, int y);
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> GetAllNeighbourTiles(int X, int Y);
 
-	std::vector<std::vector<std::shared_ptr<Entity>>> GetNeightbourEnts(int X, int Y);			// Used to get neighbouring entities to toggle visibility.
+	std::vector<std::vector<std::shared_ptr<TileComponent>>> GetAllNeighbourWalls(int X, int Y);	// Used in similar fashion as Get
+
+	std::vector<std::vector<std::shared_ptr<Entity>>> GetAllNeightbourEnts(int X, int Y);			// Used to get neighbouring entities to toggle visibility.
 
 	
 protected:

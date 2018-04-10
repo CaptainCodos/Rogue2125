@@ -21,16 +21,18 @@ TileComponent::TileComponent(Entity* p, TextureMgr* txrMgr, int x, int y)
 	m_terrainMod = 1.0f;
 
 	ResetFreeAreas();
-
-	p->addComponent<PhysicsComponent>(false, Vector2f(1.0f, 1.0f));
+	
+	m_bounds = make_shared<RectangleShape>(RectangleShape(Vector2f(32.0f, 32.0f)));
+	m_bounds->setOrigin(Vector2f(16.0f, 16.0f));
 }
 
 void TileComponent::update(double dt)
 {
+	m_bounds->setPosition(_parent->getPosition());
 	TextureComponent::update(dt);
 }
 
-shared_ptr<PhysicsComponent> TileComponent::GetTileBox() { return m_tileBox; }
+shared_ptr<sf::RectangleShape> TileComponent::GetTileBox() { return m_bounds; }
 
 Vector2i TileComponent::GetCoords() { return m_coords; }
 

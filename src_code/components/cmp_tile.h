@@ -14,7 +14,7 @@ public:
 
 	void update(double dt) override;
 
-	std::shared_ptr<PhysicsComponent> GetTileBox();
+	std::shared_ptr<sf::RectangleShape> GetTileBox();
 	sf::Vector2i GetCoords();
 	bool GetWalkable();
 	bool GetDisguised();
@@ -36,7 +36,7 @@ protected:
 private:
 	TextureMgr* m_txrMgr;
 
-	std::shared_ptr<PhysicsComponent> m_tileBox;	// Used for collision purposes
+	std::shared_ptr<sf::RectangleShape> m_bounds;	// Bounds used to detect collision
 
 	sf::Vector2i m_coords;	// Coordinates of the tile.
 

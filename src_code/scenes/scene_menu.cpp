@@ -1,8 +1,13 @@
 #include "scene_menu.h"
 #include "system_player_controls.h"
+
+#include "../general/equipment.h"
+
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_tilemap.h"
+#include "../components/cmp_actor_stats.h"
+
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
@@ -31,11 +36,34 @@ void MenuScene::Load()
 		
 		auto tm = makeEntity();
 		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);
+
+		auto a = makeEntity();
+		auto aC = a->addComponent<ActorStatsComponent>();
 	}
 
 	counter++;
 	cout << "Test: " << counter << "\n";
 
+	Useable g = Useable();
+	g.GenerateItem();
+
+	vector<string> data = g.GetDataForSave();
+
+	for (int i = 0; i < data.size(); i++)
+	{
+		cout << data[i] << "\n";
+	}
+
+	g.CreateFromData(data);
+
+	data = g.GetDataForSave();
+
+	for (int i = 0; i < data.size(); i++)
+	{
+		cout << data[i] << "\n";
+	}
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	setLoaded(true);
 }
 
@@ -45,6 +73,8 @@ void MenuScene::Update(const double& dt) {
 	txrMgr->UpdateAnims(dt);
 	delay += dt;
 	CheckCameraInput(view, zoom, dt);
+	GetMouseClick();
+	GetMousePos();
 
 	// DEBUG
 	/*if (input::GetKeyPressed(Keyboard::E, delay) == true) {
