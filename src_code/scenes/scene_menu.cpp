@@ -74,7 +74,15 @@ void MenuScene::Update(const double& dt) {
 	delay += dt;
 	CheckCameraInput(view, zoom, dt);
 	GetMouseClick();
-	GetMousePos();
+	if (MouseInWindow(Mouse::getPosition()) == true) {
+		cout << "in window" << endl;
+	}
+	if (MouseInWindow(Mouse::getPosition()) == false) {
+		cout << "not in window" << endl;
+	}
+
+	// Function not working
+	//GetMousePos(Engine::GetWindow());
 
 	// DEBUG
 	/*if (input::GetKeyPressed(Keyboard::E, delay) == true) {

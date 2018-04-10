@@ -60,6 +60,25 @@ namespace input
 	float GetAxisValue(int axis) {
 		return 0.0;
 	}
+
+	bool MouseInWindow(Vector2i &mousePos) {
+		if (mousePos.x >= Engine::GetWindow().getPosition().x &&
+			mousePos.x <= (Engine::GetWindow().getPosition().x + Engine::getWindowSize().x) &&
+			mousePos.y >= Engine::GetWindow().getPosition().y &&
+			mousePos.y <= (Engine::GetWindow().getPosition().y + Engine::getWindowSize().y))
+		{
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	// WHY DOESN'T THIS WORK?????????
+
+	/*Vector2i GetMousePos(Window &window) 
+		return Mouse::getPosition((Window&)window);
+	}*/
 };
 
 namespace controls 
@@ -101,9 +120,5 @@ namespace controls
 		if (Mouse::isButtonPressed(Mouse::Left)) {
 			cout << "\r" << "Left Click Pressed." << endl;
 		}
-	}
-
-	void GetMousePos() {
-		cout << "\r" << Mouse::getPosition() << std::flush;
 	}
 }
