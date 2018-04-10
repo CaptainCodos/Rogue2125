@@ -2,7 +2,6 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
-//#include "remap_controls.h"
 
 using namespace sf;
 
@@ -65,27 +64,6 @@ namespace controls
 {
 	void CheckCameraInput(View &view, float &zoom, double dt) 
 	{
-		// THIS DOES NOT WORK
-
-		/*if (Keyboard::isKeyPressed(PlayerControls::GetKey("Up")))
-		{
-			view.move(0, -dt * 300.0f);
-		}
-		if (Keyboard::isKeyPressed(PlayerControls::GetKey("Left")))
-		{
-			view.move(-dt * 300.0f, 0);
-		}
-		if (Keyboard::isKeyPressed(PlayerControls::GetKey("Down")))
-		{
-			view.move(0, dt * 300.0f);
-		}
-		if (Keyboard::isKeyPressed(PlayerControls::GetKey("Right")))
-		{
-			view.move(dt * 300.0f, 0);
-		}*/
-
-		// THIS DOES
-
 		if (Keyboard::isKeyPressed(Keyboard::W)) 
 		{
 			view.move(0, -dt * 300.0f);
