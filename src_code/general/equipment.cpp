@@ -144,7 +144,7 @@ void TankGun::GenerateItem()
 	Equipment::GenerateItem();
 
 	m_EID = 0;
-	m_secID = m_EID;
+	m_secID = 0;
 
 	m_name = "Nasty Gun";
 	m_short = "NG";
@@ -200,7 +200,7 @@ void TankHead::GenerateItem()
 	Equipment::GenerateItem();
 
 	m_EID = 1;
-	m_secID = m_EID;
+	m_secID = 1;
 
 	m_name = "Tank Head";
 	m_short = "TH";
@@ -232,7 +232,7 @@ void TankBody::GenerateItem()
 	Equipment::GenerateItem();
 
 	m_EID = 2;
-	m_secID = m_EID;
+	m_secID = 2;
 
 	m_name = "Tank Body";
 	m_short = "TB";
@@ -264,7 +264,7 @@ void TankEngine::GenerateItem()
 	Equipment::GenerateItem();
 
 	m_EID = 3;
-	m_secID = m_EID;
+	m_secID = 3;
 
 	m_name = "Tank Engine";
 	m_short = "TE";
