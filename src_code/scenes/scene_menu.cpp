@@ -32,7 +32,7 @@ void MenuScene::Load()
 	{
 		auto txt = makeEntity();
 		auto t = txt->addComponent<TextComponent>(
-			"Platformer\nPress Space to Start");
+			"Rogue2125\nPress Space to Start");
 		
 		auto tm = makeEntity();
 		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);

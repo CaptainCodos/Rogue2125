@@ -6,7 +6,7 @@ public:
 	MenuComponent(Entity* p);
 	~MenuComponent() = default;
 private:
-
+	
 };
 
 class Button {
