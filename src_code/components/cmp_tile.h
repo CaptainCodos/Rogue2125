@@ -14,7 +14,7 @@ public:
 
 	void update(double dt) override;
 
-	std::shared_ptr<PhysicsComponent> GetTileBox();
+	std::shared_ptr<sf::RectangleShape> GetTileBox();
 	sf::Vector2i GetCoords();
 	bool GetWalkable();
 	bool GetDisguised();

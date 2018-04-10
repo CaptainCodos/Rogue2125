@@ -2,11 +2,7 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
-//#include "remap_controls.h"
-<<<<<<< HEAD
 #include <iostream>
-=======
->>>>>>> refs/remotes/origin/SampleInput
 
 using namespace std;
 using namespace sf;
