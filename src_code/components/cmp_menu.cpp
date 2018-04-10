@@ -6,3 +6,7 @@ using namespace sf;
 MenuComponent::MenuComponent(Entity* p) : Component(p) {
 
 }
+
+Button::Button() {
+
+}
