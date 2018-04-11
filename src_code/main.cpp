@@ -1,6 +1,10 @@
 #include "engine.h"
 #include "game.h"
 #include "scenes/scene_menu.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include <random>
 
 using namespace std;
 
@@ -19,6 +23,7 @@ int counter;
 int main() 
 {
 	counter = 0;
+	random_device rd;
 	srand(time(NULL));
 	txrMgr = TextureMgr::GetInstance();
 	fontMgr = FontMgr::GetInstance();
