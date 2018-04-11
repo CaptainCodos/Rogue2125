@@ -1,4 +1,8 @@
 #include "cmp_actor_stats.h"
+#include "cmp_inventory.h"
+#include "cmp_skills.h"
+#include "cmp_player_movement.h"
+
 #include "cmp_sprite.h"
 #include "cmp_physics.h"
 #include "system_physics.h"
@@ -19,10 +23,7 @@ ActorStatsComponent::ActorStatsComponent(Entity* p)
 
 	m_isInvincible = false;
 
-
-	/*auto eC = _parent->addComponent<ShapeComponent>();
-	eC->setShape<CircleShape>(15.0f, 20);
-	eC->getShape().setOrigin(Vector2f(15.0f, 15.0f));*/
+	GenerateStats(0);
 }
 
 void ActorStatsComponent::update(double dt)
@@ -51,10 +52,15 @@ void ActorStatsComponent::GenerateStats(char ID)
 {
 	m_actorID = ID;
 
+	shared_ptr<SkillsComponent> a;
+	shared_ptr<InventoryComponent> b;
+	shared_ptr<PlayerMoveComp> c;
 	switch (ID)
 	{
 	case 0:
-
+		a = _parent->addComponent<SkillsComponent>();
+		b = _parent->addComponent<InventoryComponent>();
+		c = _parent->addComponent<PlayerMoveComp>(b, a);
 		break;
 	case 1:
 

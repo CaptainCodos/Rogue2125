@@ -39,6 +39,14 @@ Vector2<T> operator*(const Vector2<T>& left, const Vector2<T>& right) {
   return r;
 }
 
+//template <typename T>
+//Vector2<T> operator*(const Vector2<T>& left, const float& val) {
+//	Vector2<T> r = left;
+//	r.x *= val;
+//	r.y *= val;
+//	return r;
+//}
+
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Vector2<T>& v) {
   os << '(' << v.x << ',' << v.y << ')';

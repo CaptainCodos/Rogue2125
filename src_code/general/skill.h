@@ -4,7 +4,7 @@
 class Skill
 {
 public:
-	Skill() = delete;
+	Skill() = default;
 	Skill(std::string name, std::string sName, int id, int initVal);
 
 	~Skill() = default;
@@ -15,6 +15,7 @@ public:
 	int GetVal();
 
 	void SetDescription(std::string desc);
+	void AutoGenSkill();
 protected:
 
 private:
