@@ -33,6 +33,8 @@ private:
 	float m_baseArmour;		// Base armour value to determine resistances.
 
 	float m_resistances[5];	// 0 = physical, 1 = heat, 2 = electric, 3 = toxic, 4 = cold
+	float m_stats[3];
+	float m_maxStats[3];
 
 	void GeneratePlayerStats();
 	void GenerateEnemyStats();
