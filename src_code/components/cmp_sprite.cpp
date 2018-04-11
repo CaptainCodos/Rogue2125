@@ -30,6 +30,15 @@ TextureComponent::TextureComponent(Entity* p)
 	//m_srcRect = new sf::IntRect(0, 0, 32, 32);
 }
 
+std::shared_ptr<sf::Sprite> TextureComponent::GetSprite() { return m_sprite; }
+std::shared_ptr<sf::IntRect> TextureComponent::GetTexRect() { return m_srcRect; }
+
+sf::Vector2f TextureComponent::GetSpritePos() { return m_sprite->getPosition(); }
+float TextureComponent::GetSpriteAng() { return m_sprite->getRotation(); }
+
+void TextureComponent::SetPosition(sf::Vector2f pos) { m_sprite->setPosition(pos); }
+void TextureComponent::SetRotation(float ang) { m_sprite->setRotation(ang); }
+
 void TextureComponent::update(double dt) {
 	m_sprite->setPosition(_parent->getPosition());
 	m_sprite->setRotation(_parent->getRotation());
@@ -90,6 +99,7 @@ AnimComponent::AnimComponent(Entity* p)
 	m_animates = true;
 	m_fps = 30;
 	m_texRes = 32;
+	m_animTime = 1.0f;
 }
 
 void AnimComponent::SetTexture(sf::Texture& txr, int texRes)
@@ -139,6 +149,27 @@ void AnimComponent::update(double dt)
 {
 	TextureComponent::update(dt);
 
+	if (m_animates && m_sprite->getTexture() != nullptr)
+	{
+		if (m_animTime <= 0.0f)
+		{
+			m_srcRect->left += m_srcRect->width;
+			if (m_srcRect->left >= m_sprite->getTexture()->getSize().x)
+				m_srcRect->left = 0;
+
+			m_sprite->setTextureRect(*m_srcRect);
+
+			m_animTime = 1.0f;
+		}
+		else
+		{
+			m_animTime -= dt * m_fps;
+		}
+	}
+}
+
+void AnimComponent::basicUpdate(double dt)
+{
 	if (m_animates && m_sprite->getTexture() != nullptr)
 	{
 		if (m_animTime <= 0.0f)

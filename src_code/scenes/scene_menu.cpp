@@ -24,8 +24,8 @@ void MenuScene::Load()
 	/*counter++;
 	cout << "Test: " << counter << "\n";*/
 	zoom = 1.0f;
-	view = View(FloatRect(0, 0, 1920, 1080));
-	Engine::GetWindow().setView(view);
+	//view = View(FloatRect(0, 0, 1600, 900));
+	//Engine::GetWindow().setView(view);
 	cout << "Menu Load \n";
 	{
 		auto txt = makeEntity();
@@ -41,10 +41,10 @@ void MenuScene::Load()
 
 	}
 
-	counter++;
+	//counter++;
 	cout << "Test: " << counter << "\n";
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	//std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 	setLoaded(true);
 }
 
@@ -52,11 +52,13 @@ void MenuScene::Update(const double& dt) {
   // cout << "Menu Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
-	CheckCameraInput(view, zoom, dt);
-	GetMouseClick();
-	GetMousePos();
 
   if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
+	  counter++;
+	  Engine::ChangeScene(&menu);
+  }
+  if (sf::Keyboard::isKeyPressed(Keyboard::V)) {
+	  counter--;
 	  Engine::ChangeScene(&menu);
   }
 

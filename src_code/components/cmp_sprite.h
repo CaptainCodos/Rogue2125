@@ -32,8 +32,10 @@ public:
 	void update(double dt) override;
 	void render() override;
 
-	virtual std::shared_ptr<sf::Sprite> GetSprite() { return m_sprite; }
-	std::shared_ptr<sf::IntRect> GetTexRect() { return m_srcRect; }
+	virtual std::shared_ptr<sf::Sprite> GetSprite();
+	std::shared_ptr<sf::IntRect> GetTexRect();
+	sf::Vector2f GetSpritePos();
+	float GetSpriteAng();
 
 	virtual void SetTexture(sf::Texture& txr, int texRes);
 	virtual void SetOrigin(sf::Vector2f origin);	// between 0f - 1f, 0f = top/left
@@ -41,6 +43,9 @@ public:
 	void SetTint(sf::Color tint);					// Allows tinting of the given color of sprite.
 	void SetScale(float scale);
 	void SetTextureRect(std::shared_ptr<sf::IntRect> rect);
+
+	void SetPosition(sf::Vector2f pos);
+	void SetRotation(float ang);
 protected:
 	std::shared_ptr<sf::Sprite> m_sprite;
 	std::shared_ptr<sf::IntRect> m_srcRect;
@@ -58,6 +63,7 @@ public:
 	AnimComponent() = delete;
 	explicit AnimComponent(Entity* p);
 	void update(double dt) override;
+	void basicUpdate(double dt);	// Incase you don't necessarily want set to entity transform behavious
 	//void render() override;
 
 	void SetTexture(sf::Texture& txr, int texRes);
