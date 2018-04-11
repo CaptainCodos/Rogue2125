@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <Windows.h>
 //#include "maths.h"
 
 using namespace std;
@@ -293,8 +294,20 @@ bool TileMapComponent::LoadMap()
 	bool info = false;
 	bool data = false;
 
+	string folder = "res/" + m_ID;
+
+	if (CreateDirectory(folder.c_str(), NULL) ||
+		ERROR_ALREADY_EXISTS == GetLastError())
+	{
+
+	}
+	else
+	{
+
+	}
+
 	// Load map properties such as room colours and the IDs those colours match to
-	ifstream infoFile("res/" + m_ID + "Info.txt");
+	ifstream infoFile(folder + "/" + m_ID + "Info.txt");
 	if (infoFile.good())
 	{
 		Uint8 roomCs[3] = { 0, 0, 0 };
@@ -335,7 +348,7 @@ bool TileMapComponent::LoadMap()
 	}
 
 	// Load in all the tiles. Each character represents a tile's ID
-	ifstream file("res/" + m_ID + ".txt");
+	ifstream file(folder + "/" + m_ID + ".txt");
 	if (file.good())
 	{
 		for (int y = 0; y < m_height; y++)
@@ -381,8 +394,20 @@ bool TileMapComponent::LoadMap()
 }
 void TileMapComponent::SaveMap()
 {
-	string dir = "res/" + m_ID + ".txt";
-	string mapInfoDir = "res/" + m_ID + "Info.txt";
+	string folder = "res/" + m_ID;
+
+	if (CreateDirectory(folder.c_str(), NULL) ||
+		ERROR_ALREADY_EXISTS == GetLastError())
+	{
+
+	}
+	else
+	{
+
+	}
+
+	string dir = folder + "/" + m_ID + ".txt";
+	string mapInfoDir = folder + "/" + m_ID + "Info.txt";
 
 	ofstream out(dir);
 	ofstream outInfo(mapInfoDir);

@@ -13,7 +13,6 @@ public:
 	~TankSection() = default;
 
 	void update(double dt) override;
-
 	//void SetSection(std::shared_ptr<Equipment> part);
 protected:
 

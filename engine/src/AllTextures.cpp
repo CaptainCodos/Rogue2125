@@ -13,9 +13,16 @@ TextureMgr::TextureMgr()
 	colors_LiquidTiles.push_back(sf::Color(150, 195, 255, 255));// Energized Water
 	colors_LiquidTiles.push_back(sf::Color(90, 230, 255, 255));	// Water
 	
+	sheet_Items = std::vector<std::vector<sf::Texture>>();
+	sheet_Items.push_back(std::vector<sf::Texture>());
+	sheet_Items.push_back(std::vector<sf::Texture>());
+
 	// Load texture assets
 	LoadTextures("tile sheets/", "GreyScale", sheet_Tiles, 5);
+	LoadTextures("tank/", "Tank", sheet_Items[0], 4);
+
 	LoadTextures("tile sheets/", "GreyScale", anim_Tiles, 1);
+
 	LoadTextures("UI/general/tmpButtons/", "tmpButton", img_Buttons, 3);
 
 	anim_TilesRect = std::make_shared<sf::IntRect>(sf::IntRect(0, 0, 32, 32));

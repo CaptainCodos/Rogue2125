@@ -14,6 +14,7 @@ public:
 	// All the textures will be loaded on first instance call!
 
 	std::vector<sf::Texture> sheet_Tiles;
+	std::vector<std::vector<sf::Texture>> sheet_Items;
 	
 	std::vector<sf::Color> colors_LiquidTiles; // Liquid colors
 	std::vector<sf::Texture> anim_Tiles; // Liquid tile animation textures
