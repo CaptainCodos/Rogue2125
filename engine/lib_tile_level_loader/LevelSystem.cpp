@@ -189,7 +189,7 @@ size_t LevelSystem::getWidth() { return _width; }
 size_t LevelSystem::getHeight() { return _height; }
 
 sf::Vector2f LevelSystem::getTilePosition(sf::Vector2ul p) {
-  return (Vector2f(p.x, p.y) * _tileSize) + _offset;
+  return (Vector2f((float)p.x, (float)p.y) * _tileSize) + _offset;
 }
 
 std::vector<sf::Vector2ul> LevelSystem::findTiles(LevelSystem::Tile type) {

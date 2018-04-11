@@ -63,7 +63,7 @@ Entity::~Entity() {
   // Components can inter-depend on each other, so deleting them may take
   // multiple passes. We Keep deleting components until we can't delete any
   // more
-  int deli = 0;
+  size_t deli = 0;
   while (deli != _components.size()) {
     deli = _components.size();
     _components.erase(
