@@ -17,3 +17,12 @@ void ButtonComponent::update(double dt) {
 		_btnShape->getShape().setFillColor(Color(255, 0, 0, 255));
 	}
 }
+
+bool ButtonComponent::clicked() {
+	if (_btnShape->getShape().getGlobalBounds().contains(Engine::GetWindow().mapPixelToCoords(Mouse::getPosition(Engine::GetWindow())))) {
+		if (Mouse::isButtonPressed(Mouse::Left)) {
+			return true;
+		}
+	}
+	return false;
+}

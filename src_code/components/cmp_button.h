@@ -9,6 +9,7 @@ public:
 	~ButtonComponent() = default;
 
 	void update(double dt) override;
+	bool clicked();
 private:
 	std::shared_ptr<TextComponent> _btnText;
 	std::shared_ptr<ShapeComponent> _btnShape;
