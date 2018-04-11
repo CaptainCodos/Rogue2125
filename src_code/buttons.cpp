@@ -20,7 +20,7 @@ shared_ptr<Entity> new_button(string text)
 
 	btn_text->GetText()->setOrigin(btn_text->GetText()->getOrigin().x, btn_text->GetText()->getOrigin().y + 12.0f);
 
-	btn->addComponent<ButtonComponent>(btn_shape, btn_text);
+	btn->addComponent<ButtonComponent>(btn_text, btn_shape);
 
 	return btn;
 }

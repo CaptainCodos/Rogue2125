@@ -73,11 +73,7 @@ Vector2<T> rotate(const Vector2<T>& v, const double degrees) {
 
 static int RandomInt(int min, int max)	// Generate random int between min[inclusive] and max[exclusive]
 {
-<<<<<<< HEAD
-	return (((int)rand()) / ((int)RAND_MAX) * (max - min)) + min;
-=======
 	return (((float)rand() / (float)RAND_MAX) * (max - min)) + min;
->>>>>>> origin/StephanBranch
 }
 
 static float RandomFloat(float min, float max)	// Generate random float between min[inclusive] and max[exclusive]

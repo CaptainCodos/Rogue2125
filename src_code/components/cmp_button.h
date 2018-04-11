@@ -5,10 +5,11 @@
 
 class ButtonComponent : public Component {
 public:
-	explicit ButtonComponent(Entity* p, std::shared_ptr<TextComponent>, std::shared_ptr<ShapeComponent>);
+	explicit ButtonComponent(Entity* p, std::shared_ptr<TextComponent> text, std::shared_ptr<ShapeComponent> shape);
 	~ButtonComponent() = default;
 
 	void update(double dt) override;
+	void render() override;
 	bool clicked();
 private:
 	std::shared_ptr<TextComponent> _btnText;
