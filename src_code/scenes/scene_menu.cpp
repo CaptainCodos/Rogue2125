@@ -8,6 +8,7 @@
 #include "../components/cmp_tilemap.h"
 #include "../components/cmp_actor_stats.h"
 #include "../components/cmp_inventory.h"
+#include "../components/cmp_button.h"
 
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
@@ -44,6 +45,10 @@ void MenuScene::Load()
 
 	counter++;
 	cout << "Test: " << counter << "\n";
+
+	// Load Buttons
+
+	buttons.clear();
 
 	shared_ptr<Useable> gA = make_shared<Useable>(Useable());
 	gA->GenerateItem();
