@@ -52,9 +52,6 @@ void MenuScene::Update(const double& dt) {
   // cout << "Menu Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
-	//CheckCameraInput(view, zoom, dt);
-	GetMouseClick();
-	GetMousePos();
 
   if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 	  counter++;
