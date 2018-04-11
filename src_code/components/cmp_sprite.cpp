@@ -144,7 +144,7 @@ void AnimComponent::update(double dt)
 		if (m_animTime <= 0.0f)
 		{
 			m_srcRect->left += m_srcRect->width;
-			if (m_srcRect->left >= m_sprite->getTexture()->getSize().x)
+			if ((unsigned int)m_srcRect->left >= m_sprite->getTexture()->getSize().x)
 				m_srcRect->left = 0;
 
 			m_sprite->setTextureRect(*m_srcRect);
@@ -153,7 +153,7 @@ void AnimComponent::update(double dt)
 		}
 		else
 		{
-			m_animTime -= dt * m_fps;
+			m_animTime -= (float)dt * m_fps;
 		}
 	}
 }

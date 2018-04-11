@@ -34,9 +34,9 @@ void Loading_render() {
   octagon.setOrigin(80, 80);
   octagon.setRotation(loadingspinner);
   octagon.setPosition(Vcast<float>(Engine::getWindowSize()) * .5f);
-  octagon.setFillColor(Color(255,255,255,min(255.f,40.f*loadingTime)));
+  octagon.setFillColor(Color(255,255,255,(Uint8)min(255.f,40.f*loadingTime)));
   static Text t("Loading", *Resources::get<sf::Font>("RobotoMono-Regular.ttf"));
-  t.setFillColor(Color(255,255,255,min(255.f,40.f*loadingTime)));
+  t.setFillColor(Color(255,255,255,(Uint8)min(255.f,40.f*loadingTime)));
   t.setPosition(Vcast<float>(Engine::getWindowSize()) * Vector2f(0.4f,0.3f));
   Renderer::queue(&t);
   Renderer::queue(&octagon);
@@ -140,6 +140,11 @@ void Engine::ChangeScene(Scene* s) {
 sf::Vector2u Engine::getWindowSize() { return _window->getSize(); }
 
 sf::RenderWindow& Engine::GetWindow() { return *_window; }
+
+Scene* Engine::GetActiveScene()
+{
+	return _activeScene;
+}
 
 namespace timing {
 // Return time since Epoc
