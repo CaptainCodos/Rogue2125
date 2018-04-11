@@ -24,7 +24,7 @@ public:
 	std::string GetName();
 	std::string GetShortName();
 
-	sf::Texture GetTexture();
+	sf::Color GetColor();
 protected:
 	int m_absID;	// Determines if item is useable or equipment. 0 = Equipment, 1 = Useable
 	int m_secID;	// Determines type of useable or equipment. Used differently for each.
@@ -38,7 +38,6 @@ protected:
 	bool m_canStack;	// Determines if more than one can be held in same inventory slot. I got 99 mushrooms but these trends aint one!
 	int m_stack;		// How many of the item is stacked. If it cannot stack then it will not exceed 1.
 
-	int m_txrVecIdx;	// Used when loading from file to determine place in texture array.
 	sf::Texture m_texture;	// Texture of the item for gui/pickup.
 	sf::Color m_color;	// Texture color.
 private:

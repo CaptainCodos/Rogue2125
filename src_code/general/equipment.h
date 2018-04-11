@@ -63,6 +63,7 @@ public:
 	~TankHead() = default;
 
 	void GenerateItem() override;
+	void GenerateBasic() override;
 	void CreateFromData(std::vector<std::string> data) override;
 	std::vector<std::string> GetDataForSave();
 protected:
@@ -78,6 +79,7 @@ public:
 	~TankBody() = default;
 
 	void GenerateItem() override;
+	void GenerateBasic() override;
 	void CreateFromData(std::vector<std::string> data) override;
 	std::vector<std::string> GetDataForSave();
 protected:
@@ -93,6 +95,7 @@ public:
 	~TankEngine() = default;
 
 	void GenerateItem() override;
+	void GenerateBasic() override;
 	void CreateFromData(std::vector<std::string> data) override;
 	std::vector<std::string> GetDataForSave();
 protected:

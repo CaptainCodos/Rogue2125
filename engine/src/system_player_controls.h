@@ -26,6 +26,10 @@ namespace Input
 
 	// Returns direction value from axis, 0 = horizontal, 1 = verticals
 	float GetAxisValue(int axis);
+
+	bool MouseInWindow();
+	Vector2i GetMouseWindowPos();
+	Vector2i GetMouseRelativeToPos(Vector2i pos);
 };
 
 namespace controls 

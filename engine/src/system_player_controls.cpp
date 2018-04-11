@@ -66,6 +66,25 @@ float Input::GetAxisValue(int axis)
 	return val;
 }
 
+bool Input::MouseInWindow()
+{
+	Vector2u size = Engine::getWindowSize();
+	Vector2i pos = Input::GetMouseWindowPos();
+	
+	return (0 <= pos.x && pos.x < size.x) && (0 <= pos.y && pos.y < size.y);
+}
+
+Vector2i Input::GetMouseWindowPos()
+{
+	return Mouse::getPosition(Engine::GetWindow());
+}
+
+Vector2i Input::GetMouseRelativeToPos(Vector2i pos)
+{
+	Vector2i mScreen = Input::GetMouseWindowPos();
+	return mScreen - pos;
+}
+
 void controls::CheckCameraInput(View &view, float &zoom, double dt)
 {
 	// THIS DOES
@@ -108,5 +127,5 @@ void controls::GetMouseClick() {
 }
 
 void controls::GetMousePos() {
-	cout << "\r" << Mouse::getPosition() << std::flush;
+	cout << "\r" << Input::GetMouseRelativeToPos(Vector2i(800, 450)) << std::flush;
 }

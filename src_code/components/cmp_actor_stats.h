@@ -28,6 +28,8 @@ private:
 	float m_maxEn;
 
 	sf::Vector2i m_actorCoords;	// Coords of the actor in the world.
+	sf::Vector2i m_oldCoords;
+	sf::FloatRect m_colRect;
 	int m_map;					// Map the actor exists on.
 
 	float m_baseArmour;		// Base armour value to determine resistances.

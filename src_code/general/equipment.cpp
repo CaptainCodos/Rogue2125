@@ -6,7 +6,7 @@ using namespace std;
 using namespace sf;
 
 #pragma region Equipment
-Equipment::Equipment()
+Equipment::Equipment() : Item()
 {
 	m_buffs = vector<Skill>();
 
@@ -223,6 +223,8 @@ void TankGun::GenerateBasic()
 {
 	Equipment::GenerateBasic();
 
+	m_secID = 0;
+
 	m_types = vector<int>();
 	m_types.push_back(0);
 
@@ -339,6 +341,13 @@ void TankHead::GenerateItem()
 	m_descript = "Watch the barrel!";
 }
 
+void TankHead::GenerateBasic()
+{
+	Equipment::GenerateBasic();
+
+	m_secID = 1;
+}
+
 void TankHead::CreateFromData(vector<string> data)
 {
 
@@ -371,6 +380,13 @@ void TankBody::GenerateItem()
 	m_descript = "Ping!";
 }
 
+void TankBody::GenerateBasic()
+{
+	Equipment::GenerateBasic();
+
+	m_secID = 2;
+}
+
 void TankBody::CreateFromData(vector<string> data)
 {
 
@@ -401,6 +417,13 @@ void TankEngine::GenerateItem()
 	m_name = "Tank Engine";
 	m_short = "TE";
 	m_descript = "Wroooomm! Pua Pua Pua Pua Pua!";
+}
+
+void TankEngine::GenerateBasic()
+{
+	Equipment::GenerateBasic();
+
+	m_secID = 3;
 }
 
 void TankEngine::CreateFromData(vector<string> data)

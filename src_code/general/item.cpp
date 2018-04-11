@@ -10,7 +10,6 @@ Item::Item()
 	m_reqs = vector<Skill>();
 
 	m_stack = 1;
-	m_txrVecIdx = 0;
 	m_color = Color::White;
 	m_absID = 0;
 }
@@ -22,7 +21,7 @@ string Item::GetDescription() { return m_descript; }
 string Item::GetName() { return m_name; }
 string Item::GetShortName() { return m_short; }
 
-Texture Item::GetTexture() { return m_texture; }
+Color Item::GetColor() { return m_color; }
 
 bool Item::CheckReqs(vector<Skill> skills)
 {
@@ -51,7 +50,6 @@ void Item::GenerateItem()
 	m_reqs = vector<Skill>();
 
 	m_stack = 1;
-	m_txrVecIdx = 0;
 	m_color = Color::White;
 	m_absID = 0;
 	m_secID = 0;
@@ -79,8 +77,6 @@ void Item::CreateFromItemData(vector<string> data, int &count)
 	m_color.g = data[count++][0];
 	m_color.b = data[count++][0];
 
-	m_txrVecIdx = stoi(data[count++]);
-
 	int reqs = stoi(data[count++]);
 	for (int i = 0; i < reqs; i++)
 	{
@@ -104,8 +100,6 @@ vector<string> Item::GetDataForSave()
 	s << m_color.g; data.push_back(s.str()); s.str(string());
 	s << m_color.b; data.push_back(s.str()); s.str(string());
 
-	data.push_back(to_string(m_txrVecIdx));
-
 	data.push_back(to_string(m_reqs.size()));
 	for (int i = 0; i < m_reqs.size(); i++)
 	{
@@ -116,7 +110,7 @@ vector<string> Item::GetDataForSave()
 	return data;
 }
 
-Useable::Useable()
+Useable::Useable() : Item()
 {
 	m_absID = 1;
 	m_canStack = true;

@@ -24,8 +24,8 @@ void MenuScene::Load()
 	/*counter++;
 	cout << "Test: " << counter << "\n";*/
 	zoom = 1.0f;
-	view = View(FloatRect(0, 0, 1920, 1080));
-	Engine::GetWindow().setView(view);
+	//view = View(FloatRect(0, 0, 1600, 900));
+	//Engine::GetWindow().setView(view);
 	cout << "Menu Load \n";
 	{
 		auto txt = makeEntity();
@@ -52,7 +52,7 @@ void MenuScene::Update(const double& dt) {
   // cout << "Menu Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
-	CheckCameraInput(view, zoom, dt);
+	//CheckCameraInput(view, zoom, dt);
 	GetMouseClick();
 	GetMousePos();
 
