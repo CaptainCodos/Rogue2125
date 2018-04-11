@@ -16,7 +16,7 @@ TextureMgr::TextureMgr()
 	// Load texture assets
 	LoadTextures("tile sheets/", "GreyScale", sheet_Tiles, 5);
 	LoadTextures("tile sheets/", "GreyScale", anim_Tiles, 1);
-	LoadTextures("UI/general/tmpButtons", "tmpButton", img_Buttons, 1);
+	LoadTextures("UI/general/tmpButtons/", "tmpButton", img_Buttons, 3);
 
 	anim_TilesRect = std::make_shared<sf::IntRect>(sf::IntRect(0, 0, 32, 32));
 

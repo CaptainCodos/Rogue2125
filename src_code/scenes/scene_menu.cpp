@@ -1,5 +1,5 @@
 #include "scene_menu.h"
-#include "system_player_controls.h"
+//#include "system_player_controls.h"
 
 #include "../general/equipment.h"
 
@@ -41,11 +41,14 @@ void MenuScene::Load()
 
 		auto a = makeEntity();
 		auto aC = a->addComponent<ActorStatsComponent>();
+
+
 	}
 
 	counter++;
 	cout << "Test: " << counter << "\n";
 
+<<<<<<< HEAD
 	// Load Buttons
 
 	buttons.clear();

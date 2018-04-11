@@ -14,11 +14,28 @@ InventoryComponent::InventoryComponent(Entity* p)
 	: Component(p)
 {
 	CreateInventory();
+
+	m_defGun = make_shared<TankGun>();
+	m_defGun->GenerateBasic();
+
+	m_defHead = make_shared<TankHead>();
+	m_defHead->GenerateBasic();
+
+	m_defBody = make_shared<TankBody>();
+	m_defBody->GenerateBasic();
+
+	m_defEngine = make_shared<TankEngine>();
+	m_defEngine->GenerateBasic();
+
+	m_eqGun = m_defGun;
+	m_eqHead = m_defHead;
+	m_eqBody = m_defBody;
+	m_eqEngine = m_defEngine;
 }
 
 InventoryComponent::~InventoryComponent()
 {
-
+	FlushInventory();
 }
 
 void InventoryComponent::update(double dt)
@@ -377,4 +394,16 @@ void InventoryComponent::PrintAllItems()
 			cout << itemChunks[i][j] << "\n";
 		}
 	}
+}
+
+vector<shared_ptr<Equipment>> InventoryComponent::GetEquipped()
+{
+	vector<shared_ptr<Equipment>> vec = vector<shared_ptr<Equipment>>();
+
+	vec.push_back(m_eqGun);
+	vec.push_back(m_eqHead);
+	vec.push_back(m_eqBody);
+	vec.push_back(m_eqEngine);
+
+	return vec;
 }
