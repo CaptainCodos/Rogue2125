@@ -48,7 +48,6 @@ void MenuScene::Load()
 	counter++;
 	cout << "Test: " << counter << "\n";
 
-<<<<<<< HEAD
 	// Load Buttons
 
 	buttons.clear();
