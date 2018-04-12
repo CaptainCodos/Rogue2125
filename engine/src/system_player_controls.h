@@ -2,119 +2,40 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
-//#include "remap_controls.h"
-<<<<<<< HEAD
 #include <iostream>
-=======
->>>>>>> refs/remotes/origin/SampleInput
 
 using namespace std;
 using namespace sf;
 
 namespace Input
 {
-	// Simple key press trigger
-	bool GetKeyDown(Keyboard::Key key) {
-		Engine::GetWindow().setKeyRepeatEnabled(true);
-		if (Keyboard::isKeyPressed(key)) {		
-			return true;
-		}
-	}
+	bool GetKeyDown(Keyboard::Key key);
+
 	// For single frame
-	bool GetKeyPressed(Keyboard::Key key) {
-		Engine::GetWindow().setKeyRepeatEnabled(false);
-		if (Keyboard::isKeyPressed(key)) {
-			return true;
-		}
-	}
+	bool GetKeyPressed(Keyboard::Key key);
+
 	// Get key held down
-	bool GetKeyHeld(Keyboard::Key key) {
-		Engine::GetWindow().setKeyRepeatEnabled(true);
-		if (Keyboard::isKeyPressed(key)) {
-			return true;
-		}
-	}
+	bool GetKeyHeld(Keyboard::Key key);
+
 	// Simple mouse click trigger
-	bool GetMouseDown(Mouse::Button button) {
-		Engine::GetWindow().setKeyRepeatEnabled(true);
-		if (Mouse::isButtonPressed(button)) {
-			return true;
-		}
-	}
+	bool GetMouseDown(Mouse::Button button);
+
 	// For single frame
-	bool GetMousePressed(Mouse::Button button) {
-		Engine::GetWindow().setKeyRepeatEnabled(false);
-		return false;
-	}
+	bool GetMousePressed(Mouse::Button button);
+
 	// Returns direction value from axis, 0 = horizontal, 1 = verticals
-	float GetAxisValue(int axis) {
-		return 0.0;
-	}
+	float GetAxisValue(int axis);
+
+	bool MouseInWindow();
+	Vector2i GetMouseWindowPos();
+	Vector2i GetMouseRelativeToPos(Vector2i pos);
 };
 
 namespace controls 
 {
-	void CheckCameraInput(View &view, float &zoom, double dt) 
-	{
-		// THIS DOES NOT WORK
+	void CheckCameraInput(View &view, float &zoom, double dt);
 
-		/*if (Keyboard::isKeyPressed(PlayerControls::GetKey("Up")))
-		{
-			view.move(0, -dt * 300.0f);
-		}
-		if (Keyboard::isKeyPressed(PlayerControls::GetKey("Left")))
-		{
-			view.move(-dt * 300.0f, 0);
-		}
-		if (Keyboard::isKeyPressed(PlayerControls::GetKey("Down")))
-		{
-			view.move(0, dt * 300.0f);
-		}
-		if (Keyboard::isKeyPressed(PlayerControls::GetKey("Right")))
-		{
-			view.move(dt * 300.0f, 0);
-		}*/
+	void GetMouseClick();
 
-		// THIS DOES
-
-		if (Keyboard::isKeyPressed(Keyboard::W)) 
-		{
-			view.move(0, -dt * 300.0f);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::A)) 
-		{
-			view.move(-dt * 300.0f, 0);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::S)) 
-		{
-			view.move(0, dt * 300.0f);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::D)) 
-		{
-			view.move(dt * 300.0f, 0);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Q)) 
-		{
-			zoom += dt;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::E)) 
-		{
-			zoom -= dt;
-		}
-
-		view.zoom(zoom);
-
-		zoom = 1.0f;
-		Engine::GetWindow().setView(view);
-	}
-
-	void GetMouseClick() {
-		if (Mouse::isButtonPressed(Mouse::Left)) {
-			cout << "\r" << "Left Click Pressed." << endl;
-		}
-	}
-
-	void GetMousePos() {
-		cout << "\r" << Mouse::getPosition() << std::flush;
-	}
+	void GetMousePos();
 }
