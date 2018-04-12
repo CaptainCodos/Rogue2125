@@ -4,6 +4,7 @@
 #include "cmp_inventory.h"
 //#include "../general/equipment.h"
 #include "cmp_skills.h"
+#include "cmp_attack.h"
 
 class TankSection : public AnimComponent
 {
