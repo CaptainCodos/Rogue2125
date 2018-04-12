@@ -323,6 +323,3 @@ __pycache__/
 *.exe
 *.out
 *.app
-
-# End of https://www.gitignore.io/api/c++
-src_code/main.cpp
