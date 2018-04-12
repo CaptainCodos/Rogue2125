@@ -12,13 +12,15 @@ public:
 	void update(double dt) override;
 	void render() override;
 
+	int GetID();
+
 	void ApplyDamage(float dmg, std::vector<int> dmgTypes /* Add attack parameter here. This will be some projectile component or something. */);	// Apply damage to actor. dmgTypes is used to apply to resistance.
-	void GenerateStats(char ID);	// Used to generate stats according to actor type. Actor may be world object like box, an enemy or player.
+	void GenerateStats(int ID);	// Used to generate stats according to actor type. Actor may be world object like box, an enemy or player.
 protected:
 
 private:
 	std::string m_name;
-	char m_actorID;
+	int m_actorID;
 	bool m_isInvincible;	// Checks if actor can be damaged
 
 	float m_hp;		// Actor's hp.

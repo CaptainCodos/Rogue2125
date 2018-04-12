@@ -1,4 +1,5 @@
 #include "cmp_tank_section.h"
+#include "cmp_actor_stats.h"
 #include <AllMgrs.h>
 
 using namespace std;
@@ -32,6 +33,17 @@ void TankSection::update(double dt)
 		if (gun->GetFired())
 		{
 			DmgData data = gun->GetShotData();
+			data.actorID = _parent->GetCompatibleComponent<ActorStatsComponent>()[0]->GetID();
+
+			data.vel = Vector2f(sin(GetSpriteAng()), cos(GetSpriteAng())) * 6.0f;
+			data.angle = GetSpriteAng();
+
+			Vector2f offset = normalize(data.vel) * 16.0f;
+
+
+			shared_ptr<Entity> a = _parent->scene->makeEntity();
+			a->setPosition(_parent->getPosition() + offset);
+			a->addComponent<AttackComponent>(data);
 		}
 	}
 }

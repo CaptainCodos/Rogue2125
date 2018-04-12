@@ -26,6 +26,8 @@ ActorStatsComponent::ActorStatsComponent(Entity* p)
 	GenerateStats(0);
 }
 
+int ActorStatsComponent::GetID() { return m_actorID; }
+
 void ActorStatsComponent::update(double dt)
 {
 	
@@ -48,7 +50,7 @@ void ActorStatsComponent::ApplyDamage(float dmg, vector<int> dmgTypes)
 	}
 }
 
-void ActorStatsComponent::GenerateStats(char ID)
+void ActorStatsComponent::GenerateStats(int ID)
 {
 	m_actorID = ID;
 
