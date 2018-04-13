@@ -22,7 +22,7 @@ using namespace controls;
 View view;
 float zoom;
 
-void MenuScene::Load() 
+void MenuScene::Load()
 {
 	/*counter++;
 	cout << "Test: " << counter << "\n";*/
@@ -34,7 +34,7 @@ void MenuScene::Load()
 		auto txt = makeEntity();
 		auto t = txt->addComponent<TextComponent>(
 			"Platformer\nPress Space to Start");
-		
+
 		auto tm = makeEntity();
 		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);
 
@@ -59,18 +59,18 @@ void MenuScene::Load()
 }
 
 void MenuScene::Update(const double& dt) {
-  // cout << "Menu Update "<<dt<<"\n";
+	// cout << "Menu Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
 
-  if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-	  counter++;
-	  Engine::ChangeScene(&menu);
-  }
-  if (sf::Keyboard::isKeyPressed(Keyboard::V)) {
-	  counter--;
-	  Engine::ChangeScene(&menu);
-  }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
+		counter++;
+		Engine::ChangeScene(&menu);
+	}
+	if (sf::Keyboard::isKeyPressed(Keyboard::V)) {
+		counter--;
+		Engine::ChangeScene(&menu);
+	}
 
-  Scene::Update(dt);
+	Scene::Update(dt);
 }
