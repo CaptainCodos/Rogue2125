@@ -9,6 +9,7 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_tilemap.h"
 #include "../components/cmp_actor_stats.h"
+#include "../components/cmp_button.h"
 
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
@@ -47,12 +48,8 @@ void MenuScene::Load()
 	buttons.clear();
 	_btn_start_game.reset();
 	_btn_start_game = new_button("Start");
+	_btn_start_game->setPosition(Vector2f(0, 0));
 	buttons.push_back(_btn_start_game);
-
-	for (int i = 0; i < buttons.size(); i++)
-	{
-		buttons[i]->setPosition({ (float)Engine::GetWindow().getSize().x / 2, (70.0f * i) + 200.0f });
-	}
 
 	//counter++;
 	cout << "Test: " << counter << "\n";
