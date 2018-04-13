@@ -2,6 +2,8 @@
 //#include "system_player_controls.h"
 
 #include "../general/equipment.h"
+#include "../buttons.h"
+#include "ecm.h"
 
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
@@ -39,6 +41,17 @@ void MenuScene::Load()
 		auto aC = a->addComponent<ActorStatsComponent>();
 
 
+	}
+
+	// Button loading
+	buttons.clear();
+	_btn_start_game.reset();
+	_btn_start_game = new_button("Start");
+	buttons.push_back(_btn_start_game);
+
+	for (int i = 0; i < buttons.size(); i++)
+	{
+		buttons[i]->setPosition({ (float)Engine::GetWindow().getSize().x / 2, (70.0f * i) + 200.0f });
 	}
 
 	//counter++;
