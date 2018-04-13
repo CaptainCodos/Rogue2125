@@ -48,8 +48,12 @@ void MenuScene::Load()
 	buttons.clear();
 	_btn_start_game.reset();
 	_btn_start_game = new_button("Start");
-	_btn_start_game->setPosition(Vector2f(0, 0));
 	buttons.push_back(_btn_start_game);
+
+	// Set buttons position
+	for (int i = 0; i < buttons.size(); i++) {
+		buttons[i]->setPosition(Vector2f(0, -30.0f));
+	}
 
 	//counter++;
 	cout << "Test: " << counter << "\n";
@@ -62,6 +66,11 @@ void MenuScene::Update(const double& dt) {
 	// cout << "Menu Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
+
+	if (_btn_start_game->get_components<ButtonComponent>()[0]->clicked()) {
+		counter++;
+		Engine::ChangeScene(&menu);
+	}
 
 	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 		counter++;
