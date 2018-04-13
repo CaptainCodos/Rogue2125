@@ -222,7 +222,9 @@ void TankGun::GenerateItem()
 void TankGun::GenerateBasic()
 {
 	Equipment::GenerateBasic();
-
+	/*Skill s = Skill("", "", 1, 40);
+	s.AutoGenSkill();
+	m_buffs.push_back(s);*/
 	m_secID = 0;
 
 	m_types = vector<int>();
@@ -285,20 +287,21 @@ bool TankGun::GetFired()
 	return m_fire;
 }
 
-DmgData TankGun::GetShotData()
+DmgData TankGun::GetShotData(int dmg, int rate)
 {
 	DmgData data = DmgData();
 
-	data.dmg = RandomFloat(m_dmgRange.x, m_dmgRange.y);
-	data.dmg /= m_Sps;
+	data.dmg = (RandomFloat(m_dmgRange.x, m_dmgRange.y) * (1.0f + (0.05f * dmg)));
+	data.dmg /= m_Sps * (1.0f + (0.05f * rate));
 	data.types = m_types;
 
 	return data;
 }
 
-void TankGun::update(double dt)
+void TankGun::update(double dt, int rate)
 {
 	m_fire = false;
+	float Sps = m_Sps * (1.0f + (0.05f * rate));
 
 	if (Input::GetMouseDown(Mouse::Left))
 		m_firing = true;
@@ -314,12 +317,12 @@ void TankGun::update(double dt)
 		}
 		else
 		{
-			m_fireTime -= dt * m_Sps;
+			m_fireTime -= dt * Sps;
 		}
 	}
 	else
 	{
-		m_fireTime -= dt * m_Sps;
+		m_fireTime -= dt * Sps;
 	}
 }
 #pragma endregion

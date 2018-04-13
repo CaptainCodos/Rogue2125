@@ -13,7 +13,12 @@ public:
 
   ~TextComponent() override = default;
 
+  void SetPos(sf::Vector2f pos);
+  void SetColor(sf::Color color);
+  void SetOrigin(sf::Vector2f origin);	// 0 = top/left, 1 = bottom/right
+  void SetFont(sf::Font font);
   void SetText(const std::string& str);
+
   sf::Text* GetText() { return &_text; }
 
 protected:

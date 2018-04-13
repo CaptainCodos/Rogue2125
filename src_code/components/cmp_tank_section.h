@@ -10,7 +10,7 @@ class TankSection : public AnimComponent
 {
 public:
 	TankSection() = delete;
-	TankSection(Entity* p, std::shared_ptr<Equipment> item, std::shared_ptr<SkillsComponent> skills);
+	TankSection(Entity* p, std::shared_ptr<Equipment> item, std::shared_ptr<InventoryComponent> inv, std::shared_ptr<SkillsComponent> skills);
 	~TankSection() = default;
 
 	void update(double dt) override;
@@ -18,7 +18,7 @@ public:
 protected:
 
 private:
-	//std::shared_ptr<InventoryComponent> m_inventory;
+	std::shared_ptr<InventoryComponent> m_inv;
 	std::shared_ptr<Equipment> m_item;
 	std::shared_ptr<SkillsComponent> m_skills;
 };

@@ -5,19 +5,20 @@
 using namespace std;
 using namespace sf;
 
-PlayerMoveComp::PlayerMoveComp(Entity* p, shared_ptr<InventoryComponent> inv, shared_ptr<SkillsComponent> skills) 
+PlayerMoveComp::PlayerMoveComp(Entity* p, std::shared_ptr<ActorMoveComp> aMove, shared_ptr<InventoryComponent> inv, shared_ptr<SkillsComponent> skills)
 	: Component(p)
 {
+	m_moveComp = aMove;
 	m_inv = inv;
 	m_skills = skills;
 	m_baseMaxSpeed = 4.0f;
 
 	m_vel = Vector2f(0.0f, 0.0f);
 
-	m_body = _parent->addComponent<TankSection>(inv->GetEquipped()[2], skills);
-	m_engine = _parent->addComponent<TankSection>(inv->GetEquipped()[3], skills);
-	m_head = _parent->addComponent<TankSection>(inv->GetEquipped()[1], skills);
-	m_gun = _parent->addComponent<TankSection>(inv->GetEquipped()[0], skills);
+	m_body = _parent->addComponent<TankSection>(inv->GetEquipped()[2], inv, skills);
+	m_engine = _parent->addComponent<TankSection>(inv->GetEquipped()[3], inv, skills);
+	m_head = _parent->addComponent<TankSection>(inv->GetEquipped()[1], inv, skills);
+	m_gun = _parent->addComponent<TankSection>(inv->GetEquipped()[0], inv, skills);
 
 	m_body->SetFPS(1.0f);
 
@@ -29,8 +30,21 @@ PlayerMoveComp::PlayerMoveComp(Entity* p, shared_ptr<InventoryComponent> inv, sh
 
 void PlayerMoveComp::update(double dt)
 {
+	m_camera.setCenter(_parent->getPosition());
+
+	float zoom = 1.0f;
+	if (Input::GetKeyDown(Keyboard::E))
+		zoom -= dt;
+	if (Input::GetKeyDown(Keyboard::Q))
+		zoom += dt;
+
+	m_camera.zoom(zoom);
+
+	Engine::GetWindow().setView(m_camera);
+
 	Vector2f axis = Vector2f(Input::GetAxisValue(0), Input::GetAxisValue(1));
 	float maxSpeed = GetMaxSpeed();
+	m_moveComp->SetMaxSpeed(maxSpeed);
 
 	if (axis.x != 0.0f)
 		m_accel.x = axis.x;
@@ -43,11 +57,19 @@ void PlayerMoveComp::update(double dt)
 		m_accel.y = 0.0f;
 
 	if (length(m_accel) != 0.0f)
+	{
 		m_body->SetAnimates(true);
+		m_engine->SetAnimates(true);
+	}
 	else
+	{
 		m_body->SetAnimates(false);
+		m_engine->SetAnimates(false);
+	}
 
-	if (length(m_accel) > 1.0f)
+	m_moveComp->GetAccel() = m_accel;
+
+	/*if (length(m_accel) > 1.0f)
 	{
 		normalize(m_accel);
 		m_accel = m_accel * 2.0f * maxSpeed;
@@ -55,39 +77,26 @@ void PlayerMoveComp::update(double dt)
 	else
 	{
 		m_accel = m_accel * 2.0f * maxSpeed;
-	}
+	}*/
 	
-	m_vel += CalculateAccel(maxSpeed) * (float)dt;
+	/*m_vel += CalculateAccel(maxSpeed) * (float)dt;
 	if (length(m_vel) > maxSpeed)
 	{
 		m_vel = normalize(m_vel);
 		m_vel = m_vel * maxSpeed;
 	}
-
-	if (length(m_vel) > 0.2f)
+*/
+	if (length(m_moveComp->GetVel()) > 0.2f)
 		RotateBody();
 
 	if (Input::MouseInWindow())
 		RotateHead();
 
-	if (length(m_vel) < 0.5f)
+	/*if (length(m_vel) < 0.5f)
 	{
 		m_vel.x = 0.0f;
 		m_vel.y = 0.0f;
-	}
-	_parent->setPosition(_parent->getPosition() + (m_vel * (float)dt));
-
-	m_camera.setCenter(_parent->getPosition());
-
-	float zoom = 1.0f;
-	if (Input::GetKeyDown(Keyboard::E))
-		zoom -= dt;
-	if (Input::GetKeyDown(Keyboard::Q))
-		zoom += dt;
-
-	m_camera.zoom(zoom);
-
-	Engine::GetWindow().setView(m_camera);
+	}*/
 }
 
 void PlayerMoveComp::render()
@@ -111,8 +120,8 @@ Vector2f PlayerMoveComp::CalculateAccel(float max)
 
 void PlayerMoveComp::RotateBody()
 {
-	Vector2f nV = normalize(m_vel);
-	float ang = atan2(nV.x, -nV.y) * 57.3f;
+	Vector2f nV = normalize(m_moveComp->GetVel());
+	float ang = atan2(nV.x, -nV.y) * 57.259f;
 
 	m_body->SetRotation(ang);
 	m_engine->SetRotation(ang);
@@ -122,7 +131,7 @@ void PlayerMoveComp::RotateHead()
 {
 	Vector2i p = Input::GetMouseRelativeToPos(Vector2i(800, 450));
 	Vector2f nV = normalize(Vector2f(p.x, p.y));
-	float ang = atan2(nV.x, -nV.y) * 57.3f;
+	float ang = atan2(nV.x, -nV.y) * 57.259f;
 
 	m_gun->SetRotation(ang);
 	m_head->SetRotation(ang);

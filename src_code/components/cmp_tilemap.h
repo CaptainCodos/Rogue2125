@@ -35,7 +35,10 @@ public:
 
 	std::vector<std::vector<std::shared_ptr<Entity>>> GetAllNeightbourEnts(int X, int Y);			// Used to get neighbouring entities to toggle visibility.
 
-	
+	void GenerateMapObjs();
+
+	void SpawnActor(int X, int Y);
+	void SetVisibleTiles();
 protected:
 
 private:
@@ -59,12 +62,14 @@ private:
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> m_tileCmps;
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> m_visibleTiles;
 
+
+
 	std::vector<sf::IntRect> m_rooms;
 
 	std::vector<int> m_corridorDirs;
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> m_corridors;
 
-	char CalculateTileIdx(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours);
+	char CalculateTileIdx(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours, std::shared_ptr<TileComponent> tile);
 	char CalculateLiquidID(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours, char currID);
 
 	bool CheckForRoughLiquid(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours, char currID);

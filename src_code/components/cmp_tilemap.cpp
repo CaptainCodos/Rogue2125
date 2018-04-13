@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 #include <Windows.h>
+#include "cmp_actor_stats.h"
+#include "UtilityComponents\cmp_collision_handler.h"
 //#include "maths.h"
 
 using namespace std;
@@ -13,6 +15,8 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 	: Component(p)
 {
 	m_txrMgr = txrMgr;
+
+	_parent->addTag("TileMap");
 
 	// Create size according to game progression
 	m_width = 40 + ((currMap) * 3);
@@ -77,11 +81,31 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 
 		GenerateMap();
 
+		
 		// Save map and it's data to files
 		SaveMap();
 
 		m_visibleTiles = GetTiles(IntRect(0, 0, m_width, m_height));
 	}
+}
+
+void TileMapComponent::GenerateMapObjs()
+{
+	//auto ch = _parent->scene->makeEntity();
+	//enable_shared_from_this();
+	_parent->addComponent<ColHandlerComp>();
+
+	// Spawn Actor in room test
+	int room = RandomInt(0, m_rooms.size());
+	vector<vector<shared_ptr<TileComponent>>> roomSet = GetTiles(m_rooms[room]);
+
+	int rY = RandomInt(0, roomSet.size());
+	int rX = RandomInt(0, roomSet[rY].size());
+
+	auto a = _parent->scene->makeEntity();
+	shared_ptr<ActorStatsComponent> aC = a->addComponent<ActorStatsComponent>();
+	aC->SetPosition(roomSet[rY][rX]->GetTrueCoords());
+
 }
 
 void TileMapComponent::update(double dt)
@@ -100,6 +124,7 @@ void TileMapComponent::render()
 	}
 }
 
+#pragma region GetMethods
 string TileMapComponent::GetID() { return m_ID; }
 int TileMapComponent::GetIntID() { return m_IntID; }
 
@@ -277,6 +302,7 @@ vector<vector<shared_ptr<TileComponent>>> TileMapComponent::GetAllNeighbourWalls
 
 	return tilegrid;
 }
+#pragma endregion
 
 char TileMapComponent::ConvertFromInt(int n)
 {
@@ -498,15 +524,28 @@ void TileMapComponent::GenerateMap()
 	
 }
 
-char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>> neighbours)
+char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>> neighbours, shared_ptr<TileComponent> tile)
 {
 	char idx = 0;
+	tile->ResetFreeAreas();
+	bool firstX = false;
+	bool firstY = false;
 
 	if (neighbours[0][0] != nullptr)
 	{
 		if (!neighbours[0][0]->GetWalkable() || neighbours[0][0]->GetDisguised())
 		{
 			idx += 1;
+		}
+		else if (neighbours[0][0]->GetWalkable())
+		{
+			if (!firstY)
+			{
+				firstY = true;
+				tile->AddFreeY(-2);
+			}
+
+			tile->AddFreeY(-1);
 		}
 	}
 	else
@@ -520,6 +559,16 @@ char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>
 		{
 			idx += 4;
 		}
+		else if (neighbours[0][1]->GetWalkable())
+		{
+			if (!firstY)
+			{
+				firstY = true;
+				tile->AddFreeY(-2);
+			}
+
+			tile->AddFreeY(1);
+		}
 	}
 	else
 	{
@@ -532,6 +581,16 @@ char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>
 		{
 			idx += 8;
 		}
+		else if (neighbours[1][0]->GetWalkable())
+		{
+			if (!firstX)
+			{
+				firstX = true;
+				tile->AddFreeX(-2);
+			}
+
+			tile->AddFreeX(-1);
+		}
 	}
 	else
 	{
@@ -543,6 +602,16 @@ char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>
 		if (!neighbours[1][1]->GetWalkable() || neighbours[1][1]->GetDisguised())
 		{
 			idx += 2;
+		}
+		else if (neighbours[1][1]->GetWalkable())
+		{
+			if (!firstX)
+			{
+				firstX = true;
+				tile->AddFreeX(-2);
+			}
+
+			tile->AddFreeX(1);
 		}
 	}
 	else
@@ -809,7 +878,7 @@ void TileMapComponent::IterateAcrossTileMap(int pass)
 				// Change wall/non-traversable tiles
 				if (!m_tileCmps[y][x]->GetWalkable())
 				{
-					m_tileCmps[y][x]->SetTileIdx(1 + CalculateTileIdx(GetNeighbourTiles(x, y)));
+					m_tileCmps[y][x]->SetTileIdx(1 + CalculateTileIdx(GetNeighbourTiles(x, y), m_tileCmps[y][x]));
 					m_tileEnts[y][x]->addTag("wall");
 				}
 				else
@@ -852,7 +921,7 @@ void TileMapComponent::IterateTiles()
 			// Change wall/non-traversable tiles
 			if (!m_tileCmps[y][x]->GetWalkable())
 			{
-				m_tileCmps[y][x]->SetTileIdx(1 + CalculateTileIdx(GetNeighbourTiles(x, y)));
+				m_tileCmps[y][x]->SetTileIdx(1 + CalculateTileIdx(GetNeighbourTiles(x, y), m_tileCmps[y][x]));
 				m_tileEnts[y][x]->addTag("wall");
 			}
 			else

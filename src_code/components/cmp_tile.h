@@ -1,6 +1,7 @@
 #pragma once
 #include "cmp_sprite.h"
 #include "cmp_physics.h"
+#include "../general/data_shapes.h"
 #include "AllMgrs.h"
 #include <memory>
 
@@ -14,8 +15,14 @@ public:
 
 	void update(double dt) override;
 
-	std::shared_ptr<sf::RectangleShape> GetTileBox();
+	//std::shared_ptr<sf::RectangleShape> GetTileBox();
 	sf::Vector2i GetCoords();
+	sf::Vector2f GetTrueCoords();
+	DataShapes::Rectangle GetRect();
+
+	int GetFreeX();
+	int GetFreeY();
+
 	bool GetWalkable();
 	bool GetDisguised();
 	char GetID();
@@ -23,6 +30,7 @@ public:
 	char GetLiquidID();
 	float GetTerrainMod();
 
+	void SetPosition(sf::Vector2f pos);
 	void SetOrigin(sf::Vector2f origin) override;
 	void SetTileID(char ID);
 	void SetTileIdx(char idx);
@@ -36,7 +44,7 @@ protected:
 private:
 	TextureMgr* m_txrMgr;
 
-	std::shared_ptr<sf::RectangleShape> m_bounds;	// Bounds used to detect collision
+	DataShapes::Rectangle m_rect;
 
 	sf::Vector2i m_coords;	// Coordinates of the tile.
 

@@ -33,10 +33,11 @@ void MenuScene::Load()
 			"Platformer\nPress Space to Start");
 		
 		auto tm = makeEntity();
-		auto tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);
+		shared_ptr<TileMapComponent> tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);
+		tmC->GenerateMapObjs();
 
-		auto a = makeEntity();
-		auto aC = a->addComponent<ActorStatsComponent>();
+		/*auto a = makeEntity();
+		auto aC = a->addComponent<ActorStatsComponent>();*/
 
 
 	}

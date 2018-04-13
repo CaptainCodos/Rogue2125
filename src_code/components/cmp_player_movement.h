@@ -4,21 +4,26 @@
 #include "cmp_inventory.h"
 #include "cmp_skills.h"
 #include "cmp_tank_section.h"
+#include "cmp_actor_move.h"
 
 class PlayerMoveComp : public Component
 {
 public:
 	PlayerMoveComp() = delete;
-	PlayerMoveComp(Entity* p, std::shared_ptr<InventoryComponent> inv, std::shared_ptr<SkillsComponent> skills);
+	PlayerMoveComp(Entity* p, std::shared_ptr<ActorMoveComp> aMove, std::shared_ptr<InventoryComponent> inv, std::shared_ptr<SkillsComponent> skills);
 	~PlayerMoveComp() = default;
 
 	void update(double dt) override;
 	void render() override;
+
+
 protected:
 
 private:
+	std::shared_ptr<ActorMoveComp> m_moveComp;
 	std::shared_ptr<InventoryComponent> m_inv;
 	std::shared_ptr<SkillsComponent> m_skills;
+	
 	std::shared_ptr<TankSection> m_gun;
 	std::shared_ptr<TankSection> m_head;
 	std::shared_ptr<TankSection> m_body;

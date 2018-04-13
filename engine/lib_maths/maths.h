@@ -18,6 +18,10 @@ template <typename T> double length(const Vector2<T>& v) {
   return sqrt(v.x * v.x + v.y * v.y);
 }
 
+template <typename T> double dot(const Vector2<T>& v1, const Vector2<T>& v2) {
+	return (v1.x * v2.x) + (v1.y * v2.y);
+}
+
 // Normalizes the vector
 template <typename T> Vector2<T> normalize(const Vector2<T>& v) {
   Vector2<T> vector;
