@@ -11,6 +11,7 @@ public:
 	TileMapComponent() = delete;
 
 	explicit TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap);
+	void GenerateOtherMap(int map);
 
 	void update(double dt) override;
 	void render() override;
@@ -26,6 +27,7 @@ public:
 	std::string GetID();
 	int GetIntID();
 	std::shared_ptr<TileComponent> GetTile(int x, int y);
+	std::shared_ptr<TileComponent> GetTile(sf::Vector2i xy);
 	std::shared_ptr<Entity> GetEnt(int x, int y);
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> GetTiles(sf::IntRect area);
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> GetNeighbourTiles(int x, int y);

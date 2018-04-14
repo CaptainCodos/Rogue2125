@@ -32,6 +32,7 @@ TileComponent::TileComponent(Entity* p, TextureMgr* txrMgr, int x, int y)
 void TileComponent::update(double dt)
 {
 	TextureComponent::update(dt);
+	m_rect.SetPosCentre(_parent->getPosition());
 }
 
 //shared_ptr<sf::RectangleShape> TileComponent::GetTileBox() { return m_bounds; }
@@ -119,7 +120,7 @@ void TileComponent::SetOrigin(Vector2f origin)
 	if (m_sprite->getTexture() != nullptr)
 	{
 		int frames = m_sprite->getTexture()->getSize().x / m_texRes;
-		sf::Vector2f o = sf::Vector2f(origin.x * (m_sprite->getTexture()->getSize().x / frames), origin.y * m_sprite->getTexture()->getSize().y);
+		sf::Vector2f o = sf::Vector2f(origin.x * m_texRes, origin.y * m_texRes);
 		m_sprite->setOrigin(o);
 	}
 }
@@ -138,8 +139,8 @@ void TileComponent::SetTerrainMod(float mod)
 
 void TileComponent::ResetFreeAreas()
 {
-	m_freeX = 2;
-	m_freeY = 2;
+	m_freeX = 0;
+	m_freeY = 0;
 }
 
 void TileComponent::AddFreeX(int x)

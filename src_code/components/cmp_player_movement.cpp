@@ -20,7 +20,7 @@ PlayerMoveComp::PlayerMoveComp(Entity* p, std::shared_ptr<ActorMoveComp> aMove, 
 	m_head = _parent->addComponent<TankSection>(inv->GetEquipped()[1], inv, skills);
 	m_gun = _parent->addComponent<TankSection>(inv->GetEquipped()[0], inv, skills);
 
-	m_body->SetFPS(1.0f);
+	//m_body->SetFPS(12.0f);
 
 	m_rot = 0.0f;
 
@@ -123,7 +123,7 @@ void PlayerMoveComp::RotateBody()
 	Vector2f nV = normalize(m_moveComp->GetVel());
 	float ang = atan2(nV.x, -nV.y) * 57.259f;
 
-	m_body->SetRotation(ang);
+	m_body->SetRotation(ang - 180.0f);
 	m_engine->SetRotation(ang);
 }
 

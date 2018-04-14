@@ -10,6 +10,8 @@
 using namespace std;
 using namespace sf;
 
+using namespace DataShapes;
+
 ColHandlerComp::ColHandlerComp(Entity* p) 
 	: Component(p)
 {
@@ -60,7 +62,8 @@ void ColHandlerComp::HandleAttacks(vector<shared_ptr<Entity>> &attacks, vector<s
 
 			if (actorComp->GetID() != attack->GetSenderID() && attack->GetCircle().Intersects(actorComp->GetCircle(), dir))
 			{
-
+				actorComp->ApplyDamage(attack->GetData().dmg, attack->GetData().types);
+				actorComp->GetMoveComp()->GetVelRef() += (attack->GetData().vel / 10.0f);
 				cout << "Ouch!\n";
 				attacks[i]->setForDelete();
 			}
@@ -70,15 +73,12 @@ void ColHandlerComp::HandleAttacks(vector<shared_ptr<Entity>> &attacks, vector<s
 
 void ColHandlerComp::HandleActors(vector<shared_ptr<Entity>> &actors)
 {
-
-}
-
-void ColHandlerComp::HandlePlayer(vector<shared_ptr<Entity>> &actors)
-{
 	for (int i = 0; i < actors.size(); i++)
 	{
 		shared_ptr<ActorStatsComponent> actor = actors[i]->GetCompatibleComponent<ActorStatsComponent>()[0];
 		Vector2i coords = actor->GetCoords();
+		Vector2f vel = actor->GetMoveComp()->GetVel();
+		Rectangle rect = actor->GetRect();
 
 		vector<vector<shared_ptr<TileComponent>>> tiles = m_map->GetAllNeighbourTiles(coords.x, coords.y);
 
@@ -88,39 +88,36 @@ void ColHandlerComp::HandlePlayer(vector<shared_ptr<Entity>> &actors)
 			{
 				if (tiles[y][x] != nullptr)
 				{
-					Vector2i diff = coords - tiles[y][x]->GetCoords();
+					Vector2i axis = Vector2i(0, 0);
+					float depth = 0.0f;
 
-					if ((diff.x == tiles[y][x]->GetFreeX() || tiles[y][x]->GetFreeX() == 0) && tiles[y][x]->GetFreeX() != 2
-						&& (diff.y == tiles[y][x]->GetFreeY() || tiles[y][x]->GetFreeY() == 0) && tiles[y][x]->GetFreeY() != 2
-						&& !tiles[y][x]->GetWalkable())
+					if (tiles[y][x]->GetRect().Intersects(rect, depth, axis) && !tiles[y][x]->GetWalkable())
 					{
-						float depth;
-						int dir;
+						Vector2i r = coords - tiles[y][x]->GetCoords();
 
-						if (actor->GetRect().Intersects(tiles[y][x]->GetRect(), depth, dir))
+						if ((axis.x == r.x || tiles[y][x]->GetFreeX() == 0) && tiles[y][x]->GetFreeX() != 2)
 						{
-							Vector2f diffTrue = actor->GetTrueCoords() - tiles[y][x]->GetTrueCoords();
-							Vector2f v = actor->GetMoveComp()->GetVel();
-							float dotV = dot(diffTrue, v);
-
-							if (dotV < 0.0f)
+							if (axis.x * vel.x < 0.0f && tiles[y][x]->GetFreeX() * axis.x >= 0)
 							{
-								switch (dir)
-								{
-								case 0:
-									actor->GetMoveComp()->GetVelRef().x = 0.0f;
-									break;
-								case 1:
-									actor->GetMoveComp()->GetVelRef().y = 0.0f;
-									break;
-								}
+								actor->GetMoveComp()->GetVelRef().x = 0.0f;
 							}
+						}
 
-							
+						if ((axis.y == r.y || tiles[y][x]->GetFreeY() == 0) && tiles[y][x]->GetFreeY() != 2)
+						{
+							if (axis.y * vel.y < 0.0f && tiles[y][x]->GetFreeY() * axis.y >= 0)
+							{
+								actor->GetMoveComp()->GetVelRef().y = 0.0f;
+							}
 						}
 					}
 				}
 			}
 		}
 	}
+}
+
+void ColHandlerComp::HandlePlayer(vector<shared_ptr<Entity>> &actors)
+{
+	
 }

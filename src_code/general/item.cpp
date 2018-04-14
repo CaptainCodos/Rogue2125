@@ -16,6 +16,7 @@ Item::Item()
 
 int Item::GetPriID() { return m_absID; }
 int Item::GetSecID() { return m_secID; }
+int Item::GetPrice() { return m_price; }
 
 string Item::GetDescription() { return m_descript; }
 string Item::GetName() { return m_name; }
@@ -43,6 +44,8 @@ bool Item::CheckReqs(vector<Skill> skills)
 
 void Item::GenerateItem()
 {
+	m_price = 0;
+
 	m_name = "Name";
 	m_short = "S";
 	m_descript = "Description!";
@@ -68,9 +71,13 @@ void Item::CreateFromItemData(vector<string> data, int &count)
 	m_absID = stoi(data[count++]);
 	m_secID = stoi(data[count++]);
 
+	m_price = stoi(data[count++]);
+
 	m_name = data[count++];
 	m_short = data[count++];
 	m_descript = data[count++];
+
+	m_stack = stoi(data[count++]);
 
 	m_color = Color();
 	m_color.r = data[count++][0];
@@ -91,6 +98,8 @@ vector<string> Item::GetDataForSave()
 	data.push_back(to_string(m_absID));
 	data.push_back(to_string(m_secID));
 
+	data.push_back(to_string(m_price));
+
 	data.push_back(m_name);
 	data.push_back(m_short);
 	data.push_back(m_descript);
@@ -99,6 +108,8 @@ vector<string> Item::GetDataForSave()
 	s << m_color.r; data.push_back(s.str()); s.str(string());
 	s << m_color.g; data.push_back(s.str()); s.str(string());
 	s << m_color.b; data.push_back(s.str()); s.str(string());
+
+	data.push_back(to_string(m_stack));
 
 	data.push_back(to_string(m_reqs.size()));
 	for (int i = 0; i < m_reqs.size(); i++)

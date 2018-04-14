@@ -15,6 +15,7 @@ public:
 	void render() override;
 
 	int GetID();
+	int GetSecID();
 	std::shared_ptr<ActorMoveComp> GetMoveComp();
 	DataShapes::Circle GetCircle();
 	DataShapes::Rectangle GetRect();
@@ -34,7 +35,10 @@ private:
 
 	std::string m_name;
 	int m_actorID;
+	int m_secID;
 	bool m_isInvincible;	// Checks if actor can be damaged
+	bool m_isDynamic;	// Checks if actor can be moved
+	bool m_isPhysical;	// Ensures no collision occurs. Objects will pass over this object
 
 	float m_hp;		// Actor's hp.
 	float m_en;		// Actor's energy value.

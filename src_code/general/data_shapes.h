@@ -30,8 +30,21 @@ namespace DataShapes
 		void SetSize(sf::Vector2f s);
 		void SetPosCentre(sf::Vector2f p);
 
+		float GetTop();
+		float GetBottom();
+		float GetLeft();
+		float GetRight();
+
+		sf::Vector2f GetTL();
+		sf::Vector2f GetTR();
+		sf::Vector2f GetBL();
+		sf::Vector2f GetBR();
+
 		bool Intersects(Rectangle other);	// Check for intersection
-		bool Intersects(Rectangle other, float &depth, int &dir);	// Check for intersection and return penetration depth and direction (A to B)
-		bool Intersects(Rectangle other, sf::Vector2f &depth, int &dir);	// Check for intersection and return depth vector and direction (A to B)
+		bool Intersects(Rectangle other, float &depth, sf::Vector2i &axis);	// Check for intersection and return penetration depth and direction (A to B)
+		bool Intersects(Rectangle other, sf::Vector2f &depth, sf::Vector2i &axis);	// Check for intersection and return depth vector and direction (A to B)
+
+		bool Contains(sf::Vector2f p);	// Check if the rectangle contains point p
+		bool Contains(sf::Vector2f p, float &depth, sf::Vector2i &axis);	// Check if the rectangle contains point p
 	};
 }

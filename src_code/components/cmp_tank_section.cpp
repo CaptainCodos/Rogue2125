@@ -11,8 +11,9 @@ TankSection::TankSection(Entity* p, shared_ptr<Equipment> item, shared_ptr<Inven
 	m_inv = inv;
 	m_skills = skills;
 
+	SetScale(0.75f);
 	SetTexture(TextureMgr::GetInstance()->sheet_Items[m_item->GetPriID()][m_item->GetSecID()], 32);
-	SetFPS(4.0f);
+	SetFPS(30.0f);
 
 	SetColor(m_item->GetColor());
 	SetOrigin(Vector2f(0.5f, 0.5f));
@@ -20,8 +21,8 @@ TankSection::TankSection(Entity* p, shared_ptr<Equipment> item, shared_ptr<Inven
 
 void TankSection::update(double dt)
 {
-	SetTexture(TextureMgr::GetInstance()->sheet_Items[m_item->GetPriID()][m_item->GetSecID()], 32);
-	SetColor(m_item->GetColor());
+	//SetTexture(TextureMgr::GetInstance()->sheet_Items[m_item->GetPriID()][m_item->GetSecID()], 32);
+	//SetColor(m_item->GetColor());
 
 	AnimComponent::basicUpdate(dt);
 
@@ -38,7 +39,7 @@ void TankSection::update(double dt)
 			DmgData data = gun->GetShotData(m_skills->GetTotalSkill(m_inv->GetEquipped(), 0), m_skills->GetTotalSkill(m_inv->GetEquipped(), 1));
 			data.actorID = _parent->GetCompatibleComponent<ActorStatsComponent>()[0]->GetID();
 
-			data.vel = Vector2f(sin(GetSpriteAng() / 57.295f), -cos(GetSpriteAng() / 57.295f)) * 6.0f;
+			data.vel = Vector2f(sin(GetSpriteAng() / 57.295f), -cos(GetSpriteAng() / 57.295f)) * 10.0f;
 			data.angle = GetSpriteAng();
 
 			Vector2f offset = normalize(data.vel) * 16.0f;

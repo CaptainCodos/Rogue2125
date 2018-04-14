@@ -89,6 +89,11 @@ TileMapComponent::TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap)
 	}
 }
 
+void TileMapComponent::GenerateOtherMap(int map)
+{
+
+}
+
 void TileMapComponent::GenerateMapObjs()
 {
 	//auto ch = _parent->scene->makeEntity();
@@ -133,6 +138,18 @@ shared_ptr<TileComponent> TileMapComponent::GetTile(int x, int y)
 	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
 	{
 		return m_tileCmps[y][x];
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+shared_ptr<TileComponent> TileMapComponent::GetTile(Vector2i xy)
+{
+	if (xy.x >= 0 && xy.x < m_width && xy.y >= 0 && xy.y < m_height)
+	{
+		return m_tileCmps[xy.x][xy.y];
 	}
 	else
 	{
@@ -527,9 +544,9 @@ void TileMapComponent::GenerateMap()
 char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>> neighbours, shared_ptr<TileComponent> tile)
 {
 	char idx = 0;
-	tile->ResetFreeAreas();
-	bool firstX = false;
-	bool firstY = false;
+
+	bool gotX = false;
+	bool gotY = false;
 
 	if (neighbours[0][0] != nullptr)
 	{
@@ -539,12 +556,7 @@ char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>
 		}
 		else if (neighbours[0][0]->GetWalkable())
 		{
-			if (!firstY)
-			{
-				firstY = true;
-				tile->AddFreeY(-2);
-			}
-
+			gotY = true;
 			tile->AddFreeY(-1);
 		}
 	}
@@ -561,12 +573,7 @@ char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>
 		}
 		else if (neighbours[0][1]->GetWalkable())
 		{
-			if (!firstY)
-			{
-				firstY = true;
-				tile->AddFreeY(-2);
-			}
-
+			gotY = true;
 			tile->AddFreeY(1);
 		}
 	}
@@ -583,12 +590,7 @@ char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>
 		}
 		else if (neighbours[1][0]->GetWalkable())
 		{
-			if (!firstX)
-			{
-				firstX = true;
-				tile->AddFreeX(-2);
-			}
-
+			gotX = true;
 			tile->AddFreeX(-1);
 		}
 	}
@@ -605,12 +607,7 @@ char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>
 		}
 		else if (neighbours[1][1]->GetWalkable())
 		{
-			if (!firstX)
-			{
-				firstX = true;
-				tile->AddFreeX(-2);
-			}
-
+			gotX = true;
 			tile->AddFreeX(1);
 		}
 	}
@@ -618,6 +615,12 @@ char TileMapComponent::CalculateTileIdx(vector<vector<shared_ptr<TileComponent>>
 	{
 		idx += 2;
 	}
+
+	if (!gotX)
+		tile->AddFreeX(2);
+
+	if (!gotY)
+		tile->AddFreeY(2);
 
 	return idx;
 }

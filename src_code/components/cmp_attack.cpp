@@ -29,6 +29,7 @@ AttackComponent::AttackComponent(Entity* p, DmgData data)
 	}
 
 	SetOrigin(sf::Vector2f(0.5f, 0.5f));
+	SetScale(0.5f);
 
 	std::vector<sf::Uint8> colors;
 
@@ -59,6 +60,7 @@ AttackComponent::AttackComponent(Entity* p, DmgData data)
 
 int AttackComponent::GetSenderID() { return m_data.actorID; }
 Circle AttackComponent::GetCircle() { return m_circle; }
+DmgData AttackComponent::GetData() { return m_data; }
 
 void AttackComponent::update(double dt)
 {

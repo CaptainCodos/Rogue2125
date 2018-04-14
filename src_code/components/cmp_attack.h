@@ -13,6 +13,7 @@ public:
 	~AttackComponent() = default;
 
 	int GetSenderID();
+	DmgData GetData();
 	DataShapes::Circle GetCircle();
 
 	void update(double dt) override;
