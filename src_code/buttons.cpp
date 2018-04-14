@@ -19,7 +19,6 @@ shared_ptr<Entity> new_button(string text)
 
 	auto btn_text = btn->addComponent<TextComponent>(text);
 	btn_text->SetOrigin(Vector2f(0.5, 0.5f));
-	btn_text->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 300.0f, Engine::getWindowSize().y / 2 - 10.0f));
 
 	btn->addComponent<ButtonComponent>(btn_text, btn_shape);
 
