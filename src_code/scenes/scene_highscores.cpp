@@ -20,11 +20,11 @@ void HighscoresScene::Load()
 		auto txt = makeEntity();
 		auto t = txt->addComponent<TextComponent>(
 			"Highscores");
-		t->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 180.0f, Engine::getWindowSize().y / 2 - 200.f));
+		t->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 70.0f, Engine::getWindowSize().y / 2 - 350.f));
 
 		btn_highscores.reset();
 		btn_highscores = new_button("Back to Menu");
-		btn_highscores->setPosition(Vector2f(Engine::getWindowSize().x / 2 + 50.0f, Engine::getWindowSize().y / 2 + 100.0f));
+		btn_highscores->setPosition(Vector2f(Engine::getWindowSize().x / 2 + 50.0f, Engine::getWindowSize().y / 2 + 350.0f));
 		btn_highscores->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(btn_highscores->getPosition().x, btn_highscores->getPosition().y - 8.0f));
 	}
 	setLoaded(true);
