@@ -20,9 +20,9 @@ void MenuComponent::LoadButtons() {
 	_btn_start_game = new_button("Start");
 	buttons.push_back(_btn_start_game);
 
-	_btn_options.reset();
-	_btn_options = new_button("Options");
-	buttons.push_back(_btn_options);
+	_btn_settings.reset();
+	_btn_settings = new_button("Options");
+	buttons.push_back(_btn_settings);
 
 	// Set buttons position
 	for (int i = 0; i < buttons.size(); i++) {
@@ -38,7 +38,7 @@ void MenuComponent::update(double dt)
 		Engine::ChangeScene(&gameplay);
 	}
 
-	if (_btn_options->get_components<ButtonComponent>()[0]->clicked()) {
+	if (_btn_settings->get_components<ButtonComponent>()[0]->clicked()) {
 		Engine::ChangeScene(&settings);
 	}
 }
