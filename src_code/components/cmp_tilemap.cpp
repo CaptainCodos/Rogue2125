@@ -100,16 +100,27 @@ void TileMapComponent::GenerateMapObjs()
 	//enable_shared_from_this();
 	_parent->addComponent<ColHandlerComp>();
 
-	// Spawn Actor in room test
-	int room = RandomInt(0, m_rooms.size());
-	vector<vector<shared_ptr<TileComponent>>> roomSet = GetTiles(m_rooms[room]);
+	vector<int> usedIdxs = vector<int>();
+	//bool found = find(openList.begin(), openList.end(), Ns[y][x]) != openList.end()
 
-	int rY = RandomInt(0, roomSet.size());
-	int rX = RandomInt(0, roomSet[rY].size());
+	vector<shared_ptr<TileComponent>> usableTiles = vector<shared_ptr<TileComponent>>();
+
+	for (int y = 0; y < m_tileCmps.size(); y++)
+	{
+		for (int x = 0; x < m_tileCmps[y].size(); x++)
+		{
+			if (m_tileCmps[y][x]->GetWalkable() && m_tileCmps[y][x]->GetID() < 15)
+			{
+				usableTiles.push_back(m_tileCmps[y][x]);
+			}
+		}
+	}
+
+	int randTile = RandomInt(0, usableTiles.size());
 
 	auto a = _parent->scene->makeEntity();
 	shared_ptr<ActorStatsComponent> aC = a->addComponent<ActorStatsComponent>();
-	aC->SetPosition(roomSet[rY][rX]->GetTrueCoords());
+	aC->SetPosition(usableTiles[randTile]->GetTrueCoords());
 
 }
 
