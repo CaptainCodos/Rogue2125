@@ -1,4 +1,5 @@
 #include "scene_settings.h"
+#include "../buttons.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
 #include "../game.h"
@@ -10,7 +11,6 @@ using namespace sf;
 
 void SettingsScene::Load()
 {
-
 	cout << "Settings Load \n";
 	{
 		auto txt = makeEntity();
@@ -25,10 +25,6 @@ void SettingsScene::Update(const double& dt) {
 	// cout << "Settings Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
-
-	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-		Engine::ChangeScene(&menu);
-	}
 
 	Scene::Update(dt);
 }

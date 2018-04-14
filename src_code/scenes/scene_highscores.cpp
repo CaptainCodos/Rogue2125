@@ -1,12 +1,16 @@
 #include "scene_highscores.h"
+#include "../buttons.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_button.h"
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 
 using namespace std;
 using namespace sf;
+
+shared_ptr<Entity> btn_highscores;
 
 void HighscoresScene::Load()
 {
@@ -15,8 +19,13 @@ void HighscoresScene::Load()
 	{
 		auto txt = makeEntity();
 		auto t = txt->addComponent<TextComponent>(
-			"Platformer\nPress Space to Start");
+			"Highscores");
+		t->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 180.0f, Engine::getWindowSize().y / 2 - 200.f));
 
+		btn_highscores.reset();
+		btn_highscores = new_button("Back to Menu");
+		btn_highscores->setPosition(Vector2f(Engine::getWindowSize().x / 2 + 50.0f, Engine::getWindowSize().y / 2 + 100.0f));
+		btn_highscores->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(btn_highscores->getPosition().x, btn_highscores->getPosition().y - 8.0f));
 	}
 	setLoaded(true);
 }
@@ -26,7 +35,8 @@ void HighscoresScene::Update(const double& dt) {
 
 	txrMgr->UpdateAnims(dt);
 
-	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
+	if (btn_highscores->get_components<ButtonComponent>()[0]->clicked())
+	{
 		Engine::ChangeScene(&menu);
 	}
 
