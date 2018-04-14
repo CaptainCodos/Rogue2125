@@ -16,6 +16,7 @@ public:
 
 	int GetTotalSkill(std::vector<std::shared_ptr<Equipment>> equip, int ID);
 	void LevelUp();
+	void AddSkillPoint();
 protected:
 
 private:
@@ -25,5 +26,4 @@ private:
 	int m_skillPts;
 
 	Skill m_skills[10];
-
 };

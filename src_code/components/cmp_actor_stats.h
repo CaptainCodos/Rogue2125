@@ -1,6 +1,10 @@
 #pragma once
 #include <AllMgrs.h>
 #include "ecm.h"
+#include "../general/data_shapes.h"
+#include "cmp_actor_move.h"
+#include "../general/world_objs.h"
+#include "../general/interactables.h"
 
 class ActorStatsComponent : public Component 
 {
@@ -12,14 +16,32 @@ public:
 	void update(double dt) override;
 	void render() override;
 
+	int GetID();
+	int GetSecID();
+	std::shared_ptr<ActorMoveComp> GetMoveComp();
+	DataShapes::Circle GetCircle();
+	DataShapes::Rectangle GetRect();
+	sf::Vector2f GetTrueCoords();
+	sf::Vector2i GetCoords();
+	NPA GetNonPlayerActor();
+
+	void SetPosition(sf::Vector2f pos);
 	void ApplyDamage(float dmg, std::vector<int> dmgTypes /* Add attack parameter here. This will be some projectile component or something. */);	// Apply damage to actor. dmgTypes is used to apply to resistance.
-	void GenerateStats(char ID);	// Used to generate stats according to actor type. Actor may be world object like box, an enemy or player.
+	void GenerateStats(int ID);	// Used to generate stats according to actor type. Actor may be world object like box, an enemy or player.
 protected:
 
 private:
+	std::shared_ptr<ActorMoveComp> m_moveComp;
+
+	DataShapes::Circle m_circle;
+	DataShapes::Rectangle m_rect;
+
 	std::string m_name;
-	char m_actorID;
+	int m_actorID;
+	int m_secID;
 	bool m_isInvincible;	// Checks if actor can be damaged
+	bool m_isDynamic;	// Checks if actor can be moved
+	bool m_isPhysical;	// Ensures no collision occurs. Objects will pass over this object
 
 	float m_hp;		// Actor's hp.
 	float m_en;		// Actor's energy value.
@@ -29,7 +51,7 @@ private:
 
 	sf::Vector2i m_actorCoords;	// Coords of the actor in the world.
 	sf::Vector2i m_oldCoords;
-	sf::FloatRect m_colRect;
+	//std::shared_ptr<TileMapComponent> m_tileMap;
 	int m_map;					// Map the actor exists on.
 
 	float m_baseArmour;		// Base armour value to determine resistances.

@@ -3,12 +3,16 @@
 using namespace std;
 using namespace sf;
 
+using namespace DataShapes;
+
 TileComponent::TileComponent(Entity* p, TextureMgr* txrMgr, int x, int y)
 	: TextureComponent(p)
 {
 	m_txrMgr = txrMgr;
 
 	m_texRes = 32;
+
+	m_rect = Rectangle(p->getPosition(), Vector2f(32.0f, 32.0f));
 
 	m_coords = Vector2i(x, y);
 
@@ -23,20 +27,22 @@ TileComponent::TileComponent(Entity* p, TextureMgr* txrMgr, int x, int y)
 	m_terrainMod = 1.0f;
 
 	ResetFreeAreas();
-	
-	m_bounds = make_shared<RectangleShape>(RectangleShape(Vector2f(32.0f, 32.0f)));
-	m_bounds->setOrigin(Vector2f(16.0f, 16.0f));
 }
 
 void TileComponent::update(double dt)
 {
-	m_bounds->setPosition(_parent->getPosition());
 	TextureComponent::update(dt);
+	m_rect.SetPosCentre(_parent->getPosition());
 }
 
-shared_ptr<sf::RectangleShape> TileComponent::GetTileBox() { return m_bounds; }
+//shared_ptr<sf::RectangleShape> TileComponent::GetTileBox() { return m_bounds; }
 
 Vector2i TileComponent::GetCoords() { return m_coords; }
+Vector2f TileComponent::GetTrueCoords() { return Vector2f(16.0f + (m_coords.x * 32.0f), 16.0f + (m_coords.y * 32.0f)); }
+Rectangle TileComponent::GetRect() { return m_rect; }
+
+int TileComponent::GetFreeX() { return m_freeX; }
+int TileComponent::GetFreeY() { return m_freeY; }
 
 bool TileComponent::GetWalkable() { return m_walkable; }
 bool TileComponent::GetDisguised() { return m_disguised; }
@@ -103,12 +109,18 @@ void TileComponent::SetTileID(char ID)
 	SetOrigin(Vector2f(0.5f, 0.5f));
 }
 
+void TileComponent::SetPosition(Vector2f pos)
+{
+	TextureComponent::SetPosition(pos);
+	m_rect.SetPosCentre(pos);
+}
+
 void TileComponent::SetOrigin(Vector2f origin)
 {
 	if (m_sprite->getTexture() != nullptr)
 	{
 		int frames = m_sprite->getTexture()->getSize().x / m_texRes;
-		sf::Vector2f o = sf::Vector2f(origin.x * (m_sprite->getTexture()->getSize().x / frames), origin.y * m_sprite->getTexture()->getSize().y);
+		sf::Vector2f o = sf::Vector2f(origin.x * m_texRes, origin.y * m_texRes);
 		m_sprite->setOrigin(o);
 	}
 }
@@ -127,8 +139,8 @@ void TileComponent::SetTerrainMod(float mod)
 
 void TileComponent::ResetFreeAreas()
 {
-	m_freeX = 2;
-	m_freeY = 2;
+	m_freeX = 0;
+	m_freeY = 0;
 }
 
 void TileComponent::AddFreeX(int x)

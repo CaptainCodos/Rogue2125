@@ -15,8 +15,11 @@ public:
 
 	std::vector<sf::Texture> sheet_Tiles;
 	std::vector<std::vector<sf::Texture>> sheet_Items;
+	std::vector<sf::Texture> sheet_Projectiles;
 	
 	std::vector<sf::Color> colors_LiquidTiles; // Liquid colors
+	std::vector<sf::Color> colors_Elements; // Damage colors
+
 	std::vector<sf::Texture> anim_Tiles; // Liquid tile animation textures
 	std::shared_ptr<sf::IntRect> anim_TilesRect; // Used to animate the liquid tile frames. This is done by passing the rect as reference.
 	float anim_LiquidTimer;

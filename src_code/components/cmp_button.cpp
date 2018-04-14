@@ -5,7 +5,7 @@
 using namespace std;
 using namespace sf;
 
-ButtonComponent::ButtonComponent(Entity* p, shared_ptr<TextComponent> t, shared_ptr<ShapeComponent> s) : Component(p) {
+ButtonComponent::ButtonComponent(Entity* p, shared_ptr<TextComponent> text, shared_ptr<ShapeComponent> shape) : _btnShape(shape), _btnText(text), Component(p) {
 
 }
 
@@ -16,6 +16,11 @@ void ButtonComponent::update(double dt) {
 	else {
 		_btnShape->getShape().setFillColor(Color(255, 0, 0, 255));
 	}
+}
+
+void ButtonComponent::render()
+{
+
 }
 
 bool ButtonComponent::clicked() {

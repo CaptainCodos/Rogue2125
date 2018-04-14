@@ -18,6 +18,10 @@ template <typename T> double length(const Vector2<T>& v) {
   return sqrt(v.x * v.x + v.y * v.y);
 }
 
+template <typename T> double dot(const Vector2<T>& v1, const Vector2<T>& v2) {
+	return (v1.x * v2.x) + (v1.y * v2.y);
+}
+
 // Normalizes the vector
 template <typename T> Vector2<T> normalize(const Vector2<T>& v) {
   Vector2<T> vector;
@@ -73,11 +77,7 @@ Vector2<T> rotate(const Vector2<T>& v, const double degrees) {
 
 static int RandomInt(int min, int max)	// Generate random int between min[inclusive] and max[exclusive]
 {
-<<<<<<< HEAD
-	return (((int)rand()) / ((int)RAND_MAX) * (max - min)) + min;
-=======
 	return (((float)rand() / (float)RAND_MAX) * (max - min)) + min;
->>>>>>> origin/StephanBranch
 }
 
 static float RandomFloat(float min, float max)	// Generate random float between min[inclusive] and max[exclusive]

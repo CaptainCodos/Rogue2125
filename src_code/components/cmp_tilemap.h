@@ -11,6 +11,7 @@ public:
 	TileMapComponent() = delete;
 
 	explicit TileMapComponent(Entity* p, TextureMgr* txrMgr, int currMap);
+	void GenerateOtherMap(int map);
 
 	void update(double dt) override;
 	void render() override;
@@ -26,6 +27,7 @@ public:
 	std::string GetID();
 	int GetIntID();
 	std::shared_ptr<TileComponent> GetTile(int x, int y);
+	std::shared_ptr<TileComponent> GetTile(sf::Vector2i xy);
 	std::shared_ptr<Entity> GetEnt(int x, int y);
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> GetTiles(sf::IntRect area);
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> GetNeighbourTiles(int x, int y);
@@ -35,7 +37,10 @@ public:
 
 	std::vector<std::vector<std::shared_ptr<Entity>>> GetAllNeightbourEnts(int X, int Y);			// Used to get neighbouring entities to toggle visibility.
 
-	
+	void GenerateMapObjs();
+
+	void SpawnActor(int X, int Y);
+	void SetVisibleTiles();
 protected:
 
 private:
@@ -59,12 +64,14 @@ private:
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> m_tileCmps;
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> m_visibleTiles;
 
+
+
 	std::vector<sf::IntRect> m_rooms;
 
 	std::vector<int> m_corridorDirs;
 	std::vector<std::vector<std::shared_ptr<TileComponent>>> m_corridors;
 
-	char CalculateTileIdx(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours);
+	char CalculateTileIdx(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours, std::shared_ptr<TileComponent> tile);
 	char CalculateLiquidID(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours, char currID);
 
 	bool CheckForRoughLiquid(std::vector<std::vector<std::shared_ptr<TileComponent>>> neighbours, char currID);

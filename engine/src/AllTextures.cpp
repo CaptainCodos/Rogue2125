@@ -12,6 +12,12 @@ TextureMgr::TextureMgr()
 	colors_LiquidTiles.push_back(sf::Color(20, 255, 180, 255));	// Acid
 	colors_LiquidTiles.push_back(sf::Color(150, 195, 255, 255));// Energized Water
 	colors_LiquidTiles.push_back(sf::Color(90, 230, 255, 255));	// Water
+
+	colors_Elements.push_back(sf::Color(255, 240, 180, 255));	// Physical
+	colors_Elements.push_back(sf::Color(255, 160, 0, 255));	// Heat
+	colors_Elements.push_back(sf::Color(160, 255, 255, 255));	// Electric
+	colors_Elements.push_back(sf::Color(50, 195, 50, 255));// Toxic
+	colors_Elements.push_back(sf::Color(50, 50, 255, 255));	// Cold
 	
 	sheet_Items = std::vector<std::vector<sf::Texture>>();
 	sheet_Items.push_back(std::vector<sf::Texture>());
@@ -20,6 +26,8 @@ TextureMgr::TextureMgr()
 	// Load texture assets
 	LoadTextures("tile sheets/", "GreyScale", sheet_Tiles, 5);
 	LoadTextures("tank/", "Tank", sheet_Items[0], 4);
+
+	LoadTextures("projectiles/", "Proj", sheet_Projectiles, 1);
 
 	LoadTextures("tile sheets/", "GreyScale", anim_Tiles, 1);
 

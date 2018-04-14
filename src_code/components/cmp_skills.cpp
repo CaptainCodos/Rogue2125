@@ -45,3 +45,8 @@ void SkillsComponent::LevelUp()
 
 	m_reqXP = 100 * pow(1.15f, m_level - 1);
 }
+
+void SkillsComponent::AddSkillPoint()
+{
+	m_skillPts++;
+}
