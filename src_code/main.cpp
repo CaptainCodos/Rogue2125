@@ -27,5 +27,4 @@ int main()
 	txrMgr = TextureMgr::GetInstance();
 	fontMgr = FontMgr::GetInstance();
 	Engine::Start(1600, 900, "Rogue2125", &menu);
-	
 }
