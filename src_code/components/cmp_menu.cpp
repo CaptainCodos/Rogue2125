@@ -22,7 +22,7 @@ void MenuComponent::LoadButtons() {
 
 	// Set buttons position
 	for (int i = 0; i < buttons.size(); i++) {
-		buttons[i]->setPosition(Vector2f(0, -30.0f));
+		buttons[i]->setPosition(Vector2f(Engine::getWindowSize().x / 2 - 300.0f, Engine::getWindowSize().y / 2));
 	}
 }
 
@@ -30,6 +30,10 @@ void MenuComponent::update(double dt)
 {
 	if (_btn_start_game->get_components<ButtonComponent>()[0]->clicked()) {
 		counter++;
-		Engine::ChangeScene(&menu);
+		Engine::ChangeScene(&gameplay);
 	}
+}
+
+void MenuComponent::render()
+{
 }

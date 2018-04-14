@@ -9,6 +9,7 @@ public:
 	void LoadButtons();
 
 	void update(double dt) override;
+	void render() override;
 private:
 	std::vector<std::shared_ptr<Entity>> buttons;
 

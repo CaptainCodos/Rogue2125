@@ -45,8 +45,6 @@ void GameplayScene::Load()
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 	setLoaded(true);
-
-
 }
 
 void GameplayScene::Update(const double& dt) {

@@ -18,8 +18,8 @@ shared_ptr<Entity> new_button(string text)
 	btn_shape->getShape().setOrigin(btn_shape->getShape().getLocalBounds().width / 2, btn_shape->getShape().getLocalBounds().height / 2);
 
 	auto btn_text = btn->addComponent<TextComponent>(text);
-
-	btn_text->GetText()->setOrigin(btn_text->GetText()->getOrigin().x, btn_text->GetText()->getOrigin().y + 10.0f);
+	btn_text->SetOrigin(Vector2f(0.5, 0.5f));
+	btn_text->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 300.0f, Engine::getWindowSize().y / 2 - 10.0f));
 
 	btn->addComponent<ButtonComponent>(btn_text, btn_shape);
 

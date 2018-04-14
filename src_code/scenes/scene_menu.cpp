@@ -20,7 +20,11 @@ void MenuScene::Load()
 			"Platformer\nPress Space to Start");
 		t->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 180.0f, Engine::getWindowSize().y / 2 - 200.f));
 
-		// Button loading - method 1
+		// Button loading - method 1 (Component approach)
+		auto menu = makeEntity();
+		auto m = menu->addComponent<MenuComponent>();
+
+		// Button loading - method 2
 		/*shared_ptr<Entity> btn_highscores;
 		btn_highscores.reset();
 		btn_highscores = new_button("Highscores");
