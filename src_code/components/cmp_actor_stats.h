@@ -3,6 +3,8 @@
 #include "ecm.h"
 #include "../general/data_shapes.h"
 #include "cmp_actor_move.h"
+#include "../general/world_objs.h"
+#include "../general/interactables.h"
 
 class ActorStatsComponent : public Component 
 {
@@ -21,6 +23,7 @@ public:
 	DataShapes::Rectangle GetRect();
 	sf::Vector2f GetTrueCoords();
 	sf::Vector2i GetCoords();
+	NPA GetNonPlayerActor();
 
 	void SetPosition(sf::Vector2f pos);
 	void ApplyDamage(float dmg, std::vector<int> dmgTypes /* Add attack parameter here. This will be some projectile component or something. */);	// Apply damage to actor. dmgTypes is used to apply to resistance.
