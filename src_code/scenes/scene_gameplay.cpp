@@ -30,20 +30,14 @@ void GameplayScene::Load()
 	zoom = 1.0f;
 	//view = View(FloatRect(0, 0, 1600, 900));
 	//Engine::GetWindow().setView(view);
-	cout << "Menu Load \n";
+	cout << "Gameplay Load \n";
 	{
-		auto txt = makeEntity();
-		auto t = txt->addComponent<TextComponent>(
-			"Platformer\nPress Space to Start");
-
 		auto tm = makeEntity();
 		shared_ptr<TileMapComponent> tmC = tm->addComponent<TileMapComponent>(txrMgr, counter);
 		tmC->GenerateMapObjs();
 
 		/*auto a = makeEntity();
 		auto aC = a->addComponent<ActorStatsComponent>();*/
-
-
 	}
 
 	//counter++;

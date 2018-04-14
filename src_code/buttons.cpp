@@ -15,15 +15,13 @@ shared_ptr<Entity> new_button(string text)
 	auto btn_shape = btn->addComponent<ShapeComponent>();
 	btn_shape->setShape<RectangleShape>(Vector2f(300.0f, 50.0f));
 	btn_shape->getShape().setFillColor(Color::Green);
-	btn_shape->getShape().setOrigin(btn_shape->getShape().getPosition().x + (btn_shape->getShape().getGlobalBounds().width / 2 - 40.0f), 
-									btn_shape->getShape().getPosition().y - 28.0f);
+	btn_shape->getShape().setOrigin(btn_shape->getShape().getLocalBounds().width / 2, btn_shape->getShape().getLocalBounds().height / 2);
 
 	auto btn_text = btn->addComponent<TextComponent>(text);
 
-	btn_text->GetText()->setOrigin(btn_shape.get()->getShape().getOrigin().x, btn_shape.get()->getShape().getOrigin().y);
-	btn_text->GetText()->setPosition(btn_text->GetText()->getOrigin());
+	btn_text->GetText()->setOrigin(btn_text->GetText()->getOrigin().x, btn_text->GetText()->getOrigin().y + 10.0f);
 
-	btn->addComponent<ButtonComponent>(btn_text, btn_shape); // Error Line!
+	btn->addComponent<ButtonComponent>(btn_text, btn_shape);
 
 	return btn;
 }
