@@ -16,4 +16,5 @@ private:
 	std::shared_ptr<Entity> _btn_start_game;
 	std::shared_ptr<Entity> _btn_settings;
 	std::shared_ptr<Entity> _btn_highscores;
+	std::shared_ptr<Entity> _btn_quit;
 };

@@ -28,8 +28,14 @@ void MenuComponent::LoadButtons() {
 	_btn_highscores = new_button("Highscores");
 	buttons.push_back(_btn_highscores);
 
+	_btn_quit.reset();
+	_btn_quit = new_button("Quit");
+	_btn_quit->setPosition(Vector2f(Engine::getWindowSize().x / 2 + 50.0f, Engine::getWindowSize().y / 2 + 100.0f));
+	_btn_quit->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(_btn_quit->getPosition().x, _btn_quit->getPosition().y - 8.0f));
+	buttons.push_back(_btn_quit);
+
 	// Set buttons position
-	for (int i = 0; i < buttons.size(); i++) {
+	for (int i = 0; i < buttons.size() - 1; i++) {
 		buttons[i]->setPosition(Vector2f(Engine::getWindowSize().x / 2 - 300.0f + (i * 350), Engine::getWindowSize().y / 2));
 		buttons[i]->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(buttons[i]->getPosition().x, buttons[i]->getPosition().y - 8.0f));
 	}
@@ -37,18 +43,20 @@ void MenuComponent::LoadButtons() {
 
 void MenuComponent::update(double dt)
 {
-	if (_btn_start_game->get_components<ButtonComponent>()[0]->clicked()) {
+	if (_btn_start_game->get_components<ButtonComponent>()[0]->clicked()) 
+	{
 		counter++;
 		Engine::ChangeScene(&gameplay);
-	}
-
-	/*if (_btn_settings->get_components<ButtonComponent>()[0]->clicked()) {				// ADDING ANY OF THESE TWO
-		Engine::ChangeScene(&settings);													// CREATES A READ ACCESS VIOLATION ERROR
-	}
-
-	if (_btn_highscores->get_components<ButtonComponent>()[0]->clicked()) {
+	} else if (_btn_settings->get_components<ButtonComponent>()[0]->clicked()) 
+	{
+		Engine::ChangeScene(&settings);
+	} else if (_btn_highscores->get_components<ButtonComponent>()[0]->clicked()) 
+	{
 		Engine::ChangeScene(&highscores);
-	}*/
+	} else if (_btn_quit->get_components<ButtonComponent>()[0]->clicked()) 
+	{
+		Engine::GetWindow().close();
+	}
 }
 
 void MenuComponent::render()
