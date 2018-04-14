@@ -43,8 +43,8 @@ public:
 	std::vector<std::string> GetDataForSave();
 
 	bool GetFired();
-	DmgData GetShotData();
-	void update(double dt);
+	DmgData GetShotData(int dmg, int rate);
+	void update(double dt, int rate);
 protected:
 	
 private:

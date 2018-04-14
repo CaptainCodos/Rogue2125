@@ -1,10 +1,19 @@
 #include "cmp_attack.h"
 #include <AllMgrs.h>
 
+using namespace std;
+using namespace sf;
+
+using namespace DataShapes;
+
 AttackComponent::AttackComponent(Entity* p, DmgData data) 
 	: AnimComponent(p)
 {
+	_parent->addTag("Attack");
+	m_circle = Circle(4.0f, p->getPosition());
+
 	m_data = data;
+	m_life = 20.0f;
 	
 	switch (m_data.actorID)
 	{
@@ -20,27 +29,47 @@ AttackComponent::AttackComponent(Entity* p, DmgData data)
 	}
 
 	SetOrigin(sf::Vector2f(0.5f, 0.5f));
+	SetScale(0.5f);
 
-	int colors[3] = { 0, 0, 0 };
+	std::vector<sf::Uint8> colors;
 
 	for (int i = 0; i < m_data.types.size(); i++)
 	{
-		colors[0] += TextureMgr::GetInstance()->colors_Elements[m_data.types[i]].r;
-		colors[1] += TextureMgr::GetInstance()->colors_Elements[m_data.types[i]].g;
-		colors[2] += TextureMgr::GetInstance()->colors_Elements[m_data.types[i]].b;
+		colors.push_back(TextureMgr::GetInstance()->colors_Elements[m_data.types[i]].r);
+		colors.push_back(TextureMgr::GetInstance()->colors_Elements[m_data.types[i]].g);
+		colors.push_back(TextureMgr::GetInstance()->colors_Elements[m_data.types[i]].b);
 	}
 
-	for (int i = 0; i < 3; i++)
+	sf::Color finalC = sf::Color(0, 0, 0, 255);
+
+	for (int i = 0; i < m_data.types.size(); i++)
 	{
-		colors[0] /= m_data.types.size();
-		colors[1] /= m_data.types.size();
-		colors[2] /= m_data.types.size();
-	}
+		int itr = i * 3;
 
-	SetRotation(m_data.angle);
+		finalC.r += colors[itr] / m_data.types.size();
+		finalC.b += colors[itr + 1] / m_data.types.size();
+		finalC.g += colors[itr + 2] / m_data.types.size();
+	}
+	//finalC.r *= 1.5f;
+	//finalC.g *= 1.5f;
+	//finalC.b *= 1.5f;
+	SetColor(finalC);
+
+	_parent->setRotation(data.angle);
 }
+
+int AttackComponent::GetSenderID() { return m_data.actorID; }
+Circle AttackComponent::GetCircle() { return m_circle; }
+DmgData AttackComponent::GetData() { return m_data; }
 
 void AttackComponent::update(double dt)
 {
 	_parent->setPosition(_parent->getPosition() + (m_data.vel * 32.0f * (float)dt));
+	m_circle.pos = _parent->getPosition();
+	m_life -= dt;
+
+	if (m_life <= 0.0f)
+		_parent->setForDelete();
+
+	AnimComponent::update(dt);
 }

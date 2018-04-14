@@ -65,7 +65,7 @@ void TextureComponent::SetOrigin(sf::Vector2f origin)
 {
 	if (m_sprite->getTexture() != nullptr)
 	{
-		sf::Vector2f o = sf::Vector2f(origin.x * m_sprite->getTexture()->getSize().x, origin.y * m_sprite->getTexture()->getSize().y);
+		sf::Vector2f o = sf::Vector2f(origin.x * m_sprite->getTexture()->getSize().x * m_sprite->getScale().x, origin.y * m_sprite->getTexture()->getSize().y * m_sprite->getScale().y);
 		m_sprite->setOrigin(o);
 	}
 }
@@ -114,7 +114,8 @@ void AnimComponent::SetOrigin(sf::Vector2f origin)
 {
 	if (m_sprite->getTexture() != nullptr)
 	{
-		sf::Vector2f o = sf::Vector2f(origin.x * m_texRes, origin.y * m_texRes);
+		int frames = m_sprite->getTexture()->getSize().x / m_texRes;
+		sf::Vector2f o = sf::Vector2f(origin.x * m_texRes, origin.y * m_texRes);// *m_sprite->getScale().x;
 		m_sprite->setOrigin(o);
 	}
 }

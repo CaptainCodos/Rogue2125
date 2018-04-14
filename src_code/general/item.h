@@ -12,6 +12,7 @@ public:
 
 	int GetPriID();
 	int GetSecID();
+	int GetPrice();
 
 	bool CheckReqs(std::vector<Skill> skills);
 	virtual void GenerateItem();
@@ -28,6 +29,8 @@ public:
 protected:
 	int m_absID;	// Determines if item is useable or equipment. 0 = Equipment, 1 = Useable
 	int m_secID;	// Determines type of useable or equipment. Used differently for each.
+
+	int m_price;	// Price of item in shop
 
 	std::string m_descript;	// Item description.
 	std::string m_name;
