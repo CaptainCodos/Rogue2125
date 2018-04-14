@@ -41,6 +41,8 @@ void MenuScene::Load()
 
 		auto a = makeEntity();
 		auto aC = a->addComponent<ActorStatsComponent>();
+
+
 	}
 
 	//counter++;
