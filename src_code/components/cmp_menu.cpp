@@ -42,13 +42,13 @@ void MenuComponent::update(double dt)
 		Engine::ChangeScene(&gameplay);
 	}
 
-	if (_btn_settings->get_components<ButtonComponent>()[0]->clicked()) {
-		Engine::ChangeScene(&settings);
+	/*if (_btn_settings->get_components<ButtonComponent>()[0]->clicked()) {				// ADDING ANY OF THESE TWO
+		Engine::ChangeScene(&settings);													// CREATES A READ ACCESS VIOLATION ERROR
 	}
 
-	if (_btn_settings->get_components<ButtonComponent>()[0]->clicked()) {
+	if (_btn_highscores->get_components<ButtonComponent>()[0]->clicked()) {
 		Engine::ChangeScene(&highscores);
-	}
+	}*/
 }
 
 void MenuComponent::render()

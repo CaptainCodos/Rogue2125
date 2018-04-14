@@ -14,7 +14,7 @@ void ButtonComponent::update(double dt) {
 		_btnShape->getShape().setFillColor(Color(0, 255, 0, 255));
 	}
 	else {
-		_btnShape->getShape().setFillColor(Color(255, 255, 153, 255));
+		_btnShape->getShape().setFillColor(Color(255, 0, 0, 255));
 	}
 }
 

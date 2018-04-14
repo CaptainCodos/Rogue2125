@@ -14,7 +14,6 @@ shared_ptr<Entity> new_button(string text)
 
 	auto btn_shape = btn->addComponent<ShapeComponent>();
 	btn_shape->setShape<RectangleShape>(Vector2f(300.0f, 50.0f));
-	btn_shape->getShape().setFillColor(Color::Green);
 	btn_shape->getShape().setOrigin(btn_shape->getShape().getLocalBounds().width / 2, btn_shape->getShape().getLocalBounds().height / 2);
 
 	auto btn_text = btn->addComponent<TextComponent>(text);
