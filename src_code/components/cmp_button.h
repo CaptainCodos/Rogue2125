@@ -10,7 +10,7 @@ public:
 
 	void update(double dt) override;
 	void render() override;
-	bool clicked();
+	bool clicked(double delay);
 private:
 	std::shared_ptr<TextComponent> _btnText;
 	std::shared_ptr<ShapeComponent> _btnShape;

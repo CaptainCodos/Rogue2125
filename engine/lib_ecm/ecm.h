@@ -53,7 +53,6 @@ public:
 	std::shared_ptr<Entity> makeEntity();
 
 	EntityManager ents;
-
 protected:
 	void setLoaded(bool);
 	mutable bool _loaded;

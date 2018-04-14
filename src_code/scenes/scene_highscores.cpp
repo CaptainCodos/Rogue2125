@@ -11,6 +11,7 @@ using namespace std;
 using namespace sf;
 
 shared_ptr<Entity> btn_highscores;
+double highScoresDelay = 0;
 
 void HighscoresScene::Load()
 {
@@ -33,9 +34,11 @@ void HighscoresScene::Load()
 void HighscoresScene::Update(const double& dt) {
 	// cout << "Highscores Update "<<dt<<"\n";
 
+	highScoresDelay += dt;
+
 	txrMgr->UpdateAnims(dt);
 
-	if (btn_highscores->get_components<ButtonComponent>()[0]->clicked())
+	if (btn_highscores->get_components<ButtonComponent>()[0]->clicked(highScoresDelay))
 	{
 		Engine::ChangeScene(&menu);
 	}

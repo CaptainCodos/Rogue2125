@@ -4,13 +4,14 @@
 #include "engine.h"
 #include "../game.h"
 #include "system_player_controls.h"
+#include "ecm.h"
 
 using namespace std;
 using namespace sf;
 using namespace Input;
 
 extern int counter;
-double delay = 0;
+double menuDelay = 0;
 
 MenuComponent::MenuComponent(Entity* p) : Component(p) {
 	LoadButtons();
@@ -46,25 +47,19 @@ void MenuComponent::LoadButtons() {
 
 void MenuComponent::update(double dt)
 {
-	delay += dt;
+	menuDelay += dt;
 
-	cout << "\r" << delay << std::flush;
-
-	if (Input::GetMousePressed(Mouse::Left, delay) == true) {
-		cout << "Left Click Pressed." << endl;
-	}
-
-	if (_btn_start_game->get_components<ButtonComponent>()[0]->clicked()) 
+	if (_btn_start_game->get_components<ButtonComponent>()[0]->clicked(menuDelay))
 	{
 		counter++;
 		Engine::ChangeScene(&gameplay);
-	} else if (_btn_settings->get_components<ButtonComponent>()[0]->clicked()) 
+	} else if (_btn_settings->get_components<ButtonComponent>()[0]->clicked(menuDelay))
 	{
 		Engine::ChangeScene(&settings);
-	} else if (_btn_highscores->get_components<ButtonComponent>()[0]->clicked()) 
+	} else if (_btn_highscores->get_components<ButtonComponent>()[0]->clicked(menuDelay))
 	{
 		Engine::ChangeScene(&highscores);
-	} else if (_btn_quit->get_components<ButtonComponent>()[0]->clicked()) 
+	} else if (_btn_quit->get_components<ButtonComponent>()[0]->clicked(menuDelay))
 	{
 		Engine::GetWindow().close();
 	}

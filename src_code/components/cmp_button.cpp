@@ -1,9 +1,11 @@
 #include "cmp_button.h"
+#include "system_player_controls.h"
 #include "engine.h"
 #include <SFML/Window/Mouse.hpp>
 
 using namespace std;
 using namespace sf;
+using namespace Input;
 
 ButtonComponent::ButtonComponent(Entity* p, shared_ptr<TextComponent> text, shared_ptr<ShapeComponent> shape) : _btnShape(shape), _btnText(text), Component(p) {
 
@@ -23,9 +25,9 @@ void ButtonComponent::render()
 
 }
 
-bool ButtonComponent::clicked() {
+bool ButtonComponent::clicked(double delay) {
 	if (_btnShape->getShape().getGlobalBounds().contains(Engine::GetWindow().mapPixelToCoords(Mouse::getPosition(Engine::GetWindow())))) {
-		if (Mouse::isButtonPressed(Mouse::Left)) {
+		if (Input::GetMousePressed(Mouse::Left, delay) == true) {
 			return true;
 		}
 	}
