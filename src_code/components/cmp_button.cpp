@@ -5,7 +5,7 @@
 using namespace std;
 using namespace sf;
 
-ButtonComponent::ButtonComponent(Entity* p, shared_ptr<TextComponent> text, shared_ptr<ShapeComponent> shape) : Component(p) {
+ButtonComponent::ButtonComponent(Entity* p, shared_ptr<TextComponent> text, shared_ptr<ShapeComponent> shape) : _btnShape(shape), _btnText(text), Component(p) {
 
 }
 
