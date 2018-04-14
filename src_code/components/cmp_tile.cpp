@@ -24,6 +24,8 @@ TileComponent::TileComponent(Entity* p, TextureMgr* txrMgr, int x, int y)
 	m_tileIdx = 0;
 	m_liquidID = 0;
 
+	m_effectID = 10;
+
 	m_terrainMod = 1.0f;
 
 	ResetFreeAreas();
@@ -46,10 +48,15 @@ int TileComponent::GetFreeY() { return m_freeY; }
 
 bool TileComponent::GetWalkable() { return m_walkable; }
 bool TileComponent::GetDisguised() { return m_disguised; }
+bool TileComponent::HasShutDoor() { return m_hasShutDoor; }
+
+void TileComponent::SetShut(bool shutVal) { m_hasShutDoor = shutVal; }
 
 char TileComponent::GetID() { return m_tileID; }
 char TileComponent::GetIdx() { return m_tileIdx; }
 char TileComponent::GetLiquidID() { return m_liquidID; }
+int TileComponent::GetEffectID() { return m_effectID; }
+void TileComponent::SetEffectID(int ID) { m_effectID = ID; }
 
 float TileComponent::GetTerrainMod() { return m_terrainMod; }
 
@@ -60,11 +67,13 @@ void TileComponent::SetTileID(char ID)
 	int catagory = ID / 5;
 	int set = ID % 5;
 
+	m_effectID = 10;
 	if (ID > 14)
 	{
 		m_liquidID = (ID - 15);
 		catagory = 0;
 		set = 0;
+		m_effectID = 4 - m_liquidID;
 	}
 
 	switch (catagory)

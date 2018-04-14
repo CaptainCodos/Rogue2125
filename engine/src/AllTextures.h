@@ -16,6 +16,8 @@ public:
 	std::vector<sf::Texture> sheet_Tiles;
 	std::vector<std::vector<sf::Texture>> sheet_Items;
 	std::vector<sf::Texture> sheet_Projectiles;
+
+	std::vector<std::vector<sf::Texture>> sheet_NPA_Textures;
 	
 	std::vector<sf::Color> colors_LiquidTiles; // Liquid colors
 	std::vector<sf::Color> colors_Elements; // Damage colors

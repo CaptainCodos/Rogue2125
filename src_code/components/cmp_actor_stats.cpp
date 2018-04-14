@@ -8,6 +8,9 @@
 //#include "cmp_physics.h"
 
 #include "system_physics.h"
+#include "cmp_world_obj.h"
+#include "cmp_interactable.h"
+#include "engine.h"
 //#include <Box2D/Dynamics/b2Body.h>
 
 using namespace std;
@@ -37,13 +40,18 @@ ActorStatsComponent::ActorStatsComponent(Entity* p)
 	m_isDynamic = true;
 	m_isPhysical = true;
 
-	m_hp = 100.0f;
+	m_hp = 10.0f;
+	m_effects = vector<StatusEffect>();
 
-	GenerateStats(0);
+	m_placed = true;
 }
 
 int ActorStatsComponent::GetID() { return m_actorID; }
 int ActorStatsComponent::GetSecID() { return m_secID; }
+
+bool ActorStatsComponent::IsDynamic() { return m_isDynamic; }
+bool ActorStatsComponent::IsPhysical() { return m_isPhysical; }
+
 shared_ptr<ActorMoveComp> ActorStatsComponent::GetMoveComp() { return m_moveComp; }
 Circle ActorStatsComponent::GetCircle() { return m_circle; }
 Rectangle ActorStatsComponent::GetRect() { return m_rect; }
@@ -57,14 +65,64 @@ void ActorStatsComponent::update(double dt)
 	m_circle.pos = _parent->getPosition();
 	m_rect.SetPosCentre(_parent->getPosition());
 	Vector2f pPos = _parent->getPosition();
-	m_actorCoords = Vector2i(pPos.x / 32, pPos.y / 32);
+	m_actorCoords = Vector2i(pPos / 32.0f);
 
 	if (m_hp <= 0.0f)
 	{
 		OnDeath();
 		_parent->setForDelete();
+
+		return;
+	}
+	if (m_placed && m_actorID <= 1)
+	{
+		/*for (size_t i = 0; i < _components.size(); i++) {
+			if (_components[i]->is_fordeletion()) {
+				_components.erase(_components.begin() + i);
+				--i;
+			}
+			_components[i]->update(dt);
+		}*/
+		for (int i = 0; i < m_effects.size(); i++)
+		{
+			if (m_effects[i].ToBeDeleted())
+			{
+				m_effects.erase(m_effects.begin() + i);
+				--i;
+			}
+		}
+		for (int i = 0; i < m_effects.size(); i++)
+		{
+			m_effects[i].update(dt);
+			GetMoveComp()->SetSpeedMod(m_effects[i].GetSpeedMod());
+			float e = 0.0f;
+
+			if (m_effects[i].IsTriggering())
+			{
+				float dmg = 0.0f;
+				m_effects[i].DeliverEffect(dmg, 100.0f, e, e);
+				vector<int> type = vector<int>();
+				type.push_back(m_effects[i].GetDmgType());
+				ApplyDamage(-dmg, type);
+			}
+				
+		}
+
+		if (m_effects.size() <= 0)
+		{
+			GetMoveComp()->SetSpeedMod(1.0f);
+		}
+
+		GetTileEffect();
+
+
+		/*cout << "HP: " << m_hp << "\n";
+		cout << "Effects: " << m_effects.size() << "\n";
+		cout << "X: " << m_actorCoords.x << " Y: " << m_actorCoords.y << "\n";*/
 	}
 
+	//cout << "HP: " << m_hp << "\n";
+	
 	m_oldCoords = m_actorCoords;
 }
 
@@ -122,20 +180,14 @@ void ActorStatsComponent::GenerateStats(int ID)
 {
 	m_actorID = ID;
 
-	shared_ptr<SkillsComponent> a;
-	shared_ptr<InventoryComponent> b;
-	shared_ptr<PlayerMoveComp> c;
+	
 
 	//int secID = 0;
 
 	switch (ID)
 	{
 	case 0:
-		a = _parent->addComponent<SkillsComponent>();
-		b = _parent->addComponent<InventoryComponent>();
-		c = _parent->addComponent<PlayerMoveComp>(m_moveComp, b, a);
-
-		_parent->addTag("Player");
+		GeneratePlayerStats();
 		break;
 	case 1:
 		_parent->addTag("Enemy");
@@ -143,58 +195,151 @@ void ActorStatsComponent::GenerateStats(int ID)
 		m_secID = RandomInt(0, 3);
 		break;
 	case 2:
-		_parent->addTag("Interactable");
-
-		m_secID = RandomInt(0, 3);
+		GenerateInteractable();
 		break;
 	case 3:
-		_parent->addTag("World");
-
-		m_isInvincible = true;
-		m_isDynamic = false;
-
-		m_secID = RandomInt(0, 4);
-
-		switch (m_secID)
-		{
-		case 0:
-			m_isPhysical = false;
-			break;
-		case 1:
-			m_isInvincible = false;
-			m_hp *= 10.0f;
-
-
-			break;
-		case 2:
-
-			break;
-		case 3:
-
-			break;
-		}
-
+		GenerateWObjStats();
 		break;
 	}
 }
 
 void ActorStatsComponent::GeneratePlayerStats()
 {
+	m_placed = true;
 	m_resistances[0] = 0.15f;
 	m_resistances[1] = 0.1f;
 	m_resistances[2] = 0.05f;
 	m_resistances[3] = 0.0f;
 	m_resistances[4] = 0.1f;
+
+	m_hp = 1000.0f;
+
+	shared_ptr<SkillsComponent> a = _parent->addComponent<SkillsComponent>();
+	shared_ptr<InventoryComponent> b = _parent->addComponent<InventoryComponent>();
+	shared_ptr<PlayerMoveComp> c = _parent->addComponent<PlayerMoveComp>(m_moveComp, b, a);
+
+	_parent->addTag("Player");
 }
 
 void ActorStatsComponent::GenerateEnemyStats()
 {
+	m_placed = true;
 
+}
+
+void ActorStatsComponent::GenerateInteractable()
+{
+	m_placed = true;
+	_parent->addTag("Interactable");
+
+	m_secID = RandomInt(0, 3);
+
+	switch (m_secID)
+	{
+	case 0:
+		_parent->addComponent<InteractComp>(make_shared<Barrel>());
+		break;
+	case 1:
+		_parent->addComponent<InteractComp>(make_shared<Crate>());
+		break;
+	case 2:
+		m_isDynamic = false;
+		m_isPhysical = false;
+		_parent->addComponent<InteractComp>(make_shared<Trap>());
+		break;
+	}
 }
 
 void ActorStatsComponent::GenerateWObjStats()
 {
+	m_placed = true;
+	_parent->addTag("World");
 
+	m_isInvincible = true;
+	m_isDynamic = false;
+
+	m_secID = 3;
+
+	switch (m_secID)
+	{
+	case 0:
+		m_isPhysical = false;
+		break;
+	case 1:
+		m_isInvincible = false;
+		m_hp = 1000.0f;
+		break;
+	case 2:
+
+		break;
+	case 3:
+		_parent->addComponent<WorldObjComp>(make_shared<SkillLibrary>());
+		break;
+	}
+}
+
+void ActorStatsComponent::GenerateDoor(int dir)
+{
+	m_placed = true;
+	_parent->addTag("World");
+
+	m_secID = 1;
+	m_actorID = 3;
+
+	if (dir == 0)
+		_parent->setRotation(0.0f);
+	else
+		_parent->setRotation(90.0f);
+
+	_parent->addComponent<WorldObjComp>(make_shared<Door>());
+}
+
+void ActorStatsComponent::GenerateFloorChange(int dir)
+{
+	m_placed = true;
+	_parent->addTag("World");
+
+	m_secID = 0;
+	m_actorID = 3;
+
+	m_isPhysical = false;
+
+	/*shared_ptr<FloorChange> change = make_shared<FloorChange>();
+	change->GenerateData(dir);*/
+
+	_parent->addComponent<WorldObjComp>(make_shared<FloorChange>(dir));
+}
+
+void ActorStatsComponent::GetTileEffect()
+{
+	std::shared_ptr<TileComponent> tile = Engine::GetActiveScene()->ents.find("TileMap")[0]->GetCompatibleComponent<TileMapComponent>()[0]->GetTile(m_actorCoords.x, m_actorCoords.y);
+
+	if (tile != nullptr)
+	{
+		if (tile->GetEffectID() != 10)
+		{
+			bool found = false;
+			for (int i = 0; i < m_effects.size(); i++)
+			{
+				if (tile->GetEffectID() == m_effects[i].GetEffectID())
+				{
+					if (m_effects[i].GetStacks() <= 0)
+					{
+						m_effects[i].AddStack();
+					}
+					
+					found = true;
+					return;
+				}
+			}
+
+			if (!found)
+			{
+				m_effects.push_back(StatusEffect(tile->GetEffectID()));
+			}
+			
+		}
+	}
 }
 
 void ActorStatsComponent::OnDeath()

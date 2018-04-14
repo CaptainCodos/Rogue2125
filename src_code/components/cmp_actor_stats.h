@@ -5,6 +5,7 @@
 #include "cmp_actor_move.h"
 #include "../general/world_objs.h"
 #include "../general/interactables.h"
+#include "../general/status_effects.h"
 
 class ActorStatsComponent : public Component 
 {
@@ -18,20 +19,34 @@ public:
 
 	int GetID();
 	int GetSecID();
+
+	bool IsDynamic();
+	bool IsPhysical();
+
 	std::shared_ptr<ActorMoveComp> GetMoveComp();
 	DataShapes::Circle GetCircle();
 	DataShapes::Rectangle GetRect();
 	sf::Vector2f GetTrueCoords();
 	sf::Vector2i GetCoords();
-	NPA GetNonPlayerActor();
+	//NPA GetNonPlayerActor();
 
 	void SetPosition(sf::Vector2f pos);
 	void ApplyDamage(float dmg, std::vector<int> dmgTypes /* Add attack parameter here. This will be some projectile component or something. */);	// Apply damage to actor. dmgTypes is used to apply to resistance.
 	void GenerateStats(int ID);	// Used to generate stats according to actor type. Actor may be world object like box, an enemy or player.
+
+	void GeneratePlayerStats();
+	void GenerateEnemyStats();
+	void GenerateInteractable();
+	void GenerateWObjStats();
+
+	void GenerateDoor(int dir);
+	void GenerateFloorChange(int dir);
 protected:
 
 private:
 	std::shared_ptr<ActorMoveComp> m_moveComp;
+
+	std::vector<StatusEffect> m_effects;
 
 	DataShapes::Circle m_circle;
 	DataShapes::Rectangle m_rect;
@@ -42,6 +57,8 @@ private:
 	bool m_isInvincible;	// Checks if actor can be damaged
 	bool m_isDynamic;	// Checks if actor can be moved
 	bool m_isPhysical;	// Ensures no collision occurs. Objects will pass over this object
+
+	bool m_placed;
 
 	float m_hp;		// Actor's hp.
 	float m_en;		// Actor's energy value.
@@ -59,10 +76,7 @@ private:
 	float m_resistances[5];	// 0 = physical, 1 = heat, 2 = electric, 3 = toxic, 4 = cold
 	float m_stats[3];
 	float m_maxStats[3];
-
-	void GeneratePlayerStats();
-	void GenerateEnemyStats();
-	void GenerateWObjStats();
-
+	
+	void GetTileEffect();
 	void OnDeath();			// Determines death behaviour. It may spawn an effect or drop item etc...
 };

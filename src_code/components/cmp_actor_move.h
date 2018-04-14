@@ -14,6 +14,7 @@ public:
 
 	void SetMaxSpeed(float speed);
 	void SetBaseMaxSpeed(float speed);
+	void SetSpeedMod(float mod);
 
 	float GetBaseMaxSpeed();
 	sf::Vector2f& GetVelRef();
@@ -24,6 +25,7 @@ protected:
 private:
 	float m_baseMaxSpeed;
 	float m_maxSpeed;
+	float m_speedMod;
 
 	sf::Vector2f m_vel;
 	sf::Vector2f m_accel;

@@ -13,19 +13,21 @@ void WorldObj::GenerateData()
 	m_priID = 2;
 }
 
-FloorChange::FloorChange()
+FloorChange::FloorChange(int dir)
 {
 	m_secID = 0;
+
+	GenerateData(dir);
 }
 
-void FloorChange::GenerateData(int dir, Vector2i outCoords)
+void FloorChange::GenerateData(int dir)
 {
 	WorldObj::GenerateData();
 
 	m_secID = 0;
 
 	m_dir = dir;
-	m_outCoords = outCoords;
+	m_outCoords = Vector2i(0, 0);
 }
 
 void FloorChange::CreateFromData(std::vector<std::string> data)
@@ -64,6 +66,8 @@ sf::Vector2i FloorChange::GetOutPos() { return m_outCoords; }
 Door::Door()
 {
 	m_secID = 1;
+
+	GenerateData(false);
 }
 
 void Door::GenerateData(bool locked)
@@ -100,6 +104,7 @@ std::vector<std::string> Door::GetDataForSave()
 }
 
 bool Door::IsLocked() { return m_locked; }
+bool Door::IsOpen() { return m_open; }
 
 void Door::ToggleOpen()
 {
@@ -114,6 +119,8 @@ void Door::Unlock()
 AutoShop::AutoShop()
 {
 	m_secID = 2;
+
+	GenerateData();
 }
 
 void AutoShop::GenerateData()
