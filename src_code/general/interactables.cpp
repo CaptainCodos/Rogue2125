@@ -74,6 +74,8 @@ Trap::Trap()
 	GenerateData();
 }
 
+int Trap::GetTrapID() { return m_trapID; }
+
 void Trap::GenerateData()
 {
 	m_secID = 2;

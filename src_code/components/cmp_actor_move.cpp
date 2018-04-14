@@ -12,10 +12,12 @@ ActorMoveComp::ActorMoveComp(Entity* p)
 
 	m_baseMaxSpeed = 4.0f;
 	m_maxSpeed = 4.0f;
+	m_speedMod = 1.0f;
 }
 
 void ActorMoveComp::SetMaxSpeed(float speed) { m_maxSpeed = speed; }
 void ActorMoveComp::SetBaseMaxSpeed(float speed) { m_baseMaxSpeed = speed; }
+void ActorMoveComp::SetSpeedMod(float mod) { m_speedMod = mod; }
 
 float ActorMoveComp::GetBaseMaxSpeed() { return m_baseMaxSpeed; }
 Vector2f& ActorMoveComp::GetVelRef() { return m_vel; }
@@ -36,7 +38,7 @@ void ActorMoveComp::update(double dt)
 		m_accel = m_accel * 2.0f * m_maxSpeed;
 	}
 
-	m_vel += CalculateAccel(m_maxSpeed) * (float)dt;
+	m_vel += CalculateAccel(m_maxSpeed * m_speedMod) * (float)dt;
 	if (length(m_vel) > m_maxSpeed)
 	{
 		m_vel = normalize(m_vel);

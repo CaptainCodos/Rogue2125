@@ -5,6 +5,7 @@
 #include "../src_code/components/cmp_attack.h"
 #include "SFML\Graphics.hpp"
 #include "maths.h"
+#include "engine.h"
 
 
 using namespace std;
@@ -15,15 +16,15 @@ using namespace DataShapes;
 ColHandlerComp::ColHandlerComp(Entity* p) 
 	: Component(p)
 {
-	//vector<shared_ptr<Entity>> tileMap = _parent->scene->ents.find("TileMap");
+	//vector<shared_ptr<Entity>> tileMap = Engine::GetActiveScene()->ents.find("TileMap");
 	m_map = _parent->GetCompatibleComponent<TileMapComponent>()[0];
 }
 
 void ColHandlerComp::update(double dt)
 {
-	vector<shared_ptr<Entity>> attacks = _parent->scene->ents.find("Attack");
-	vector<shared_ptr<Entity>> actors = _parent->scene->ents.find("Actor");
-	vector<shared_ptr<Entity>> player = _parent->scene->ents.find("Player");
+	vector<shared_ptr<Entity>> attacks = Engine::GetActiveScene()->ents.find("Attack");
+	vector<shared_ptr<Entity>> actors = Engine::GetActiveScene()->ents.find("Actor");
+	vector<shared_ptr<Entity>> player = Engine::GetActiveScene()->ents.find("Player");
 
 	HandleAttacks(attacks, actors);
 	HandleActors(actors);
@@ -60,12 +61,15 @@ void ColHandlerComp::HandleAttacks(vector<shared_ptr<Entity>> &attacks, vector<s
 			Vector2f dir;
 			int d;
 
-			if (actorComp->GetID() != attack->GetSenderID() && attack->GetCircle().Intersects(actorComp->GetCircle(), dir))
+			if (actorComp->IsPhysical())
 			{
-				actorComp->ApplyDamage(attack->GetData().dmg, attack->GetData().types);
-				actorComp->GetMoveComp()->GetVelRef() += (attack->GetData().vel / 10.0f);
-				cout << "Ouch!\n";
-				attacks[i]->setForDelete();
+				if (actorComp->GetID() != attack->GetSenderID() && attack->GetCircle().Intersects(actorComp->GetCircle(), dir))
+				{
+					actorComp->ApplyDamage(attack->GetData().dmg, attack->GetData().types);
+					actorComp->GetMoveComp()->GetVelRef() += (attack->GetData().vel * 10.0f);
+					cout << "Ouch!\n";
+					attacks[i]->setForDelete();
+				}
 			}
 		}
 	}

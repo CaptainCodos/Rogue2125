@@ -116,6 +116,17 @@ bool Rectangle::Intersects(Rectangle other, float &depth, sf::Vector2i &axis)
 
 		if (r.y != 0.0f)
 			ratio = r.x / r.y;
+		else
+		{
+			if (r.x < 0.0f)
+				axis.x = -1;
+			else
+				axis.x = 1;
+
+			depth = r.x;
+
+			return true;
+		}
 
 		if (ratio > 1.0f || ratio < -1.0f)
 		{

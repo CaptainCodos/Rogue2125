@@ -1,6 +1,7 @@
 #include "cmp_tank_section.h"
 #include "cmp_actor_stats.h"
 #include <AllMgrs.h>
+#include "engine.h"
 
 using namespace std;
 
@@ -45,7 +46,7 @@ void TankSection::update(double dt)
 			Vector2f offset = normalize(data.vel) * 16.0f;
 
 
-			shared_ptr<Entity> a = _parent->scene->makeEntity();
+			shared_ptr<Entity> a = Engine::GetActiveScene()->makeEntity();
 			a->setPosition(_parent->getPosition() + offset);
 			a->addComponent<AttackComponent>(data);
 		}

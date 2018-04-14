@@ -17,13 +17,13 @@ private:
 
 };
 
-class FloorChange : WorldObj
+class FloorChange : public WorldObj
 {
 public:
-	FloorChange();
+	FloorChange(int dir);
 	~FloorChange() = default;
 
-	void GenerateData(int dir, sf::Vector2i outCoords);
+	void GenerateData(int dir);
 
 	void CreateFromData(std::vector<std::string> data);
 	void CreateFromFloorChangeData(std::vector<std::string> data, int &count);
@@ -38,7 +38,7 @@ private:
 	sf::Vector2i m_outCoords;
 };
 
-class Door : WorldObj
+class Door : public WorldObj
 {
 public:
 	Door();
@@ -51,6 +51,7 @@ public:
 	std::vector<std::string> GetDataForSave();
 
 	bool IsLocked();
+	bool IsOpen();
 
 	void ToggleOpen();
 	void Unlock();
@@ -61,7 +62,7 @@ private:
 	bool m_locked;
 };
 
-class AutoShop : WorldObj
+class AutoShop : public WorldObj
 {
 public:
 	AutoShop();
@@ -85,7 +86,7 @@ private:
 	std::shared_ptr<Useable> m_useables[3][3];
 };
 
-class SkillLibrary : WorldObj
+class SkillLibrary : public WorldObj
 {
 public:
 	SkillLibrary();

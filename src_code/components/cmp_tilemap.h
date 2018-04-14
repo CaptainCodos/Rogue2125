@@ -37,9 +37,11 @@ public:
 
 	std::vector<std::vector<std::shared_ptr<Entity>>> GetAllNeightbourEnts(int X, int Y);			// Used to get neighbouring entities to toggle visibility.
 
-	void GenerateMapObjs();
+	bool GetNeighbourWalls(int x, int y, int &walls);	// Used to check if in corridor
 
-	void SpawnActor(int X, int Y);
+	void GenerateMapObjs();
+	void GenerateFromScratch();
+
 	void SetVisibleTiles();
 protected:
 
