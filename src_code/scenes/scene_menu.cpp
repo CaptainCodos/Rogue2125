@@ -1,4 +1,5 @@
 #include "scene_gameplay.h"
+#include "system_player_controls.h"
 #include "../buttons.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
@@ -10,6 +11,7 @@
 
 using namespace std;
 using namespace sf;
+using namespace Input;
 
 void MenuScene::Load()
 {

@@ -38,9 +38,15 @@ bool Input::GetMouseDown(Mouse::Button button) {
 	}
 }
 // For single frame
-bool Input::GetMousePressed(Mouse::Button button) {
+bool Input::GetMousePressed(Mouse::Button button, double &delay) {
 	Engine::GetWindow().setKeyRepeatEnabled(false);
-	return false;
+	if (Mouse::isButtonPressed(button) && delay >= 1.0) {
+		delay = 0;
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 // Returns direction value from axis, 0 = horizontal, 1 = verticals
 float Input::GetAxisValue(int axis)

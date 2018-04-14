@@ -3,11 +3,14 @@
 #include "cmp_button.h"
 #include "engine.h"
 #include "../game.h"
+#include "system_player_controls.h"
 
 using namespace std;
 using namespace sf;
+using namespace Input;
 
 extern int counter;
+double delay = 0;
 
 MenuComponent::MenuComponent(Entity* p) : Component(p) {
 	LoadButtons();
@@ -43,6 +46,14 @@ void MenuComponent::LoadButtons() {
 
 void MenuComponent::update(double dt)
 {
+	delay += dt;
+
+	cout << "\r" << delay << std::flush;
+
+	if (Input::GetMousePressed(Mouse::Left, delay) == true) {
+		cout << "Left Click Pressed." << endl;
+	}
+
 	if (_btn_start_game->get_components<ButtonComponent>()[0]->clicked()) 
 	{
 		counter++;

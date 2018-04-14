@@ -21,7 +21,7 @@ namespace Input
 	bool GetMouseDown(Mouse::Button button);
 
 	// For single frame
-	bool GetMousePressed(Mouse::Button button);
+	bool GetMousePressed(Mouse::Button button, double &delay);
 
 	// Returns direction value from axis, 0 = horizontal, 1 = verticals
 	float GetAxisValue(int axis);
