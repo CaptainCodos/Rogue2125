@@ -24,6 +24,10 @@ void MenuComponent::LoadButtons() {
 	_btn_settings = new_button("Options");
 	buttons.push_back(_btn_settings);
 
+	_btn_highscores.reset();
+	_btn_highscores = new_button("Highscores");
+	buttons.push_back(_btn_highscores);
+
 	// Set buttons position
 	for (int i = 0; i < buttons.size(); i++) {
 		buttons[i]->setPosition(Vector2f(Engine::getWindowSize().x / 2 - 300.0f + (i * 350), Engine::getWindowSize().y / 2));
@@ -40,6 +44,10 @@ void MenuComponent::update(double dt)
 
 	if (_btn_settings->get_components<ButtonComponent>()[0]->clicked()) {
 		Engine::ChangeScene(&settings);
+	}
+
+	if (_btn_settings->get_components<ButtonComponent>()[0]->clicked()) {
+		Engine::ChangeScene(&highscores);
 	}
 }
 
