@@ -10,6 +10,7 @@
 #include "../components/cmp_tilemap.h"
 #include "../components/cmp_actor_stats.h"
 #include "../components/cmp_button.h"
+#include "../components/cmp_menu.h"
 
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
@@ -40,19 +41,6 @@ void MenuScene::Load()
 
 		auto a = makeEntity();
 		auto aC = a->addComponent<ActorStatsComponent>();
-
-
-	}
-
-	// Button loading
-	buttons.clear();
-	_btn_start_game.reset();
-	_btn_start_game = new_button("Start");
-	buttons.push_back(_btn_start_game);
-
-	// Set buttons position
-	for (int i = 0; i < buttons.size(); i++) {
-		buttons[i]->setPosition(Vector2f(0, -30.0f));
 	}
 
 	//counter++;
@@ -66,11 +54,6 @@ void MenuScene::Update(const double& dt) {
 	// cout << "Menu Update "<<dt<<"\n";
 
 	txrMgr->UpdateAnims(dt);
-
-	if (_btn_start_game->get_components<ButtonComponent>()[0]->clicked()) {
-		counter++;
-		Engine::ChangeScene(&menu);
-	}
 
 	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 		counter++;
