@@ -32,6 +32,9 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 
 #### Add Engine and our own library projects####
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lib/sfml/extlibs/bin/x64/openal32.dll
+	DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/Debug)
+
 file(GLOB_RECURSE RESOURCE_FILES "res/*.*")
 ####
 file(GLOB_RECURSE SOURCE_FILES engine/src/*.cpp engine/src/*.h)
