@@ -11,6 +11,9 @@ using namespace std;
 using namespace sf;
 
 shared_ptr<Entity> btn_settings;
+shared_ptr<Entity> btn_fullscreen;
+shared_ptr<Entity> btn_windowed;
+shared_ptr<Entity> btn_res_one;
 double settingsDelay = 0;
 
 void SettingsScene::Load()
@@ -20,7 +23,17 @@ void SettingsScene::Load()
 		auto txt = makeEntity();
 		auto t = txt->addComponent<TextComponent>(
 			"Settings");
-		t->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 30.0f, Engine::getWindowSize().y / 2 - 350.f));
+		t->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 20.0f, Engine::getWindowSize().y / 2 - 350.f));
+
+		btn_fullscreen.reset();
+		btn_fullscreen = new_button("Fullscreen");
+		btn_fullscreen->setPosition(Vector2f(Engine::getWindowSize().x / 2 - 130.0f, Engine::getWindowSize().y / 2 - 200.0f));
+		btn_fullscreen->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(btn_fullscreen->getPosition().x, btn_fullscreen->getPosition().y - 8.0f));
+
+		btn_windowed.reset();
+		btn_windowed = new_button("Windowed");
+		btn_windowed->setPosition(Vector2f(Engine::getWindowSize().x / 2 + 230.0f, Engine::getWindowSize().y / 2 - 200.0f));
+		btn_windowed->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(btn_windowed->getPosition().x, btn_windowed->getPosition().y - 8.0f));
 
 		btn_settings.reset();
 		btn_settings = new_button("Back to Menu");
