@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Audio.hpp>
 #include "ecm.h"
 #include "cmp_sprite.h"
 #include "../general/damage_object.h"
@@ -24,6 +23,4 @@ private:
 	DataShapes::Circle m_circle;
 	DmgData m_data;
 	float m_life;
-	sf::SoundBuffer buffer;
-	sf::Sound sound;
 };

@@ -1,16 +1,27 @@
 #include "cmp_attack.h"
 #include <AllMgrs.h>
+#include <SFML/Audio.hpp>
 
 using namespace std;
 using namespace sf;
 
 using namespace DataShapes;
 
+sf::SoundBuffer buffer;
+sf::Sound sound;
+
 AttackComponent::AttackComponent(Entity* p, DmgData data) 
 	: AnimComponent(p)
 {
-	/*buffer.loadFromFile("res/shoot.wav");
-	sound.setBuffer(buffer);*/
+	if (!buffer.loadFromFile("res/sounds/shoot.wav"))
+	{
+		std::cout << "Can't find WAV file!" << std::endl;
+	}
+
+	sound.setBuffer(buffer);
+	sound.setVolume(10.0f);
+	sound.play();
+
 	_parent->addTag("Attack");
 	m_circle = Circle(4.0f, p->getPosition());
 
@@ -66,7 +77,6 @@ DmgData AttackComponent::GetData() { return m_data; }
 
 void AttackComponent::update(double dt)
 {
-	//sound.play();
 	_parent->setPosition(_parent->getPosition() + (m_data.vel * 32.0f * (float)dt));
 	m_circle.pos = _parent->getPosition();
 	m_life -= dt;
