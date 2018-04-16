@@ -15,7 +15,7 @@ private:
 
 };
 
-class Barrel : Interactable
+class Barrel : public Interactable
 {
 public:
 	Barrel();
@@ -32,7 +32,7 @@ private:
 
 };
 
-class Crate : Interactable
+class Crate : public Interactable
 {
 public:
 	Crate();
@@ -49,11 +49,13 @@ private:
 
 };
 
-class Trap : Interactable
+class Trap : public Interactable
 {
 public:
 	Trap();
 	~Trap() = default;
+
+	int GetTrapID();
 
 	void GenerateData();
 

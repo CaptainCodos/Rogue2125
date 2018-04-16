@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include "cmp_actor_stats.h"
 #include "UtilityComponents\cmp_collision_handler.h"
+#include "engine.h"
 //#include "maths.h"
 
 using namespace std;
@@ -96,7 +97,7 @@ void TileMapComponent::GenerateOtherMap(int map)
 
 void TileMapComponent::GenerateMapObjs()
 {
-	//auto ch = _parent->scene->makeEntity();
+	//auto ch = Engine::GetActiveScene()->makeEntity();
 	//enable_shared_from_this();
 	_parent->addComponent<ColHandlerComp>();
 
@@ -118,9 +119,176 @@ void TileMapComponent::GenerateMapObjs()
 
 	int randTile = RandomInt(0, usableTiles.size());
 
-	auto a = _parent->scene->makeEntity();
+	if (m_IntID < 20)
+	{
+		auto exit = Engine::GetActiveScene()->makeEntity();
+		exit->setPosition(usableTiles[randTile]->GetTrueCoords());
+		shared_ptr<ActorStatsComponent> aC = exit->addComponent<ActorStatsComponent>();
+		usedIdxs.push_back(randTile);
+
+		aC->GenerateFloorChange(1);
+		
+	}
+	if (m_IntID > 0)
+	{
+		randTile = RandomInt(0, usableTiles.size());
+
+		bool found = find(usedIdxs.begin(), usedIdxs.end(), randTile) != usedIdxs.end();
+		while (found)
+		{
+			randTile = RandomInt(0, usableTiles.size());
+			found = find(usedIdxs.begin(), usedIdxs.end(), randTile) != usedIdxs.end();
+		}
+
+		auto enter = Engine::GetActiveScene()->makeEntity();
+		enter->setPosition(usableTiles[randTile]->GetTrueCoords());
+		shared_ptr<ActorStatsComponent> aC = enter->addComponent<ActorStatsComponent>();
+		usedIdxs.push_back(randTile);
+
+		aC->GenerateFloorChange(-1);
+	}
+
+	
+
+	/*for (int i = 0; i < m_corridors.size(); i++)
+	{
+		int prevWalls = 0;
+		bool placeDoor = false;
+		Vector2i prevPos = Vector2i(0, 0);
+
+		for (int k = 0; k < m_corridors[i].size(); k++)
+		{
+			placeDoor = false;
+
+			if (k == 0)
+				prevPos = m_corridors[i][k]->GetCoords();
+			else
+				prevPos = m_corridors[i][k - 1]->GetCoords();
+
+			Vector2i currPos = m_corridors[i][k]->GetCoords();
+			int currWalls = 0;
+			bool cor = GetNeighbourWalls(m_corridors[i][k]->GetCoords().x, m_corridors[i][k]->GetCoords().y, currWalls);
+			if (currWalls != prevWalls && cor && currWalls == 2 && m_corridors[i][k]->GetID() < 15)
+			{
+				placeDoor = true;
+
+				Vector2i diff = currPos - prevPos;
+
+				auto door = Engine::GetActiveScene()->makeEntity();
+				Vector2f pos = Vector2f(currPos * 32) + Vector2f(16.0f, 16.0f);
+				door->setPosition(pos);
+				shared_ptr<ActorStatsComponent> aC = door->addComponent<ActorStatsComponent>();
+
+				if (diff.y == 0)
+					aC->GenerateDoor(0);
+				else
+					aC->GenerateDoor(1);
+			}
+
+			prevWalls = currWalls;
+			prevPos = currPos;
+
+			if (!placeDoor)
+			{
+				if (k + 1 < m_corridors[i].size())
+				{
+					currPos = m_corridors[i][k]->GetCoords();
+					int currWalls = 0;
+					bool cor = GetNeighbourWalls(m_corridors[i][k + 1]->GetCoords().x, m_corridors[i][k + 1]->GetCoords().y, currWalls);
+					if (currWalls != prevWalls && cor && prevWalls == 2 && m_corridors[i][k]->GetID() < 15)
+					{
+						placeDoor = true;
+
+						Vector2i diff = currPos - prevPos;
+
+						auto door = Engine::GetActiveScene()->makeEntity();
+						Vector2f pos = Vector2f(prevPos * 32) + Vector2f(16.0f, 16.0f);
+						door->setPosition(pos);
+						shared_ptr<ActorStatsComponent> aC = door->addComponent<ActorStatsComponent>();
+
+						if (diff.y == 0)
+							aC->GenerateDoor(0);
+						else
+							aC->GenerateDoor(1);
+					}
+				}
+			}
+		}
+	}*/
+
+	float SpawnLibs = RandomFloat(0.0f, 1.0f);
+
+	if (SpawnLibs < 0.1f)
+	{
+		int libs = RandomInt(1, 4);
+
+		for (int i = 0; i < libs; i++)
+		{
+			randTile = RandomInt(0, usableTiles.size());
+
+			bool found = find(usedIdxs.begin(), usedIdxs.end(), randTile) != usedIdxs.end();
+			bool found2 = false;
+			while (found || found2)
+			{
+				randTile = RandomInt(0, usableTiles.size());
+				found = find(usedIdxs.begin(), usedIdxs.end(), randTile) != usedIdxs.end();
+
+				found2 = false;
+				for (int j = 0; j < m_corridors.size(); j++)
+				{
+					found2 = find(usableTiles.begin(), usableTiles.end(), usableTiles[randTile]) != usableTiles.end();
+
+					if (found2)
+						break;
+					else
+						continue;
+				}
+			}
+
+			auto lib = Engine::GetActiveScene()->makeEntity();
+			lib->setPosition(usableTiles[randTile]->GetTrueCoords());
+			shared_ptr<ActorStatsComponent> aC = lib->addComponent<ActorStatsComponent>();
+			usedIdxs.push_back(randTile);
+
+			aC->GenerateStats(3);
+		}
+	}
+
+	int interactables = RandomInt(10, 20);
+
+	for (int i = 0; i < interactables; i++)
+	{
+		randTile = RandomInt(0, usableTiles.size());
+
+		bool found = find(usedIdxs.begin(), usedIdxs.end(), randTile) != usedIdxs.end();
+		while (found)
+		{
+			randTile = RandomInt(0, usableTiles.size());
+			found = find(usedIdxs.begin(), usedIdxs.end(), randTile) != usedIdxs.end();
+		}
+
+		auto inter = Engine::GetActiveScene()->makeEntity();
+		inter->setPosition(usableTiles[randTile]->GetTrueCoords());
+		shared_ptr<ActorStatsComponent> aC = inter->addComponent<ActorStatsComponent>();
+		aC->GenerateStats(2);
+
+		usedIdxs.push_back(randTile);
+
+	}
+
+	randTile = RandomInt(0, usableTiles.size());
+
+	bool found = find(usedIdxs.begin(), usedIdxs.end(), randTile) != usedIdxs.end();
+	while (found)
+	{
+		randTile = RandomInt(0, usableTiles.size());
+		found = find(usedIdxs.begin(), usedIdxs.end(), randTile) != usedIdxs.end();
+	}
+
+	auto a = Engine::GetActiveScene()->makeEntity();
 	shared_ptr<ActorStatsComponent> aC = a->addComponent<ActorStatsComponent>();
 	aC->SetPosition(usableTiles[randTile]->GetTrueCoords());
+	aC->GenerateStats(0);
 
 }
 
@@ -245,6 +413,54 @@ vector<vector<shared_ptr<TileComponent>>> TileMapComponent::GetNeighbourTiles(in
 		tilegrid[1].push_back(nullptr);
 
 	return tilegrid;
+}
+
+bool TileMapComponent::GetNeighbourWalls(int x, int y, int &walls)
+{
+	walls = 0;
+
+	bool dX = false;
+	bool dY = false;
+
+	vector<vector<shared_ptr<TileComponent>>> neighbours = GetNeighbourTiles(x, y);
+
+	if (neighbours[0][0] != nullptr)
+	{
+		if (!neighbours[0][0]->GetWalkable())
+		{
+			walls++;
+			dX = true;
+		}
+	}
+
+	if (neighbours[0][1] != nullptr)
+	{
+		if (!neighbours[0][1]->GetWalkable())
+		{
+			walls++;
+			dX = true;
+		}
+	}
+
+	if (neighbours[1][0] != nullptr)
+	{
+		if (!neighbours[1][0]->GetWalkable())
+		{
+			walls++;
+			dY = true;
+		}
+	}
+
+	if (neighbours[1][1] != nullptr)
+	{
+		if (!neighbours[1][1]->GetWalkable())
+		{
+			walls++;
+			dY = true;
+		}
+	}
+
+	return (dX || dY) && (dX != dY) && walls == 2;
 }
 
 vector<vector<shared_ptr<Entity>>> TileMapComponent::GetAllNeightbourEnts(int X, int Y)
@@ -900,10 +1116,12 @@ void TileMapComponent::IterateAcrossTileMap(int pass)
 					if (m_tileCmps[y][x]->GetID() > 14)
 					{
 						m_tileEnts[y][x]->addTag("liquid");
+						//m_tileCmps[y][x]->SetEffectID(m_tileCmps[y][x]->GetID() % 5);
 					}
 					else
 					{
 						m_tileEnts[y][x]->addTag("floor");
+						m_tileCmps[y][x]->SetEffectID(10);
 					}
 				}
 				
@@ -943,10 +1161,12 @@ void TileMapComponent::IterateTiles()
 				if (m_tileCmps[y][x]->GetID() > 14)
 				{
 					m_tileEnts[y][x]->addTag("liquid");
+					//m_tileCmps[y][x]->SetEffectID(m_tileCmps[y][x]->GetID() % 5);
 				}
 				else
 				{
 					m_tileEnts[y][x]->addTag("floor");
+					m_tileCmps[y][x]->SetEffectID(10);
 				}
 			}
 

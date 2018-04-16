@@ -23,10 +23,17 @@ TextureMgr::TextureMgr()
 	sheet_Items.push_back(std::vector<sf::Texture>());
 	sheet_Items.push_back(std::vector<sf::Texture>());
 
+	sheet_NPA_Textures = std::vector<std::vector<sf::Texture>>();
+	sheet_NPA_Textures.push_back(std::vector<sf::Texture>());
+	sheet_NPA_Textures.push_back(std::vector<sf::Texture>());
+	sheet_NPA_Textures.push_back(std::vector<sf::Texture>());
+
 	// Load texture assets
 	LoadTextures("tile sheets/", "GreyScale", sheet_Tiles, 5);
 	LoadTextures("tank/", "Tank", sheet_Items[0], 4);
-
+	LoadTextures("interactables/", "interactable", sheet_NPA_Textures[0], 3);
+	LoadTextures("interactables/", "interactable", sheet_NPA_Textures[1], 3);
+	LoadTextures("world/", "world", sheet_NPA_Textures[2], 4);
 	LoadTextures("projectiles/", "Proj", sheet_Projectiles, 1);
 
 	LoadTextures("tile sheets/", "GreyScale", anim_Tiles, 1);
