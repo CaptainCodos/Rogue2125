@@ -18,6 +18,8 @@ shared_ptr<Entity> btn_res_two;
 shared_ptr<Entity> btn_res_three;
 bool fullscreen = false;
 double settingsDelay = 0;
+shared_ptr<Entity> resHeader;
+shared_ptr<TextComponent> rH;
 
 void SettingsScene::Load()
 {
@@ -33,8 +35,8 @@ void SettingsScene::Load()
 			"Window Options");
 		dH->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 80.0f, Engine::getWindowSize().y / 2 - 270.0f));
 
-		auto resHeader = makeEntity();
-		auto rH = txt->addComponent<TextComponent>(
+		resHeader = makeEntity();
+		rH = txt->addComponent<TextComponent>(
 			"Resolution Options");
 		rH->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 120.0f, Engine::getWindowSize().y / 2 + 105.0f));
 
@@ -83,44 +85,43 @@ void SettingsScene::Update(const double& dt) {
 	{
 		Engine::ChangeScene(&menu);
 	}
-	else if (btn_fullscreen->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	else if (btn_fullscreen->get_components<ButtonComponent>()[0]->clicked(settingsDelay))
 	{
 		fullscreen = true;
 		Engine::GetWindow().create(sf::VideoMode(Engine::getWindowSize().x, Engine::getWindowSize().y, 32), "Rogue2125", sf::Style::Fullscreen);
 	}
-	else if (btn_windowed->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	else if (btn_windowed->get_components<ButtonComponent>()[0]->clicked(settingsDelay))
 	{
 		fullscreen = false;
 		Engine::GetWindow().create(sf::VideoMode(Engine::getWindowSize().x, Engine::getWindowSize().y, 32), "Rogue2125", sf::Style::Resize);
 	}
 
 	// Resolution functions
-	else if (btn_res_one->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	else if (btn_res_one->get_components<ButtonComponent>()[0]->clicked(settingsDelay))
 	{
-		if (fullscreen == true) {
-			Engine::GetWindow().create(sf::VideoMode(1920, 1080, 32), "Rogue2125", sf::Style::Fullscreen);
-		}
-		else {
-			Engine::GetWindow().create(sf::VideoMode(1920, 1080, 32), "Rogue2125", sf::Style::Resize);
-		}
+		Engine::GetWindow().create(sf::VideoMode(1920, 1080, 32), "Rogue2125", sf::Style::Resize);
 	}
-	else if (btn_res_two->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	else if (btn_res_two->get_components<ButtonComponent>()[0]->clicked(settingsDelay))
 	{
-		if (fullscreen == true) {
-			Engine::GetWindow().create(sf::VideoMode(1600, 900, 32), "Rogue2125", sf::Style::Fullscreen);
-		}
-		else {
-			Engine::GetWindow().create(sf::VideoMode(1600, 900, 32), "Rogue2125", sf::Style::Resize);
-		}
+		Engine::GetWindow().create(sf::VideoMode(1600, 900, 32), "Rogue2125", sf::Style::Resize);
 	}
-	else if (btn_res_three->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	else if (btn_res_three->get_components<ButtonComponent>()[0]->clicked(settingsDelay))
 	{
-		if (fullscreen == true) {
-			Engine::GetWindow().create(sf::VideoMode(1280, 1024, 32), "Rogue2125", sf::Style::Fullscreen);
-		}
-		else {
-			Engine::GetWindow().create(sf::VideoMode(1280, 1024, 32), "Rogue2125", sf::Style::Resize);
-		}
+		Engine::GetWindow().create(sf::VideoMode(1280, 1024, 32), "Rogue2125", sf::Style::Resize);
+	}
+
+	// Certain resolutions don't work with fullscreen, too complex to fix.
+	else if (fullscreen == true) {
+		btn_res_one->setVisible(false);
+		btn_res_two->setVisible(false);
+		btn_res_three->setVisible(false);
+		rH->SetText("Fullscreen Window cannot be resized.");
+	}
+	else if (fullscreen == false) {
+		btn_res_one->setVisible(true);
+		btn_res_two->setVisible(true);
+		btn_res_three->setVisible(true);
+		rH->SetText("Resolution Options");
 	}
 
 	Scene::Update(dt);
