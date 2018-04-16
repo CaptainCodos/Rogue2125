@@ -16,6 +16,7 @@ shared_ptr<Entity> btn_windowed;
 shared_ptr<Entity> btn_res_one;
 shared_ptr<Entity> btn_res_two;
 shared_ptr<Entity> btn_res_three;
+bool fullscreen = false;
 double settingsDelay = 0;
 
 void SettingsScene::Load()
@@ -83,15 +84,22 @@ void SettingsScene::Update(const double& dt) {
 	}
 	else if (btn_fullscreen->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
 	{
+		fullscreen = true;
 		Engine::GetWindow().create(sf::VideoMode(Engine::getWindowSize().x, Engine::getWindowSize().y, 32), "Rogue2125", sf::Style::Fullscreen);
 	}
 	else if (btn_windowed->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
 	{
+		fullscreen = false;
 		Engine::GetWindow().create(sf::VideoMode(Engine::getWindowSize().x, Engine::getWindowSize().y, 32), "Rogue2125", sf::Style::Resize);
 	}
 	else if (btn_res_one->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
 	{
-
+		if (fullscreen == true) {
+			Engine::GetWindow().create(sf::VideoMode(1920, 1080, 32), "Rogue2125", sf::Style::Fullscreen);
+		}
+		else {
+			Engine::GetWindow().create(sf::VideoMode(1920, 1080, 32), "Rogue2125", sf::Style::Resize);
+		}
 	}
 	else if (btn_res_two->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
 	{
