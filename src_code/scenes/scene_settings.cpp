@@ -64,7 +64,7 @@ void SettingsScene::Load()
 		btn_res_two->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(btn_res_two->getPosition().x, btn_res_two->getPosition().y - 8.0f));
 
 		btn_res_three.reset();
-		btn_res_three = new_button("Res: 1024x768");
+		btn_res_three = new_button("Res: 1280x1024");
 		btn_res_three->setPosition(Vector2f(Engine::getWindowSize().x / 2 - 350.0f, Engine::getWindowSize().y / 2 + 175.0f));
 		btn_res_three->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(btn_res_three->getPosition().x, btn_res_three->getPosition().y - 8.0f));
 	}
@@ -78,6 +78,7 @@ void SettingsScene::Update(const double& dt) {
 
 	txrMgr->UpdateAnims(dt);
 
+	// Check if a button has been pressed - if true, carry out function.
 	if (btn_settings->get_components<ButtonComponent>()[0]->clicked(settingsDelay))
 	{
 		Engine::ChangeScene(&menu);
@@ -92,6 +93,8 @@ void SettingsScene::Update(const double& dt) {
 		fullscreen = false;
 		Engine::GetWindow().create(sf::VideoMode(Engine::getWindowSize().x, Engine::getWindowSize().y, 32), "Rogue2125", sf::Style::Resize);
 	}
+
+	// Resolution functions
 	else if (btn_res_one->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
 	{
 		if (fullscreen == true) {
@@ -103,11 +106,21 @@ void SettingsScene::Update(const double& dt) {
 	}
 	else if (btn_res_two->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
 	{
-
+		if (fullscreen == true) {
+			Engine::GetWindow().create(sf::VideoMode(1600, 900, 32), "Rogue2125", sf::Style::Fullscreen);
+		}
+		else {
+			Engine::GetWindow().create(sf::VideoMode(1600, 900, 32), "Rogue2125", sf::Style::Resize);
+		}
 	}
 	else if (btn_res_three->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
 	{
-
+		if (fullscreen == true) {
+			Engine::GetWindow().create(sf::VideoMode(1280, 1024, 32), "Rogue2125", sf::Style::Fullscreen);
+		}
+		else {
+			Engine::GetWindow().create(sf::VideoMode(1280, 1024, 32), "Rogue2125", sf::Style::Resize);
+		}
 	}
 
 	Scene::Update(dt);
