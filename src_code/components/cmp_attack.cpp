@@ -9,6 +9,8 @@ using namespace DataShapes;
 AttackComponent::AttackComponent(Entity* p, DmgData data) 
 	: AnimComponent(p)
 {
+	/*buffer.loadFromFile("res/shoot.wav");
+	sound.setBuffer(buffer);*/
 	_parent->addTag("Attack");
 	m_circle = Circle(4.0f, p->getPosition());
 
@@ -64,6 +66,7 @@ DmgData AttackComponent::GetData() { return m_data; }
 
 void AttackComponent::update(double dt)
 {
+	//sound.play();
 	_parent->setPosition(_parent->getPosition() + (m_data.vel * 32.0f * (float)dt));
 	m_circle.pos = _parent->getPosition();
 	m_life -= dt;
