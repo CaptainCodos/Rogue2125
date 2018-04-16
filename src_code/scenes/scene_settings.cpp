@@ -14,6 +14,8 @@ shared_ptr<Entity> btn_settings;
 shared_ptr<Entity> btn_fullscreen;
 shared_ptr<Entity> btn_windowed;
 shared_ptr<Entity> btn_res_one;
+shared_ptr<Entity> btn_res_two;
+shared_ptr<Entity> btn_res_three;
 double settingsDelay = 0;
 
 void SettingsScene::Load()
@@ -24,6 +26,11 @@ void SettingsScene::Load()
 		auto t = txt->addComponent<TextComponent>(
 			"Settings");
 		t->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 20.0f, Engine::getWindowSize().y / 2 - 350.f));
+
+		auto displayHeader = makeEntity();
+		auto dH = txt->addComponent<TextComponent>(
+			"Window Options");
+		dH->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 80.0f, Engine::getWindowSize().y / 2 - 270.0f));
 
 		btn_fullscreen.reset();
 		btn_fullscreen = new_button("Fullscreen");
