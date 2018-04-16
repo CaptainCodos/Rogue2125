@@ -34,6 +34,11 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lib/sfml/extlibs/bin/x64/openal32.dll
 	DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/Debug)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lib/sfml/extlibs/bin/x64/openal32.dll
+	DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/Release)
+
+file(DOWNLOAD https://freesound.org/people/Sirkoto51/sounds/368574/download/368574__sirkoto51__ice-cavern-loop.wav
+		${CMAKE_SOURCE_DIR}/res/sounds/music.wav)
 
 file(GLOB_RECURSE RESOURCE_FILES "res/*.*")
 ####
