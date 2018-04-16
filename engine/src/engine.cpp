@@ -105,6 +105,9 @@ void Engine::Start(unsigned int width, unsigned int height,
 				else if (event.key.code == sf::Keyboard::F1) {
 					window.create(sf::VideoMode(width, height, 32), gameName, sf::Style::Fullscreen);
 				}
+				else if (event.key.code == sf::Keyboard::F2) {
+					window.create(sf::VideoMode(width, height, 32), gameName, sf::Style::Resize);
+				}
 			}
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
