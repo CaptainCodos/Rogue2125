@@ -37,6 +37,11 @@ void SettingsScene::Load()
 			"Resolution Options");
 		rH->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 120.0f, Engine::getWindowSize().y / 2 + 105.0f));
 
+		btn_settings.reset();
+		btn_settings = new_button("Back to Menu");
+		btn_settings->setPosition(Vector2f(Engine::getWindowSize().x / 2 + 50.0f, Engine::getWindowSize().y / 2 + 350.0f));
+		btn_settings->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(btn_settings->getPosition().x, btn_settings->getPosition().y - 8.0f));
+
 		btn_fullscreen.reset();
 		btn_fullscreen = new_button("Fullscreen");
 		btn_fullscreen->setPosition(Vector2f(Engine::getWindowSize().x / 2 - 130.0f, Engine::getWindowSize().y / 2 - 200.0f));
@@ -46,11 +51,6 @@ void SettingsScene::Load()
 		btn_windowed = new_button("Windowed");
 		btn_windowed->setPosition(Vector2f(Engine::getWindowSize().x / 2 + 230.0f, Engine::getWindowSize().y / 2 - 200.0f));
 		btn_windowed->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(btn_windowed->getPosition().x, btn_windowed->getPosition().y - 8.0f));
-
-		btn_settings.reset();
-		btn_settings = new_button("Back to Menu");
-		btn_settings->setPosition(Vector2f(Engine::getWindowSize().x / 2 + 50.0f, Engine::getWindowSize().y / 2 + 350.0f));
-		btn_settings->get_components<TextComponent>()[0]->SetPos(sf::Vector2f(btn_settings->getPosition().x, btn_settings->getPosition().y - 8.0f));
 
 		btn_res_one.reset();
 		btn_res_one = new_button("Res: 1920x1080");
@@ -80,6 +80,26 @@ void SettingsScene::Update(const double& dt) {
 	if (btn_settings->get_components<ButtonComponent>()[0]->clicked(settingsDelay))
 	{
 		Engine::ChangeScene(&menu);
+	}
+	else if (btn_fullscreen->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	{
+		Engine::GetWindow().create(sf::VideoMode(Engine::getWindowSize().x, Engine::getWindowSize().y, 32), "Rogue2125", sf::Style::Fullscreen);
+	}
+	else if (btn_windowed->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	{
+		Engine::GetWindow().create(sf::VideoMode(Engine::getWindowSize().x, Engine::getWindowSize().y, 32), "Rogue2125", sf::Style::Resize);
+	}
+	else if (btn_res_one->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	{
+
+	}
+	else if (btn_res_two->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	{
+
+	}
+	else if (btn_res_three->get_components<ButtonComponent>()[0]->clicked(settingsDelay)) 
+	{
+
 	}
 
 	Scene::Update(dt);
