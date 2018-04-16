@@ -14,6 +14,7 @@ Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
 SoundBuffer musicBuffer;
 Sound music;
+bool wait;
 
 static bool loading = false;
 static float loadingspinner = 0.f;
@@ -92,7 +93,7 @@ void Engine::Start(unsigned int width, unsigned int height,
 	Renderer::initialise(window);
 	Physics::initialise();
 
-	ChangeScene(scn);
+	ChangeScene(scn, gameName);
 	if (!musicBuffer.loadFromFile("res/sounds/music.wav"))
 	{
 		std::cout << "Can't find music file!" << std::endl;
@@ -125,10 +126,12 @@ void Engine::Start(unsigned int width, unsigned int height,
 			window.close();
 		}
 
-		window.clear();
-		Update();
-		Render(window);
-		window.display();
+		if (wait == false) {
+			window.clear();
+			Update();
+			Render(window);
+			window.display();
+		}
 	}
 	if (_activeScene != nullptr) {
 		_activeScene->UnLoad();
@@ -147,7 +150,7 @@ std::shared_ptr<Entity> Scene::makeEntity() {
 
 void Engine::setVsync(bool b) { _window->setVerticalSyncEnabled(b); }
 
-void Engine::ChangeScene(Scene* s) {
+void Engine::ChangeScene(Scene* s, std::string name) {
 	cout << "Eng: changing scene: " << s << endl;
 	auto old = _activeScene;
 	_activeScene = s;

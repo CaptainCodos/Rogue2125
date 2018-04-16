@@ -30,12 +30,3 @@ namespace Input
 	Vector2i GetMouseWindowPos();
 	Vector2i GetMouseRelativeToPos(Vector2i pos);
 };
-
-namespace controls 
-{
-	void CheckCameraInput(View &view, float &zoom, double dt);
-
-	void GetMouseClick();
-
-	void GetMousePos();
-}

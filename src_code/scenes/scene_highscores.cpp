@@ -40,7 +40,7 @@ void HighscoresScene::Update(const double& dt) {
 
 	if (btn_highscores->get_components<ButtonComponent>()[0]->clicked(highScoresDelay))
 	{
-		Engine::ChangeScene(&menu);
+		Engine::ChangeScene(&menu, "menu");
 	}
 
 	Scene::Update(dt);

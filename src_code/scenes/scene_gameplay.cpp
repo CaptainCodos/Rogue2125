@@ -18,7 +18,6 @@
 
 using namespace std;
 using namespace sf;
-using namespace controls;
 
 View view;
 float zoom;
@@ -52,13 +51,9 @@ void GameplayScene::Update(const double& dt) {
 
 	txrMgr->UpdateAnims(dt);
 
-	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-		counter++;
-		Engine::ChangeScene(&menu);
-	}
-	if (sf::Keyboard::isKeyPressed(Keyboard::V)) {
+	if (sf::Keyboard::isKeyPressed(Keyboard::F3)) {
 		counter--;
-		Engine::ChangeScene(&menu);
+		Engine::ChangeScene(&menu, "menu");
 	}
 
 	Scene::Update(dt);

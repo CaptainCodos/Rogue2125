@@ -81,7 +81,7 @@ void SettingsScene::Update(const double& dt) {
 	// Check if a button has been pressed - if true, carry out function.
 	if (btn_settings->get_components<ButtonComponent>()[0]->clicked(settingsDelay))
 	{
-		Engine::ChangeScene(&menu);
+		Engine::ChangeScene(&menu, "menu");
 	}
 	else if (btn_fullscreen->get_components<ButtonComponent>()[0]->clicked(settingsDelay))
 	{

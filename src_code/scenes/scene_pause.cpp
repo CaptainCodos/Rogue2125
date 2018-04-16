@@ -27,7 +27,7 @@ void PauseScene::Update(const double& dt) {
 	txrMgr->UpdateAnims(dt);
 
 	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-		Engine::ChangeScene(&menu);
+		Engine::ChangeScene(&menu, "menu");
 	}
 
 	Scene::Update(dt);

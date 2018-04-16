@@ -12,14 +12,16 @@ public:
   Engine() = delete;
   static void Start(unsigned int width, unsigned int height,
                     const std::string& gameName, Scene* scn);
-  static void ChangeScene(Scene*);
+  static void ChangeScene(Scene*, std::string name);
   static sf::RenderWindow& GetWindow();
   static sf::Vector2u getWindowSize();
   static Scene* GetActiveScene();
   static void setVsync(bool b);
+  static void pause(bool paused);
 
 private:
   static Scene* _activeScene;
+  static std::string _sceneName;
   static std::string _gameName;
   static void Update();
   static void Render(sf::RenderWindow& window);

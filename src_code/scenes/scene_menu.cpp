@@ -31,6 +31,9 @@ void MenuScene::Load()
 		btn_highscores.reset();
 		btn_highscores = new_button("Highscores");
 		btn_highscores->setPosition(Vector2f(Engine::getWindowSize().x / 2 - 400.0f, Engine::getWindowSize().y / 2));*/
+
+		sf::View m_camera = View(FloatRect(0, 0, 1600, 900));
+		Engine::GetWindow().setView(m_camera);
 	}
 	setLoaded(true);
 }
@@ -41,7 +44,7 @@ void MenuScene::Update(const double& dt) {
 	txrMgr->UpdateAnims(dt);
 
 	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-		Engine::ChangeScene(&gameplay);
+		Engine::ChangeScene(&gameplay, "gameplay");
 	}
 
 	Scene::Update(dt);

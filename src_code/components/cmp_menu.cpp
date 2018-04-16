@@ -52,13 +52,13 @@ void MenuComponent::update(double dt)
 	if (_btn_start_game->get_components<ButtonComponent>()[0]->clicked(menuDelay))
 	{
 		counter++;
-		Engine::ChangeScene(&gameplay);
+		Engine::ChangeScene(&gameplay, "gameplay");
 	} else if (_btn_settings->get_components<ButtonComponent>()[0]->clicked(menuDelay))
 	{
-		Engine::ChangeScene(&settings);
+		Engine::ChangeScene(&settings, "settings");
 	} else if (_btn_highscores->get_components<ButtonComponent>()[0]->clicked(menuDelay))
 	{
-		Engine::ChangeScene(&highscores);
+		Engine::ChangeScene(&highscores, "highscores");
 	} else if (_btn_quit->get_components<ButtonComponent>()[0]->clicked(menuDelay))
 	{
 		Engine::GetWindow().close();
