@@ -227,6 +227,5 @@ long long last() {
   then = n;
   return dt;
 }
-} // namespace timing
 
 Scene::~Scene() { UnLoad(); }
