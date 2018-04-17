@@ -4,6 +4,8 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage[font=small,labelfont=bf]{caption}
+\graphicspath{ {images/} }
 
 \begin{document}
 
@@ -53,13 +55,26 @@ In terms of inspiration, the game draws certain gameplay points from games such 
 
 \section{Game Design Document Changes and Omissions}
 
-Within our game design document, we followed a slightly altered form of the MoSCoW prioritisation structure. Instead of prioritising by importance, we structed it by what we invisioned the easiest to hardest features to look like. However, some of the features that were promised were not delivered. To start with, only very basic enemies were implemented, without AI or any kind of prevention functions. This leads to the next promised feature - pickups from enemies. When killed, enemies were meant to drop a variance of items to help the player; while we had the work in place to implement this, it needed a bit more work to be fully functional, and is unfortunately absent from the game. The game unfortunately doesn't have any form of experience points either - therefore, there is no way to level up and no way for the player to progress. Again, while work was in place to implement player stats/equipment/etc, unfortunately the game has no statistical balance/difficulty spiking. \linebreak
+Within our game design document, we followed a slightly altered form of the MoSCoW prioritisation structure. Instead of prioritising by importance, we structed it by what we invisioned the easiest to hardest features to look like. However, some of the features that were promised were not delivered. To start with, only very basic enemies were implemented, without AI or any kind of prevention functions. This leads to the next promised feature - pickups from enemies. When killed, enemies were meant to drop a variance of items to help the player; while we had the work in place to implement this, it needed a bit more work to be fully functional, and is unfortunately absent from the game. The game unfortunately doesn't have any form of experience points either - therefore, there is no way to level up and no way for the player to progress. Again, while work was in place to implement player stats/equipment/etc, unfortunately the game has no statistical balance/difficulty spiking. \newline
 
 The game has no items or resources, therefore a UI was naturally not implemented, except for the menus. The game has no visible exits/separate rooms or end condition, although one could be easily implemented given extra time.
 
 \clearpage
 
 \section{Software Design}
+
+The game at it's core is very simple, given that it has no win/end condition. Starting with the menus, it was planned to have four menus - main, settings, highscores and pause. The main menu and settings menus are (almost) fully functional - with transitions implemented. \newline
+
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{MenuState}
+\captionof{figure}{Menu States}
+
+\hspace{1cm}
+
+Unfortunately, highscores as well as pausing aren't quite implemented in the game, although the functionality for saving a game is almost there. While playing the game, unfortunately only a few states are available, not warranting a separate diagram - idle, move and shoot. With more functionality, the tank in the game could boost/explode/power-up/etc.
+
+\clearpage
+
+\section{Game Implementation}
 
 
 
