@@ -52,7 +52,7 @@ void GameplayScene::Update(const double& dt) {
 	txrMgr->UpdateAnims(dt);
 
 	if (sf::Keyboard::isKeyPressed(Keyboard::F3)) {
-		counter--;
+		counter++;
 		Engine::ChangeScene(&menu, "menu");
 	}
 
