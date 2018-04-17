@@ -19,7 +19,7 @@ void MenuScene::Load()
 	{
 		auto txt = makeEntity();
 		auto t = txt->addComponent<TextComponent>(
-			"Platformer\nPress Space to Start");
+			"Rogue: 2125\nPress Space to Start");
 		t->SetPos(Vector2f(Engine::getWindowSize().x / 2 - 140.0f, Engine::getWindowSize().y / 2 - 200.f));
 
 		// Button loading - method 1 (Component approach)
